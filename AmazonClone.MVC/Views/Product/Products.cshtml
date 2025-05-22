@@ -1,0 +1,125 @@
+﻿@model List<AmazonClone.MVC.Models.ViewModel.Product>
+
+<h2>@Model.FirstOrDefault()?.SubCategoryName</h2>
+
+<div class="products-grid">
+    @if (Model != null && Model.Any())
+    {
+        @foreach (var product in Model)
+        {
+            <div class="product-card">
+                <a asp-controller="Product"
+                   asp-action="ProductDetails"
+                   asp-route-Id="@product.Id">
+                    <div class="product-image">
+                        <img src="@GetProductImageUrl(product.Name)"
+                             alt="@product.Name" />
+                    </div>
+                    <h3 class="product-title">@product.Name</h3>
+                    <p class="product-price">@product.Price</p>
+                </a>
+                <div class="wishlist-icon">
+                    <i class="fas fa-heart" onclick="addToWishlist(@product.Id)"></i>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <p class="no-products">No products available for this subcategory.</p>
+    }
+</div>
+@functions {
+    string GetProductImageUrl(string productName)
+    {
+        if (string.IsNullOrEmpty(productName))
+        {
+            return "/images/products/default.jpg";
+        }
+        var specialCases = new Dictionary<string, string>
+        {
+            {"iPhone 14 Pro", "https://m.media-amazon.com/images/I/71qO1iuMAGL._AC_UL320_.jpg"},
+            {"Samsung Galaxy S23", "https://m.media-amazon.com/images/I/61-E0V81kBL._AC_UY218_.jpg"},
+            {"Google Pixel 8", "https://m.media-amazon.com/images/I/51zKbcOw1rL._AC_UL320_.jpg"},
+            {"OnePlus 12", "https://m.media-amazon.com/images/I/71o8VehMHXL._AC_UY218_.jpg"},
+            {"Xiaomi 13 Pro", "https://m.media-amazon.com/images/I/61RvCwjI7dL._AC_UY218_.jpg"},
+            {"Motorola Edge 40", "https://m.media-amazon.com/images/I/71gL3+m6uuL._AC_UL320_.jpg"},
+            {"ASUS ROG Phone 7", "https://m.media-amazon.com/images/I/31QwUqcvKjL._AC_UL320_.jpg"},
+            {"Realme GT Neo 5", "https://m.media-amazon.com/images/I/61HyiMlCuTL._AC_UY218_.jpg"},
+            {"Sony Xperia 1 V", "https://m.media-amazon.com/images/I/71UdkYWXjCL._AC_UL320_.jpg"},
+            {"Nothing Phone 2", "https://m.media-amazon.com/images/I/81S3-nKXeRL._AC_UL320_.jpg"}
+        };
+        if (specialCases.TryGetValue(productName, out var specialUrl))
+        {
+            return specialUrl;
+        }
+        return null;
+    }
+}
+
+
+<style>
+    .products-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 20px;
+        margin-top: 30px;
+    }
+
+    .product-card {
+        background: white;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+    .product-image {
+        height: 180px;
+        overflow: hidden;
+    }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+    .product-card:hover .product-image img {
+        transform: scale(1.05);
+    }
+
+    .product-title {
+        padding: 15px;
+        margin: 0;
+        font-size: 16px;
+        color: #111;
+        text-align: center;
+    }
+
+    .product-price {
+        padding: 0 15px 15px;
+        margin: 0;
+        font-size: 14px;
+        color: #555;
+        text-align: center;
+    }
+
+    .product-card a {
+        text-decoration: none;
+    }
+
+    .no-products {
+        grid-column: 1 / -1;
+        text-align: center;
+        color: #555;
+        font-style: italic;
+        padding: 40px 0;
+    }
+</style>

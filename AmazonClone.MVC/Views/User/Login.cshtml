@@ -1,0 +1,55 @@
+﻿@model AmazonClone.MVC.Models.LoginModel
+
+@{
+    ViewData["Title"] = "Login to Amazon Clone";
+}
+<link href="~/css/login.css" rel="stylesheet" />
+<div class="login-container">
+    <div class="login-logo">
+        <div class="logo"></div>
+        <span class="dotin">.in</span>
+    </div>
+
+    <div class="login-card">
+        <h1 class="login-title">Sign in</h1>
+
+        <form asp-action="Login" method="post" class="login-form">
+            <div asp-validation-summary="ModelOnly" class="text-danger validation-summary"></div>
+
+            <div class="form-group">
+                <label asp-for="Email" class="form-label">Email</label>
+                <input asp-for="Email" class="form-input" />
+                <span asp-validation-for="Email" class="text-danger validation-message"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Password" class="form-label">Password</label>
+                <input asp-for="Password" class="form-input" type="password" />
+                <span asp-validation-for="Password" class="text-danger validation-message"></span>
+            </div>
+
+            <button type="submit" class="login-button">Sign in</button>
+        </form>
+
+        <div class="login-terms">
+            By continuing, you agree to Amazon's <a href="#">Conditions of Use</a> and <a href="#">Privacy Notice</a>.
+        </div>
+
+        <div class="login-help">
+            <i class="fas fa-caret-right"></i> <a href="#">Need help?</a>
+        </div>
+    </div>
+
+    <div class="login-divider">
+        <span>New to Amazon?</span>
+    </div>
+
+    <a asp-action="Register" asp-controller="User" class="create-account-button">Create your Amazon account</a>
+</div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+}

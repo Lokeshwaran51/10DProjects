@@ -1,0 +1,50 @@
+﻿@model AmazonClone.MVC.Models.RegisterModel.User
+
+@{
+    ViewData["Title"] = "Register";
+}
+<link href="~/css/register.css" rel="stylesheet" />
+
+
+<div class="register-container">
+    <h2>Register</h2>
+
+    <form asp-action="Register" method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <div class="form-group">
+            <label asp-for="UserName"></label>
+            <input asp-for="UserName" class="form-control" />
+            <span asp-validation-for="UserName" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Mobile"></label>
+            <input asp-for="Mobile" class="form-control" />
+            <span asp-validation-for="Mobile" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Email"></label>
+            <input asp-for="Email" class="form-control" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Password"></label>
+            <input asp-for="Password" class="form-control" type="password" />
+            <span asp-validation-for="Password" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="register-button">Register</button>
+
+        <p class="mt-3">
+            Already have an account?
+            <a asp-action="Login" asp-controller="User">Login here</a>
+        </p>
+    </form>
+</div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}
