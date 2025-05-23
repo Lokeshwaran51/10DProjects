@@ -1,4 +1,4 @@
-﻿using AmazonClone.API.Data;
+﻿using AmazonClone.API.Data.Entity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -6,11 +6,11 @@ namespace AmazonClone.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProductControllerAPI : ControllerBase
+    public class ProductController : ControllerBase
     {
         private readonly AppDbContext _context;
         private readonly IConfiguration _configuration;
-        public ProductControllerAPI(IConfiguration configuration,AppDbContext appDbContext)
+        public ProductController(IConfiguration configuration, AppDbContext appDbContext)
         {
             _configuration = configuration;
             _context = appDbContext;
@@ -19,30 +19,38 @@ namespace AmazonClone.API.Controllers
         [HttpGet("GetListOfProductsBySubCategoryId/{SubCategoryId}")]
         public async Task<IActionResult> GetListOfProductsBySubCategoryId(int SubCategoryId)
         {
-            var products = await _context.Products
-                .Where(p => p.SubCategoryId == SubCategoryId)
-                .ToListAsync();
+            try
+            {
+                var products = await _context.Products
+                       .Where(p => p.SubCategoryId == SubCategoryId)
+                       .ToListAsync();
 
-            return Ok(products);
+                return Ok(products);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Internal server error: " + ex.Message);
+            }
         }
 
-        [HttpGet("GetProductDetailByProductId/{id}")]
-        public async Task<IActionResult> GetProductDetailByProductId(int id)
+        [HttpGet("ProductDetails/{ProductId}")]
+        public async Task<IActionResult> ProductDetails(int ProductId)
         {
             try
             {
-                if (id <= 0)
+                if (ProductId <= 0)
                 {
                     return BadRequest("Invalid product ID");
-                }; ;
+                }
+                ; ;
                 var product = await _context.Products
-                    .Include(p => p.Category)  
-                    .Include(p => p.SubCategory)  
-                    .FirstOrDefaultAsync(p => p.Id == id);
+                    .Include(p => p.Category)
+                    .Include(p => p.SubCategory)
+                    .FirstOrDefaultAsync(p => p.Id == ProductId);
 
                 if (product == null)
                 {
-                    return NotFound($"Product with ID {id} not found");
+                    return NotFound($"Product with ID {ProductId} not found");
                 }
                 var result = new
                 {
@@ -56,9 +64,9 @@ namespace AmazonClone.API.Controllers
                 };
                 return Ok(result);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return StatusCode(500, "An error occurred while processing your request");
+                return StatusCode(500, "Internal server error: " + ex.Message);
             }
         }
     }

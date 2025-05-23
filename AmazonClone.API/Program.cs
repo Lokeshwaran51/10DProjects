@@ -1,8 +1,8 @@
-using AmazonClone.API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using AmazonClone.API.Data.Entity;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -37,10 +37,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         ClockSkew = TimeSpan.Zero
     };
 });
-
-
-
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

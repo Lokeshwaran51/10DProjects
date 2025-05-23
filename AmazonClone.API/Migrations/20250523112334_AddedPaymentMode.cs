@@ -5,15 +5,15 @@
 namespace AmazonClone.API.Migrations
 {
     /// <inheritdoc />
-    public partial class AddedNewColumnSubCategoryName : Migration
+    public partial class AddedPaymentMode : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<string>(
-                name: "SubCategoryName",
-                table: "Products",
-                type: "nvarchar(max)",
+                name: "PaymentMode",
+                table: "Orders",
+                type: "nvarchar(50)",
                 nullable: false,
                 defaultValue: "");
         }
@@ -22,8 +22,8 @@ namespace AmazonClone.API.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "SubCategoryName",
-                table: "Products");
+                name: "PaymentMode",
+                table: "Orders");
         }
     }
 }
