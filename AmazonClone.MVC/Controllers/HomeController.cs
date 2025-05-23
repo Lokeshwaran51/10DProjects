@@ -3,7 +3,7 @@ using Azure;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Diagnostics;
-using static AmazonClone.MVC.Models.ViewModel;
+using static AmazonClone.MVC.Models.Category;
 
 namespace AmazonClone.MVC.Controllers
 {
@@ -20,43 +20,62 @@ namespace AmazonClone.MVC.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            var response = await _httpClient.GetAsync(_httpClient.BaseAddress + "/CategoryControllerAPI/GetAllCategories");
-           /* var res = await _httpClient.GetAsync(_httpClient.BaseAddress + "/CategoryControllerAPI/GetSubCategoryByCategoryId/CategoryId");*/
-            List<Category> categories = new List<Category>();
-
-            if (response.IsSuccessStatusCode)
+            try
             {
-                var data = await response.Content.ReadAsStringAsync();
-                categories = JsonConvert.DeserializeObject<List<Category>>(data);
+                var response = await _httpClient.GetAsync(_httpClient.BaseAddress + "/Category/GetAllCategories");
+                List<Category> categories = new List<Category>();
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var data = await response.Content.ReadAsStringAsync();
+                    categories = JsonConvert.DeserializeObject<List<Category>>(data);
+                }
+                return View(categories);
             }
-            return View(categories); 
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Internal server error: " + ex.Message);
+            }
         }
 
         [HttpGet("Home/GetSubCategoryByCategoryId/{CategoryId}")]
         public async Task<JsonResult> GetSubCategoryByCategoryId(int CategoryId)
         {
-            var res = await _httpClient.GetAsync($"{_httpClient.BaseAddress}/CategoryControllerAPI/GetSubCategoryByCategoryId/{CategoryId}");
-
-            List<SubCategory> subCategories = new List<SubCategory>();
-            if (res.IsSuccessStatusCode)
+            try
             {
-                var data = await res.Content.ReadAsStringAsync();
-                subCategories = JsonConvert.DeserializeObject<List<SubCategory>>(data);
+                var res = await _httpClient.GetAsync($"{_httpClient.BaseAddress}/Category/GetSubCategoryByCategoryId/{CategoryId}");
+
+                List<SubCategory> subCategories = new List<SubCategory>();
+                if (res.IsSuccessStatusCode)
+                {
+                    var data = await res.Content.ReadAsStringAsync();
+                    subCategories = JsonConvert.DeserializeObject<List<SubCategory>>(data);
+                }
+                return Json(subCategories);
             }
-            return Json(subCategories);
+            catch (Exception ex)
+            {
+                return Json(new { error = "An error occurred: " + ex.Message });
+            }
         }
 
         public async Task<IActionResult> SubCategories(int CategoryId)
         {
-            var res = await _httpClient.GetAsync($"{_httpClient.BaseAddress}/CategoryControllerAPI/GetSubCategoryByCategoryId/{CategoryId}");
-
-            List<SubCategory> subCategories = new List<SubCategory>();
-            if (res.IsSuccessStatusCode)
+            try
             {
-                var data = await res.Content.ReadAsStringAsync();
-                subCategories = JsonConvert.DeserializeObject<List<SubCategory>>(data);
+                var res = await _httpClient.GetAsync($"{_httpClient.BaseAddress}/Category/GetSubCategoryByCategoryId/{CategoryId}");
+                List<SubCategory> subCategories = new List<SubCategory>();
+                if (res.IsSuccessStatusCode)
+                {
+                    var data = await res.Content.ReadAsStringAsync();
+                    subCategories = JsonConvert.DeserializeObject<List<SubCategory>>(data);
+                }
+                return View(subCategories);
             }
-            return View(subCategories);
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Internal server error: " + ex.Message);
+            }
         }
     }
 }

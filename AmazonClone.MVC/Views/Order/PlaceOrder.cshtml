@@ -1,0 +1,143 @@
+﻿@model AmazonClone.MVC.Models.Order
+
+@{
+    ViewData["Title"] = "Place Order";
+}
+
+<style>
+    .order-card {
+        max-width: 480px;
+        margin: 40px auto;
+        box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+        border-radius: 12px;
+    }
+
+    .order-header {
+        background: linear-gradient(135deg, #4caf50, #087f23);
+        color: white;
+        border-top-left-radius: 12px;
+        border-top-right-radius: 12px;
+        padding: 20px;
+        font-weight: 600;
+        font-size: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+        .order-header i {
+            font-size: 2rem;
+        }
+
+    .order-body {
+        padding: 25px 30px;
+        background-color: #f9f9f9;
+        border-bottom-left-radius: 12px;
+        border-bottom-right-radius: 12px;
+    }
+
+    .form-control[readonly] {
+        background-color: #e9ecef;
+        font-weight: 500;
+        color: #495057;
+    }
+
+    .btn-confirm {
+        background-color: #4caf50;
+        border: none;
+        font-weight: 600;
+        letter-spacing: 0.05em;
+        transition: background-color 0.3s ease;
+    }
+
+        .btn-confirm:hover {
+            background-color: #087f23;
+        }
+
+    #confirm{
+        background: linear-gradient(to bottom,#f7dfa5,#f0c14b);
+    }
+</style>
+
+<div class="order-card shadow-sm">
+    <div class="order-header">
+        <i class="bi bi-cart-check-fill"></i>
+        <span>Confirm Your Order</span>
+    </div>
+    <div class="order-body">
+        <!-- Main form will NOT submit immediately -->
+        <form id="orderForm">
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="Price" />
+            <input type="hidden" asp-for="Total" />
+            <input type="hidden" asp-for="ProductName" />
+            <input type="hidden" asp-for="Quantity" />
+
+            <div class="mb-4">
+                <label asp-for="ProductName" class="form-label">Product Name</label>
+                <input asp-for="ProductName" class="form-control" readonly />
+            </div>
+
+            <div class="mb-4">
+                <label asp-for="Quantity" class="form-label">Quantity</label>
+                <input asp-for="Quantity" class="form-control" readonly />
+            </div>
+
+            <div class="mb-4">
+                <label asp-for="Total" class="form-label">Total Price</label>
+                <input asp-for="Total" class="form-control" readonly />
+            </div>
+
+            <!-- Button triggers payment mode modal -->
+            <button type="button" class="btn btn-confirm w-100 py-2" data-bs-toggle="modal" data-bs-target="#paymentModal">
+                Confirm &amp; Pay
+            </button>
+        </form>
+    </div>
+</div>
+
+<!-- Payment Mode Modal -->
+<div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <form asp-controller="Order" asp-action="Success" method="post" id="paymentForm" class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="paymentModalLabel">Select Payment Mode</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Pass hidden order data -->
+                <input type="hidden" name="Id" value="@Model.Id" />
+                <input type="hidden" name="Price" value="@Model.Price" />
+                <input type="hidden" name="Total" value="@Model.Total" />
+                <input type="hidden" name="ProductName" value="@Model.ProductName" />
+                <input type="hidden" name="Quantity" value="@Model.Quantity" />
+
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="PaymentMode" id="cod" value="CashOnDelivery" checked />
+                    <label class="form-check-label" for="cod">Cash on Delivery</label>
+                </div>
+
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="PaymentMode" id="creditCard" value="CreditCard" />
+                    <label class="form-check-label" for="creditCard">Credit Card</label>
+                </div>
+
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="PaymentMode" id="debitCard" value="DebitCard" />
+                    <label class="form-check-label" for="debitCard">Debit Card</label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-success w-100" id="confirm">Confirm &amp; Pay</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Bootstrap Icons CDN -->
+<link rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
+
+<!-- Bootstrap 5 CSS & JS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

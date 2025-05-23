@@ -1,4 +1,4 @@
-﻿@model List<AmazonClone.MVC.Models.ViewModel.SubCategory>
+﻿@model List<AmazonClone.MVC.Models.SubCategory>
 
 <h2>@Model.FirstOrDefault()?.CategoryName</h2>
 
@@ -31,7 +31,7 @@
     {
         var imageMap = new Dictionary<string, string>
         {
-            {"Smartphones", "https://m.media-amazon.com/images/I/31ppZt0uIML._SR480,440_.jpg"},
+            {"Mobiles", "https://m.media-amazon.com/images/I/31ppZt0uIML._SR480,440_.jpg"},
             {"Laptops", "https://m.media-amazon.com/images/G/31/IMG24/Smart_Watches/ELP_revamp/laptop._SS400_QL85_.jpg"},
             {"Televisions", "https://m.media-amazon.com/images/I/41-ALR1y5lL._SR480,440_.jpg"},
             {"Cameras", "https://m.media-amazon.com/images/I/914hFeTU2-L._AC_UL320_.jpg"},
@@ -39,7 +39,8 @@
             {"Speakers", "https://m.media-amazon.com/images/I/31P5MqaytiL._AC._SR240,240.jpg"},
             {"Drones", "https://m.media-amazon.com/images/I/61gdM4h2G5L._AC_UL320_.jpg"},
             {"Wearable Technology", "https://m.media-amazon.com/images/I/41wiAeSSN0L.AC_SX250.jpg"},
-            {"Smart Home Devices", "https://m.media-amazon.com/images/G/31/img18/PC/SmartHome/Revamp/PC/smart_home_devices._CB499295206_.jpg"}
+            {"Smart Home Devices", "https://m.media-amazon.com/images/G/31/img18/PC/SmartHome/Revamp/PC/smart_home_devices._CB499295206_.jpg"},
+            {"Gaming Consoles","https://m.media-amazon.com/images/I/51tlsAFgZAL._AC_SR180,120_CB1169409_QL70_.jpg"}
         };
 
         return imageMap.TryGetValue(subcategoryName, out var url)

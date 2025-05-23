@@ -1,4 +1,4 @@
-﻿@model List<AmazonClone.MVC.Models.ViewModel.Product>
+﻿@model List<AmazonClone.MVC.Models.Product>
 
 <h2>@Model.FirstOrDefault()?.SubCategoryName</h2>
 
@@ -47,7 +47,9 @@
             {"ASUS ROG Phone 7", "https://m.media-amazon.com/images/I/31QwUqcvKjL._AC_UL320_.jpg"},
             {"Realme GT Neo 5", "https://m.media-amazon.com/images/I/61HyiMlCuTL._AC_UY218_.jpg"},
             {"Sony Xperia 1 V", "https://m.media-amazon.com/images/I/71UdkYWXjCL._AC_UL320_.jpg"},
-            {"Nothing Phone 2", "https://m.media-amazon.com/images/I/81S3-nKXeRL._AC_UL320_.jpg"}
+            {"Nothing Phone 2", "https://m.media-amazon.com/images/I/81S3-nKXeRL._AC_UL320_.jpg"},
+            //Laptops
+            {"Hp15s,12thGen", "https://m.media-amazon.com/images/W/MEDIAX_1215821-T1/images/I/71+gQ9gOTuL._AC_UL320_.jpg"},
         };
         if (specialCases.TryGetValue(productName, out var specialUrl))
         {

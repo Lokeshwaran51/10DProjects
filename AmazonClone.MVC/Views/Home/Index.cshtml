@@ -126,76 +126,234 @@
             flex-direction: column;
             align-items: stretch;
         }
+
+
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: #131921;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+
+        .nav-left, .nav-center, .nav-right {
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-logo img {
+            height: 50px;
+        }
+
+        .location {
+            margin-left: 15px;
+        }
+
+        .top-text {
+            font-size: 10px;
+            margin: 0;
+            color: white;
+            font-weight: bold;
+        }
+
+        .bottom-text {
+            font-size: 13px;
+            margin: 0;
+            font-weight: bold;
+        }
+
+        .location-icon {
+            display: flex;
+            align-items: center;
+        }
+
+            .location-icon i {
+                margin-right: 5px;
+            }
+
+        .search-dropdown {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            background-color: #f3f3f3;
+        }
+
+        .search-box {
+            padding: 8px;
+            width: 400px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+        /* .search-icon {
+            padding: 8px 12px;
+            background-color: #febd69;
+            border: none;
+            border-radius: 0 3px 3px 0;
+            cursor: pointer;
+        } */
+        .search-icon{
+            padding: 1.5px;
+        }
+
+        .language-option, .account-option, .order-option, .cart-option {
+            margin-left: 5px;
+        }
+
+        .flag, .cart-logo {
+            margin-right: 5px;
+        }
+
+        .select-language, .select-account {
+            background-color: #131921;
+            color: white;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            padding: 5px;
+        }
+
+        .cart-option {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+        }
+
+            .nav-logo img {
+                height: 50px;
+            }
+
+        .dot-in {
+            color: white;
+            font-size: 1.2em;
+            margin-left: -10px; /* Adjust this value to position the text closer to the logo */
+            font-weight: bold;
+            margin-top: -5.5px;
+            margin-left:-3px;
+        }
+
+        .top-text p{
+            font-size:11px;
+        }
+
+        .top-text a {
+            text-decoration: none; /* removes underline */
+            color: white; /* sets text color to white */
+            font-size:11px;
+        }
+
+            /* Optional: Add hover effect */
+            .top-text a:hover {
+                text-decoration: underline;
+                color: #ddd; /* slightly different white on hover */
+            }
+
+
+
+        .select-account {
+            margin-top:-15px;
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 14px;
+            appearance: none; /* Removes default arrow in some browsers */
+            -webkit-appearance: none; /* Safari/Chrome */
+            -moz-appearance: none; /* Firefox */
+            padding: 5px;
+            cursor: pointer;
+        }
+
+            .select-account option {
+                color: black; /* Ensures dropdown text is visible */
+            }
+
+        .order-option.top-text{
+            font-size: 12px;
+        }
+        .order-option.bottom-text{
+            font-size: 13px;
+            font-weight: bold;
+        }
+
     </style>
 </head>
 
 <body>
     <div class="container">
     <header>
-        <nav>
-            <div class="nav-left">  
-                <div class="nav-logo">
-                    <img src="https://media.geeksforgeeks.org/wp-content/uploads/20240326183545/amazon.png" alt="Amazon Logo" />
-                </div>
-                <div class="location">
-                    <p class="top-text">Deliver to</p>
-                    <div class="location-icon">
-                        <i class="fa-solid fa-location-dot"></i>
-                        <p class="bottom-text">India</p>
+            <nav>
+                <div class="nav-left">
+                    <div class="nav-logo">
+                        <img src="https://media.geeksforgeeks.org/wp-content/uploads/20240326183545/amazon.png" alt="Amazon Logo" />
+                        <span class="dot-in">.in</span>
+                    </div>
+                    <div class="location">
+                        <p class="top-text">Deliver to</p>
+                        <div class="location-icon">
+                            <i class="fa-solid fa-location-dot"></i>
+                            <p class="bottom-text">India</p>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="nav-center">
-                <select class="search-dropdown" aria-label="Select department">
-                    <option>All</option>
-                    <option>All Departments</option>
-                    <option>Arts & Crafts</option>
-                </select>
-                <input type="text" placeholder="Search Amazon" class="search-box" aria-label="Search Amazon" />
-                <button class="search-icon" aria-label="Search">
-                    <i class="fa-solid fa-magnifying-glass" style="color: #28416c;"></i>
-                </button>
-            </div>
-
-            <div class="nav-right">
-                <div class="language-option">
-                    <div class="flag" aria-hidden="true">
-                        <i class="fa-regular fa-flag"></i>
-                    </div>
-                    <select class="select-language" aria-label="Select language">
-                        <option value="en">EN</option>
-                        <option value="es">ES</option>
-                        <option value="ar">AR</option>
+                <div class="nav-center">
+                    <select class="search-dropdown" aria-label="Select department">
+                        <option>All</option>
+                        <option>All Departments</option>
+                        <option>Arts & Crafts</option>
                     </select>
+                    <input type="text" placeholder="Search Amazon" class="search-box" aria-label="Search Amazon" />
+                    <button class="search-icon" aria-label="Search">
+                        <i class="fa-solid fa-magnifying-glass" style="color: #28416c;"></i>
+                    </button>
                 </div>
 
-                <div class="account-option">
-                    <p class="top-text">
-                        Hello, <br />
-                        @Html.ActionLink("Sign In", "Login", "User") 
-                       @*  @Html.ActionLink("Sign Up", "Register", "User") *@
-                    </p>
-                    <select class="select-account" aria-label="Account options">
-                        <option value="Account">Account & Lists</option>
-                        <option value="Account">Account & Lists</option>
-                        <option value="Account">Account & Lists</option>
-                    </select>
-                </div>
-
-                <div class="order-option">
-                    <p class="top-text">Returns</p>
-                    <p class="bottom-text">& Orders</p>
-                </div>
-
-                <div class="cart-option" role="button" tabindex="0" aria-label="Shopping cart">
-                    <div class="cart-logo" aria-hidden="true">
-                        <i class="fa-solid fa-cart-shopping"></i>
+                <div class="nav-right">
+                    <div class="language-option">
+                        <div class="flag" aria-hidden="true">
+                            <i class="fa-regular fa-flag"></i>
+                        </div>
+                        <select class="select-language" aria-label="Select language">
+                            <option value="en">EN</option>
+                            <option value="es">ES</option>
+                            <option value="ar">AR</option>
+                        </select>
                     </div>
-                    Cart
+
+                    <div class="account-option">
+                        <p class="top-text">
+                            Hello, 
+                            <a href="/User/Login">Sign In</a>
+                        </p>
+                        <select class="select-account" aria-label="Account options">
+                            <option value="account1">Account & Lists</option>
+                            <option value="account2">Account & Lists</option>
+                            <option value="account3">Account & Lists</option>
+                        </select>
+
+                    </div>
+
+                    <div class="order-option">
+                        <p class="top-text">Returns</p>
+                        <p class="bottom-text">& Orders</p>
+                    </div>
+
+                    <div class="cart-option" role="button" tabindex="0" aria-label="Shopping cart">
+                        <div class="cart-logo" aria-hidden="true">
+                            <i class="fa-solid fa-cart-shopping"></i>
+                        </div>
+                        Cart
+                    </div>
                 </div>
-            </div>
-        </nav>
+            </nav>
+
 
         <div class="nav-options" style="border-top: 1px solid #ccc; padding: 10px 15px; margin-top: 8px; display: flex; align-items: center; gap: 20px;">
             <div class="all-logo" role="button" tabindex="0" aria-label="Show all menu options" style="display: flex; align-items: center; cursor: pointer;">
@@ -280,7 +438,7 @@
             </article>
 
             <article class="item-card">
-                <h2>Deal in PCs</h2>
+                <h2>Deal in PCs</h2>    
                 <img src="https://media.geeksforgeeks.org/wp-content/uploads/20240326122917/image12.jpg"
                      alt="Deal in PCs" />
                 <p><a href="#">See more</a></p>

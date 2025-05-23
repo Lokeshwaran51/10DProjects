@@ -16,7 +16,6 @@ body {
     color: white;
 }
 
-
 /* layout**/
 .container {
     width: 99%;
@@ -87,7 +86,6 @@ body {
     margin-right: 3px;
 }
 
-
 /***search-container****/
 .search-container {
     background-color: red;
@@ -129,7 +127,6 @@ body {
     color: #000;
 }
 
-
 /***lauguage section*/
 .language-container {
     margin-left: 25px;
@@ -147,7 +144,6 @@ body {
     .lauguge-image img {
         width: 100%;
     }
-
 
 /***login-container***/
 .login-container {
@@ -255,11 +251,6 @@ body {
     height: 100%;
 }
 
-
-
-
-
-
 /*--image slider --*/
 .image-container {
     position: relative;
@@ -309,7 +300,6 @@ body {
         box-shadow: -2px -2px 2px rgb(230, 227, 227), 2px 2px 2px white;
         margin: 2px;
     }
-
 
 /*sidebar navigation****/
 #open-nav-sidebar {
@@ -455,7 +445,6 @@ body {
         text-decoration: underline;
         cursor: pointer;
     }
-
 
 /***
         Today's deals section

@@ -1,7 +1,6 @@
 ﻿using AmazonClone.MVC.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using static AmazonClone.MVC.Models.ViewModel;
 
 namespace AmazonClone.MVC.Controllers
 {
@@ -13,31 +12,39 @@ namespace AmazonClone.MVC.Controllers
         {
             _configuration = configuration;
             _httpClient = new HttpClient();
-            _httpClient.BaseAddress= new Uri(_configuration["ApiUrl:BaseUrl"]);
+            _httpClient.BaseAddress = new Uri(_configuration["ApiUrl:BaseUrl"]);
         }
 
         [HttpGet("GetListOfProductsBySubCategoryId/{SubCategoryId}")]
         public async Task<IActionResult> Products(int SubCategoryId)
         {
-            var res = await _httpClient.GetAsync($"{_httpClient.BaseAddress}/ProductControllerAPI/GetListOfProductsBySubCategoryId/{SubCategoryId}");
-            List<Product> products = new List<Product>();
-            if (res.IsSuccessStatusCode)
+            try
             {
-                var data = await res.Content.ReadAsStringAsync();
-                products = JsonConvert.DeserializeObject<List<Product>>(data);
+                var res = await _httpClient.GetAsync($"{_httpClient.BaseAddress}/Product/GetListOfProductsBySubCategoryId/{SubCategoryId}");
+                List<Product> products = new List<Models.Product>();
+                if (res.IsSuccessStatusCode)
+                {
+                    var data = await res.Content.ReadAsStringAsync();
+                    products = JsonConvert.DeserializeObject<List<Product>>(data);
+                }
+                return View(products);
             }
-            return View(products);
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Internal server error: " + ex.Message);
+            }
         }
 
-        [HttpGet("GetProductDetailByProductId/{Id}")]
+
+        [HttpGet("ProductDetails/{Id}")]
         public async Task<IActionResult> ProductDetails(int Id)
         {
             try
             {
-                var response = await _httpClient.GetAsync($"{_httpClient.BaseAddress}/ProductControllerAPI/GetProductDetailByProductId/{Id}");
+                var response = await _httpClient.GetAsync($"{_httpClient.BaseAddress}/Product/ProductDetails/{Id}");
                 if (!response.IsSuccessStatusCode)
                 {
-                    return NotFound(); 
+                    return NotFound();
                 }
                 var productJson = await response.Content.ReadAsStringAsync();
                 var product = JsonConvert.DeserializeObject<Product>(productJson);

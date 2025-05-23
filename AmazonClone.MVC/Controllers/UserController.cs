@@ -1,12 +1,7 @@
-﻿using AmazonClone.MVC.Models;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using static AmazonClone.MVC.Models.RegisterModel;
-using static AmazonClone.MVC.Models.ViewModel;
-using LoginModel = AmazonClone.MVC.Models.LoginModel;
-using User = AmazonClone.MVC.Models.ViewModel.User;
-
-
+using Login = AmazonClone.MVC.Models.Login;
+using User = AmazonClone.MVC.Models.User;
 namespace AmazonClone.MVC.Controllers
 {
     public class UserController : Controller
@@ -29,19 +24,26 @@ namespace AmazonClone.MVC.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(User model)
         {
-            if (ModelState.IsValid)
+            try
             {
-                var data = JsonConvert.SerializeObject(model);
-                var content = new StringContent(data, System.Text.Encoding.UTF8, "application/json");
-                var res = await _httpClient.PostAsync(_httpClient.BaseAddress + "/UserControllerAPI/Register", content);
-
-                if (res.IsSuccessStatusCode)
+                if (ModelState.IsValid)
                 {
-                    TempData["SuccessMessage"] = "User Registered Successfully.";
-                    return RedirectToAction("Index","Home");
+                    var data = JsonConvert.SerializeObject(model);
+                    var content = new StringContent(data, System.Text.Encoding.UTF8, "application/json");
+                    var res = await _httpClient.PostAsync(_httpClient.BaseAddress + "/User/Register", content);
+
+                    if (res.IsSuccessStatusCode)
+                    {
+                        TempData["SuccessMessage"] = "User Registered Successfully.";
+                        return RedirectToAction("Index", "Home");
+                    }
                 }
+                return View();
             }
-            return View();
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Internal server error: " + ex.Message);
+            }
         }
 
         public IActionResult Login()
@@ -50,21 +52,27 @@ namespace AmazonClone.MVC.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login(LoginModel model)
+        public async Task<IActionResult> Login(Login model)
         {
-            if (ModelState.IsValid)
+            try
             {
-                var data = JsonConvert.SerializeObject(model);
-                var content = new StringContent(data, System.Text.Encoding.UTF8, "application/json");
-                var res = await _httpClient.PostAsync(_httpClient.BaseAddress + "/UserControllerAPI/Login", content);
-
-                if (res.IsSuccessStatusCode)
+                if (ModelState.IsValid)
                 {
-                    TempData["SuccessMessage"] = "User Logged in Successfully.";
-                    return RedirectToAction("Index", "Home");
+                    var data = JsonConvert.SerializeObject(model);
+                    var content = new StringContent(data, System.Text.Encoding.UTF8, "application/json");
+                    var res = await _httpClient.PostAsync(_httpClient.BaseAddress + "/User/Login", content);
+                    if (res.IsSuccessStatusCode)
+                    {
+                        TempData["SuccessMessage"] = "User Logged in Successfully.";
+                        return RedirectToAction("Index", "Home");
+                    }
                 }
+                return View();
             }
-            return View();
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Internal server error: " + ex.Message);
+            }
         }
 
         public IActionResult Index()

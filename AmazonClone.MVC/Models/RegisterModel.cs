@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿/*using System.ComponentModel.DataAnnotations;
 
 namespace AmazonClone.MVC.Models
 {
@@ -51,3 +51,4 @@ namespace AmazonClone.MVC.Models
         }
     }
 }
+*/
