@@ -16,18 +16,28 @@ namespace AmazonClone.API.Data.Entity
         [Required]  // Ensures every CartItem must have a Cart
         public virtual Cart Cart { get; set; }
 
+        [Column(TypeName = "int")]
+        public int? ProductId { get; set; }
+
+        [ForeignKey("ProductId")]
+        public virtual Product Product { get; set; }
+
         [Required]
         [MaxLength(255)]
         [Column(TypeName = "nvarchar(255)")]
-        public string ProductName { get; set; } = string.Empty;
+        public string? ProductName { get; set; } = string.Empty;
 
         [Column(TypeName = "int")]
-        public int Quantity { get; set; }
+        public int? Quantity { get; set; }
 
         [Column(TypeName = "decimal(18,2)")]
-        public decimal Price { get; set; }
+        public decimal? Price { get; set; }
 
-        [Column(TypeName ="int")]
-        public User userId { get; set; }    
+        [Required]
+        [Column(TypeName = "int")]
+        public int UserId { get; set; }
+
+        [ForeignKey("UserId")]
+        public virtual User User { get; set; }
     }
 }

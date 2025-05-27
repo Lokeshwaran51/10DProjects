@@ -50,6 +50,7 @@ namespace AmazonClone.API.Controllers
             }
         }
 
+
         [HttpPost("Login")]
         public async Task<IActionResult> Login(Login model)
         {
@@ -63,7 +64,6 @@ namespace AmazonClone.API.Controllers
 
                 if (user == null)
                     return Unauthorized(new { message = "Invalid email or password." });
-
 
                 var token = GenerateJwtToken(user);
 

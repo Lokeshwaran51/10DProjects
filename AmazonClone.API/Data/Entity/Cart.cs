@@ -11,6 +11,8 @@ public class Cart
 
     [Column(TypeName = "int")]
     public int UserId { get; set; }
+    [Column (TypeName = "Varchar(200)")]
+    public string Email { get; set; }
 
     [Column(TypeName = "datetime2")]
     public DateTime CreatedDate { get; set; } = DateTime.UtcNow;

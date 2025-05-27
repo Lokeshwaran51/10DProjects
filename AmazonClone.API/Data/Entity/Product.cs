@@ -36,7 +36,7 @@ namespace AmazonClone.API.Data.Entity
         [Column(TypeName = "nvarchar(100)")]
         public string SubCategoryName { get; set; } = string.Empty;
 
-        /*public virtual User? User { get;set; }*/
+        public virtual User? User { get; set; }
         public virtual Category? Category { get; set; }
         public virtual SubCategory? SubCategory { get; set; }
     }
