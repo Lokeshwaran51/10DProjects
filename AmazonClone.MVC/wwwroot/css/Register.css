@@ -17,6 +17,7 @@ body {
     box-shadow: 0 0 10px rgba(0.5, 0.5, 0.5, 0.5);
     width: 100%;
     max-width: 400px;
+    margin-left:455px;
 }
 
 h2 {
@@ -92,3 +93,74 @@ h2 {
     }
 
 
+/*----------------------------------------------------*/
+
+
+/* Main container center alignment */
+.register-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: #f2f2f2;
+    padding: 20px;
+    margin-left:455px;
+}
+
+/* Optional Amazon-style logo */
+.register-logo {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+    .register-logo .logo {
+        width: 100px;
+        height: 30px;
+        background-image: url('https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg');
+        background-repeat: no-repeat;
+        background-size: contain;
+        background-position: center;
+    }
+
+.dotin {
+    font-size: 24px;
+    margin-left: 0px;
+    margin-top:-11px;
+}
+.login-title{
+    font-weight:400;
+}
+/* Card-style registration box */
+.register-card {
+    background-color: white;
+    padding: 30px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 350px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    text-align: left;
+}
+
+/* Field spacing */
+.form-group {
+    margin-bottom: 15px;
+}
+
+/* Register button */
+.register-button {
+    width: 100%;
+    padding: 10px;
+    background-color: #f0c14b;
+    border: 1px solid #a88734;
+    cursor: pointer;
+    font-weight: bold;
+    color: black;
+}
+
+.register-card p {
+    font-size: 14px;
+    margin-top: 20px;
+}

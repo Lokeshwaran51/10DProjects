@@ -10,17 +10,16 @@
 
     <!--css file-->
     @* <link rel="stylesheet" href="D:\Amazon_SPs\AmazonUI.css" /> *@
-    @* <link href="~/css/ui.css" rel="stylesheet" /> *@
     <link href="~/css/style.css" rel="stylesheet" />
     <!--font awesome-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
           integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
           crossorigin="anonymous" referrerpolicy="no-referrer" />
+
 </head>
 
 <body>
     <header class="header">
-        <input type="hidden" id="Email" value="@Context.Session.GetString("Email")" />
         <div class="container container-header">
             <div class="logo-container border-white">
                 <div class="logo"></div>
@@ -54,13 +53,9 @@
             </div>
 
             <div class="login-container border-white">
-                <p class="top-text">
-                    Hello,
-                    <a href="/User/Login">Sign In</a>
-                </p>
+                <p>Hello,<span>sign in</span></p>
                 <p class="account">Account & Lists</p>
             </div>
-
 
             <div class="return-order-container">
                 <p>
@@ -69,16 +64,9 @@
                 </p>
             </div>
 
-            @* <div class="cart-container border-white">
+            <div class="cart-container border-white">
                 <i class="fa-solid fa-cart-shopping"></i>
                 Cart
-            </div> *@
-
-            <div class="cart-option" role="button" tabindex="0" aria-label="Shopping cart">
-                <div class="cart-logo" aria-hidden="true">
-                    <i class="fa-solid fa-cart-shopping"></i>
-                    <span id="cart-count" class="cart-count">@ViewBag.CartItemCount</span>
-                </div>
             </div>
         </div>
     </header>
@@ -93,29 +81,14 @@
                         All
                     </span>
                 </li>
-                @* <li class="border-white"><a href="#">Best Sellers</a></li>
+                <li class="border-white"><a href="#">Best Sellers</a></li>
                 <li class="border-white"><a href="#">Today's Deals</a></li>
                 <li class="border-white"><a href="#">Mobiles</a></li>
                 <li class="border-white"><a href="#">Customer Service</a></li>
                 <li class="border-white"><a href="#">Electronic</a></li>
                 <li class="border-white"><a href="#">Home & Kitchen</a></li>
                 <li class="border-white"><a href="#">Fashion</a></li>
-                <li class="border-white"><a href="#">Book</a></li> *@
-
-                <div class="category-list" style="display: flex; gap: 15px; flex-wrap: wrap;margin-top:4px;margin-right:43px">
-                    @foreach (var cat in Model)
-                    {
-                        <div style="display: flex; flex-direction: column; align-items: flex-start;">
-                            <a href="@Url.Action("SubCategories", "Home", new { CategoryId = cat.CategoryId })"
-                               class="category-link"
-                               data-category-id="@cat.CategoryId"
-                               style="margin: 0; cursor: pointer; font-size: 14px; text-decoration: none; color: inherit;">
-                                @cat.Name
-                            </a>
-                            <div class="subcategory-container" style="margin-top: 5px;"></div>
-                        </div>
-                    }
-                </div>
+                <li class="border-white"><a href="#">Book</a></li>
                 <li class="border-white prime-image-hover">
                     <a href="#">Prime</a>
                     <div class="prime-image">
@@ -475,19 +448,15 @@
         </section>
 
     </main>
-        <!-- Toastr CSS -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet"/>
 
-    <!-- jQuery (required by Toastr) -->
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
-    <!-- Toastr JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+
+
 
 
     <script src="~/js/javascript.js"></script>
-    <script src="~/js/ecom.js"></script>
-    <script src="~/js/addtocart.js"></script>
+
 
     @*  <script src="D:\Amazon_SPs\AmazonUIJs.js" type="module"></script> *@
 </body>

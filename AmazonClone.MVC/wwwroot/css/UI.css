@@ -648,4 +648,299 @@ main {
         flex-direction: column;
         align-items: stretch;
     }
+
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+    }
+
+    .container {
+        max-width: 1400px;
+        width: 100%;
+        margin: 0 auto;
+        padding: 0 20px;
+        box-sizing: border-box;
+    }
+
+    .nav, .panel {
+        display: flex;
+        align-items: center;
+        background-color: #131921;
+        color: white;
+        padding: 10px;
+    }
+
+    .nav-logo {
+        width: 100px;
+        margin-right: 20px;
+    }
+
+    .logo {
+        background-image: url('amazon_logo.png');
+        background-size: cover;
+        height: 50px;
+        width: 100%;
+    }
+
+    .border {
+        padding: 5px;
+        cursor: pointer;
+    }
+
+    .nav-address, .nav-search, .nav-signin, .nav-return, .nav-cart {
+        margin-right: 20px;
+    }
+
+    .add-icon, .add-second {
+        display: flex;
+        align-items: center;
+    }
+
+    .panel {
+        background-color: #232f3e;
+        color: white;
+    }
+
+    .panel-all, .panel-ops p, .panel-deals {
+        margin-right: 20px;
+        cursor: pointer;
+    }
+
+    .hero-section {
+        background-image: url("hero_image.jpg");
+        background-size: cover;
+        height: 400px;
+        display: flex;
+        justify-content: center;
+        align-items: flex-end;
+    }
+
+    .hero-msg {
+        background-color: white;
+        color: black;
+        padding: 20px;
+        margin-bottom: 20px;
+        width: 90%;
+        text-align: center;
+    }
+
+    .shop-section {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        margin: 20px 0;
+    }
+
+    .box {
+        background-color: white;
+        width: 23%;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        padding: 20px;
+        box-sizing: border-box;
+    }
+
+        .box h2 {
+            font-size: 18px;
+        }
+
+    .box-img {
+        height: 200px;
+        background-size: cover;
+        background-position: center;
+        margin: 10px 0;
+    }
+
+    .box p {
+        color: #007185;
+        cursor: pointer;
+    }
+
+    .box {
+        width: 100%;
+    }
+
+    .nav-search {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+
+
+    nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 20px;
+        background-color: #131921;
+        color: white;
+        font-family: Arial, sans-serif;
+    }
+
+    .nav-left, .nav-center, .nav-right {
+        display: flex;
+        align-items: center;
+    }
+
+    .nav-logo img {
+        height: 50px;
+    }
+
+    .location {
+        margin-left: 15px;
+    }
+
+    .top-text {
+        font-size: 10px;
+        margin: 0;
+        color: white;
+        font-weight: bold;
+        text-decoration:none;
+    }
+
+    .bottom-text {
+        font-size: 13px;
+        margin: 0;
+        font-weight: bold;
+    }
+
+    .location-icon {
+        display: flex;
+        align-items: center;
+    }
+
+        .location-icon i {
+            margin-right: 5px;
+        }
+
+    .search-dropdown {
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        background-color: #f3f3f3;
+    }
+
+    .search-box {
+        padding: 8px;
+        width: 400px;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+    }
+
+    /* .search-icon {
+            padding: 8px 12px;
+            background-color: #febd69;
+            border: none;
+            border-radius: 0 3px 3px 0;
+            cursor: pointer;
+        } */
+    .search-icon {
+        padding: 1.5px;
+    }
+
+    .language-option, .account-option, .order-option, .cart-option {
+        margin-left: 5px;
+    }
+
+    .flag, .cart-logo {
+        margin-right: 5px;
+    }
+
+    .select-language, .select-account {
+        background-color: #131921;
+        color: white;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        padding: 5px;
+    }
+
+    .cart-option {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+    }
+
+    .nav-logo {
+        display: flex;
+        align-items: center;
+    }
+
+        .nav-logo img {
+            height: 50px;
+        }
+
+    .dot-in {
+        color: white;
+        font-size: 1.2em;
+        margin-left: -10px; /* Adjust this value to position the text closer to the logo */
+        font-weight: bold;
+        margin-top: -5.5px;
+        margin-left: -3px;
+    }
+
+    .top-text p {
+        font-size: 11px;
+    }
+
+    .top-text a {
+        text-decoration: none; /* removes underline */
+        color: white; /* sets text color to white */
+        font-size: 11px;
+    }
+
+        /* Optional: Add hover effect */
+        .top-text a:hover {
+            text-decoration: underline;
+            color: #ddd; /* slightly different white on hover */
+        }
+
+
+
+    .select-account {
+        margin-top: -15px;
+        background: transparent;
+        border: none;
+        color: white;
+        font-size: 14px;
+        appearance: none; /* Removes default arrow in some browsers */
+        -webkit-appearance: none; /* Safari/Chrome */
+        -moz-appearance: none; /* Firefox */
+        padding: 5px;
+        cursor: pointer;
+    }
+
+        .select-account option {
+            color: black; /* Ensures dropdown text is visible */
+        }
+
+    .order-option.top-text {
+        font-size: 12px;
+    }
+
+    .order-option.bottom-text {
+        font-size: 13px;
+        font-weight: bold;
+    }
+
+    .cart-logo {
+        position: relative;
+        display: inline-block;
+        font-size: 28px; /* Icon size */
+        color: white;
+    }
+
+    .cart-count {
+        position: absolute;
+        top: -8px;
+        right: -10px;
+        background-color: red;
+        color: white;
+        font-size: 12px;
+        font-weight: bold;
+        padding: 2px 6px;
+        border-radius: 50%;
+        min-width: 20px;
+        text-align: center;
+    }
+
 }

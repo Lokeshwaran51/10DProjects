@@ -1,0 +1,56 @@
+﻿
+.category-heading {
+    font-size: 24px;
+    font-weight: 600;
+    margin: 20px 0;
+    color: #111;
+    padding-left: 10px;
+}
+
+.amazon-subcategories-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 20px;
+    padding: 0 10px 40px 10px;
+}
+
+.amazon-subcategory-card {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    text-align: center;
+    padding: 15px;
+    transition: box-shadow 0.2s ease-in-out;
+}
+
+    .amazon-subcategory-card:hover {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+.subcategory-img {
+    width: 100%;
+    height: 150px;
+    object-fit: contain;
+    margin-bottom: 10px;
+}
+
+.subcategory-label {
+    font-size: 14px;
+    color: #0f1111;
+    font-weight: 500;
+}
+
+.amazon-subcategory-card a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.no-subcategories {
+    grid-column: 1 / -1;
+    text-align: center;
+    color: #555;
+    font-style: italic;
+    padding: 40px 0;
+}
+
+

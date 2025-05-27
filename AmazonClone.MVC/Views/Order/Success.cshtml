@@ -12,37 +12,110 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 40px;
+            background-color: #f6f6f6;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .invoice-box {
+            background-color: #fff;
+            max-width: 800px;
+            margin: auto;
+            padding: 30px;
+            border: 1px solid #ddd;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            font-size: 24px;
+            color: #ff9900;
+            font-weight: bold;
+        }
+
+        .order-summary {
+            font-size: 14px;
+            color: #333;
         }
 
         h2 {
-            color: #4caf50;
+            margin-bottom: 10px;
+            color: #333;
+            font-size: 20px;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
+            margin-top: 15px;
         }
 
-        td, th {
-            border: 1px solid #ccc;
-            padding: 10px;
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
         }
 
         th {
-            background: #f4f4f4;
+            background-color: #f0f2f2;
+            font-weight: bold;
+        }
+
+        .total {
+            font-weight: bold;
+            background-color: #f9f9f9;
+        }
+
+        .footer {
+            margin-top: 40px;
+            font-size: 12px;
+            color: #777;
+            text-align: center;
         }
     </style>
 </head>
 <body>
-    <h2>Order Invoice</h2>
-    <p><strong>Order ID:</strong> @Model.Id</p>
-    <p><strong>Product Name:</strong> @Model.ProductName</p>
-    <p><strong>Quantity:</strong> @Model.Quantity</p>
-    <p><strong>Price per Item:</strong> ₹@Model.Price</p>
-    <p><strong>Total:</strong> ₹@Model.Total</p>
-    <p><strong>Payment Mode:</strong> @Model.PaymentMode</p>
-    <p><strong>Order Date:</strong> @DateTime.UtcNow.ToString("dd MMM yyyy")</p>
+    <div class="invoice-box">
+        <div class="header">
+            <div class="logo">amazon<span style="color:#000">.in</span></div>
+            <div class="order-summary">
+                <p><strong>Order ID:</strong> @Model.Id</p>
+                <p><strong>Order Date:</strong> @DateTime.UtcNow.ToString("dd MMM yyyy")</p>
+            </div>
+        </div>
+
+        <h2>Invoice</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Product Name</th>
+                    <th>Quantity</th>
+                    <th>Price (each)</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>@Model.ProductName</td>
+                    <td>@Model.Quantity</td>
+                    <td>₹@Model.Price.ToString("0.00")</td>
+                    <td class="total">₹@Model.Total.ToString("0.00")</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p style="margin-top: 20px;"><strong>Payment Mode:</strong> @Model.PaymentMode</p>
+
+        <div class="footer">
+            This is a system-generated invoice. If you have any queries, visit <a href="https://www.amazon.in">amazon.in</a>.
+        </div>
+    </div>
 </body>
 </html>

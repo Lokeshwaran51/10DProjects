@@ -22,14 +22,33 @@ namespace AmazonClone.MVC.Controllers
         {
             try
             {
-                var response = await _httpClient.GetAsync(_httpClient.BaseAddress + "/Category/GetAllCategories");
+                var email = HttpContext.Session.GetString("Email");
+
+                // Get categories
+                var categoryResponse = await _httpClient.GetAsync(_httpClient.BaseAddress + "/Category/GetAllCategories");
                 List<Category> categories = new List<Category>();
 
-                if (response.IsSuccessStatusCode)
+                if (categoryResponse.IsSuccessStatusCode)
                 {
-                    var data = await response.Content.ReadAsStringAsync();
+                    var data = await categoryResponse.Content.ReadAsStringAsync();
                     categories = JsonConvert.DeserializeObject<List<Category>>(data);
                 }
+
+                // Get cart item count if email exists
+                int cartItemCount = 0;
+                if (!string.IsNullOrEmpty(email))
+                {
+                    var countResponse = await _httpClient.GetAsync($"{_httpClient.BaseAddress}/Cart/CartItemCount?email={email}");
+                    if (countResponse.IsSuccessStatusCode)
+                    {
+                        var countString = await countResponse.Content.ReadAsStringAsync();
+                        int.TryParse(countString, out cartItemCount);
+                    }
+                }
+
+                ViewBag.CartItemCount = cartItemCount;
+                ViewBag.Email = email;
+
                 return View(categories);
             }
             catch (Exception ex)
@@ -37,6 +56,7 @@ namespace AmazonClone.MVC.Controllers
                 return StatusCode(500, "Internal server error: " + ex.Message);
             }
         }
+
 
         [HttpGet("Home/GetSubCategoryByCategoryId/{CategoryId}")]
         public async Task<JsonResult> GetSubCategoryByCategoryId(int CategoryId)

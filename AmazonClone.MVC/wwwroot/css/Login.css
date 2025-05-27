@@ -33,6 +33,7 @@
         display: flex;
         flex-direction: column;
         align-items: center;
+        margin-left:477px;
     }
 
     .login-logo {
@@ -49,12 +50,13 @@
         background-repeat: no-repeat;
     }
 
-    .dotin {
-        color: var(--text-light);
-        font-size: 12px;
-        margin-left: -5px;
-        margin-bottom: 2px;
-    }
+.dotin {
+    color: black;
+    font-size: 12px;
+    margin-left: -5px;
+    margin-bottom: 2px;
+    margin-top:-7px;
+}
 
     .login-card {
         width: 100%;
@@ -215,5 +217,92 @@
         }
     }
 
-  
+  /*------------------------------------------------------------------*/
+
+
+/* Center the entire container */
+.login-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh; /* Full viewport height */
+    background-color: #f2f2f2;
+    padding: 20px;
+}
+
+/* Logo section alignment */
+.login-logo {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+    .login-logo .logo {
+        width: 100px;
+        height: 30px;
+        background-image: url('https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg');
+        background-repeat: no-repeat;
+        background-size: contain;
+        background-position: center;
+    }
+
+.dotin {
+    color: back;
+    font-size: 20px;
+    margin-left: 0px;
+}
+
+/* Login card styling */
+.login-card {
+    background-color: white;
+    padding: 30px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 350px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    text-align: left;
+}
+
+/* Align form fields and buttons properly */
+.login-form .form-group {
+    margin-bottom: 15px;
+}
+
+.login-title {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.login-button,
+.create-account-button {
+    width: 100%;
+    padding: 10px;
+    background-color: #f0c14b;
+    border: 1px solid #a88734;
+    cursor: pointer;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    color: black;
+}
+
+.login-divider {
+    margin: 20px 0;
+    text-align: center;
+    font-size: 14px;
+}
+
+.login-terms,
+.login-help {
+    font-size: 12px;
+    margin-top: 15px;
+    text-align: left;
+}
+
+.create-account-button {
+    background-color: #e7e9ec;
+    margin-top: 10px;
+}
 

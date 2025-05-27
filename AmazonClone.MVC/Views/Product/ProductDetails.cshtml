@@ -1,40 +1,116 @@
-﻿@model AmazonClone.MVC.Models.Product
+﻿@using System.Security.Claims
+@model AmazonClone.MVC.Models.Product
 
-<div class="product-details">
-    <h1>@Model.Name</h1>
-    <img src="@(!string.IsNullOrEmpty(Model.ImageUrl) ? Model.ImageUrl : "/images/products/default.jpg")" alt="@Model.Name" class="img-fluid" />
-    <div class="price">Price: ₹@Model.Price.ToString("0.00")</div>
-    <div class="description">
-        <h3>Description</h3>
-        <p>@Model.Description</p>
-    </div>
+<div class="container mt-4 product-detail-page">
+    <div class="row">
+        <!-- Product Image Section -->
+        <div class="col-md-5 text-center">
+            <img src="@(!string.IsNullOrEmpty(Model.ImageUrl) ? Model.ImageUrl : "/images/products/default.jpg")"
+                 alt="@Model.Name"
+                 class="img-fluid product-main-image" />
+        </div>
 
-    <!-- Hidden ProductId -->
-    <input type="hidden" id="productId" value="@Model.Id" />
+        <!-- Product Details Section -->
+        <div class="col-md-7">
+            <h2 class="product-title mb-3">@Model.Name</h2>
 
-    <!-- Quantity Selector -->
-    <div class="quantity-selector mb-3">
-        <label for="quantity" class="form-label fw-bold">Quantity:</label>
-        <div class="input-group" style="max-width: 150px;">
-            <button class="btn btn-outline-secondary" type="button" id="decreaseQty"><i class="fas fa-minus"></i></button>
-            <input type="number" id="quantity" class="form-control text-center" value="1" min="1" />
-            <button class="btn btn-outline-secondary" type="button" id="increaseQty"><i class="fas fa-plus"></i></button>
+            <div class="product-price mb-3">
+                <span class="text-danger h4">₹@Model.Price.ToString("0.00")</span>
+                <span class="text-muted ms-2">(Inclusive of all taxes)</span>
+            </div>
+
+            <div class="description mb-4">
+                <h5 class="fw-semibold">Product Description</h5>
+                <p class="text-muted">@Model.Description</p>
+            </div>
+
+            <!-- Quantity Selector -->
+            <div class="quantity-selector mb-4">
+                <label for="quantity" class="form-label fw-semibold">Quantity:</label>
+                <div class="input-group" style="max-width: 140px;">
+                    <button class="btn btn-outline-secondary" type="button" id="decreaseQty"><i class="fas fa-minus"></i></button>
+                    <input type="number" id="quantity" class="form-control text-center" value="1" min="1" />
+                    <button class="btn btn-outline-secondary" type="button" id="increaseQty"><i class="fas fa-plus"></i></button>
+                </div>
+            </div>
+
+            <!-- Hidden Product ID & Email -->
+            <input type="hidden" id="productId" value="@Model.Id" />
+            <input type="hidden" id="Email" value="@Context.Session.GetString("Email")" />
+
+            <!-- Action Buttons -->
+            <div class="action-buttons d-flex flex-column gap-3">
+                <button id="addToCart" class="btn btn-warning btn-lg w-100 text-start">
+                    <i class="fas fa-shopping-cart me-2"></i>Add to Cart
+                </button>
+                <button id="buyNow" class="btn btn-danger btn-lg w-100 text-start">
+                    <i class="fas fa-bolt me-2"></i>Buy Now
+                </button>
+                <button id="addToWishlist" class="btn btn-outline-secondary btn-lg w-100 text-start">
+                    <i class="fas fa-heart me-2"></i>Add to Wishlist
+                </button>
+            </div>
         </div>
     </div>
-
-    <!-- Action Buttons -->
-    <div class="action-buttons d-flex gap-3">
-        <button id="addToCart" class="btn btn-primary">
-            <i class="fas fa-shopping-cart me-2"></i>Add to Cart
-        </button>
-        <button id="buyNow" class="btn btn-warning">
-            <i class="fas fa-bolt me-2"></i>Buy Now
-        </button>
-        <button id="addToWishlist" class="btn btn-outline-danger">
-            <i class="fas fa-heart me-2"></i>Add to Wishlist
-        </button>
-    </div>
 </div>
+
+<style>
+    .product-detail-page {
+        background: #fff;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 1px 10px rgba(0,0,0,0.08);
+    }
+
+    .product-main-image {
+        max-height: 450px;
+        object-fit: contain;
+        border: 1px solid #ddd;
+        padding: 10px;
+        background: #f9f9f9;
+        border-radius: 8px;
+    }
+
+    .product-title {
+        font-size: 24px;
+        font-weight: 600;
+        color: #222;
+    }
+
+    .product-price {
+        font-size: 22px;
+    }
+
+    .description {
+        font-size: 16px;
+        line-height: 1.5;
+    }
+
+    .action-buttons button i {
+        font-size: 18px;
+    }
+
+    .action-buttons button {
+        transition: background 0.3s ease;
+    }
+
+    .action-buttons .btn-warning:hover {
+        background-color: #f0c14b;
+        border-color: #a88734;
+    }
+
+    .action-buttons .btn-danger:hover {
+        background-color: #c62828;
+    }
+
+    .action-buttons .btn-outline-secondary:hover {
+        background-color: #e6e6e6;
+    }
+
+    .quantity-selector label {
+        margin-bottom: 0.5rem;
+    }
+</style>
 
 @section Scripts {
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
