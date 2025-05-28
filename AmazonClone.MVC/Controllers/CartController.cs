@@ -23,18 +23,41 @@ namespace AmazonClone.MVC.Controllers
         [HttpGet("ViewCart")]
         public async Task<IActionResult> ViewCart([FromQuery] string Email)
         {
+            try
+            {
+                var res = await _httpClient.GetAsync($"{_httpClient.BaseAddress}/Cart/GetCartItems/{Email}");
+                if (res.IsSuccessStatusCode)
+                {
+                    var cartItems = await res.Content.ReadFromJsonAsync<List<CartItemDto>>();
+                    return View("ViewCart", cartItems);
+
+                    //return PartialView("_CartPartial", data);
+                }
+                return View("Error");
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+       /* [HttpGet("GetCartCount")]
+        public async Task<IActionResult> GetCartCount([FromQuery] string Email)
+        {
             var res = await _httpClient.GetAsync($"{_httpClient.BaseAddress}/Cart/GetCartItems/{Email}");
             if (res.IsSuccessStatusCode)
             {
-                var data = await res.Content.ReadFromJsonAsync<List<CartItem>>();
-                return View("ViewCart", data);
+                var cartItems = await res.Content.ReadFromJsonAsync<List<CartItem>>();
+                var count = cartItems.Sum(item => item.Quantity);
+                return Json(new { count });
             }
-            return View("Error");
-        }
+            return Json(new { count = 0 });
+        }*/
+    
 
-
-        [HttpPost]
-        public async Task<IActionResult> AddToCart(int productId, int quantity)
+        [HttpPost("AddToCart")]
+        public async Task<IActionResult> AddToCart(int productId, int quantity,string UserId)
         {
             try
             {

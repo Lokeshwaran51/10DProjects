@@ -716,3 +716,98 @@ body {
     margin-left:-7px;
     margin-right:-6px;
 }
+
+.login-container {
+    position: relative;
+    font-family: Arial, sans-serif;
+    color: white;
+    user-select: none;
+}
+
+.top-text {
+    font-size: 12px;
+    margin: 0;
+    padding: 0 10px;
+    color: #ccc;
+}
+
+    .top-text a {
+        color: white;
+        text-decoration: none;
+    }
+
+        .top-text a:hover {
+            text-decoration: underline;
+        }
+
+.account {
+    font-weight: 700;
+    font-size: 14px;
+    padding: 5px 10px;
+    cursor: pointer;
+    position: relative;
+    color: white;
+    line-height: 1.3;
+}
+
+    .account:hover {
+        color: #f90; /* Amazon orange on hover */
+    }
+
+/* Dropdown container */
+.account-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: white;
+    color: black;
+    width: 220px;
+    border-radius: 3px;
+    box-shadow: 0 4px 12px rgb(0 0 0 / 0.15);
+    margin-top: 5px;
+    display: none;
+    z-index: 10000;
+    font-size: 14px;
+}
+
+    /* List styling */
+    .account-dropdown ul {
+        list-style: none;
+        padding: 10px 0;
+        margin: 0;
+    }
+
+        .account-dropdown ul li {
+            padding: 8px 20px;
+            cursor: pointer;
+            border-bottom: 1px solid #ddd;
+        }
+
+            .account-dropdown ul li:last-child {
+                border-bottom: none;
+            }
+
+            .account-dropdown ul li:hover {
+                background-color: #f3f3f3;
+            }
+
+            .account-dropdown ul li a {
+                color: #111;
+                text-decoration: none;
+                display: block;
+            }
+
+                .account-dropdown ul li a:hover {
+                    color: #f90; /* Amazon orange */
+                }
+
+    /* Small arrow on the top */
+    .account-dropdown::before {
+        content: "";
+        position: absolute;
+        top: -8px;
+        left: 20px;
+        border-left: 8px solid transparent;
+        border-right: 8px solid transparent;
+        border-bottom: 8px solid white;
+    }

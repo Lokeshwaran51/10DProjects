@@ -132,7 +132,7 @@ today_deal_btn_nextEl.addEventListener("click", () => {
 
 })
 
-// Retrieve user email to store in session
+/*// Retrieve user email to store in session
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 
@@ -151,4 +151,4 @@ $(document).ready(function () {
             }
         });
     }
-});
+});*/

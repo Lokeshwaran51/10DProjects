@@ -53,13 +53,32 @@
                 </div>
             </div>
 
-            <div class="login-container border-white">
+            @* <div class="login-container border-white">
                 <p class="top-text">
                     Hello,
                     <a href="/User/Login">Sign In</a>
                 </p>
                 <p class="account">Account & Lists</p>
+            </div> *@
+
+            <div class="login-container border-white">
+                <p class="top-text">
+                    Hello,
+                    <a href="/User/Login">Sign In</a>
+                </p>
+                <p class="account" id="account-toggle" style="cursor:pointer;">
+                    Account & Lists
+                </p>
+
+                <div id="account-dropdown" class="account-dropdown" style="display:none;">
+                    <ul>
+                        <li><a href="/User/Profile">Your Account</a></li>
+                        <li><a href="/User/Orders">Orders</a></li>
+                        <li><a href="/User/Logout">Sign Out</a></li>
+                    </ul>
+                </div>
             </div>
+
 
 
             <div class="return-order-container">
@@ -485,7 +504,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
 
-    <script src="~/js/javascript.js"></script>
+   @*  <script src="~/js/javascript.js"></script> *@
     <script src="~/js/ecom.js"></script>
     <script src="~/js/addtocart.js"></script>
 

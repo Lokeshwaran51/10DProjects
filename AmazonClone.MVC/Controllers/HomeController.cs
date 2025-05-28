@@ -23,11 +23,9 @@ namespace AmazonClone.MVC.Controllers
             try
             {
                 var email = HttpContext.Session.GetString("Email");
-
                 // Get categories
                 var categoryResponse = await _httpClient.GetAsync(_httpClient.BaseAddress + "/Category/GetAllCategories");
                 List<Category> categories = new List<Category>();
-
                 if (categoryResponse.IsSuccessStatusCode)
                 {
                     var data = await categoryResponse.Content.ReadAsStringAsync();
@@ -56,7 +54,6 @@ namespace AmazonClone.MVC.Controllers
                 return StatusCode(500, "Internal server error: " + ex.Message);
             }
         }
-
 
         [HttpGet("Home/GetSubCategoryByCategoryId/{CategoryId}")]
         public async Task<JsonResult> GetSubCategoryByCategoryId(int CategoryId)

@@ -1,10 +1,4 @@
-﻿@model List<CartItemDto>
-
-@{
-    ViewData["Title"] = "Your Cart";
-}
-
-<h2>Your Cart</h2>
+﻿@model List<CartItem>
 
 @if (Model == null || !Model.Any())
 {

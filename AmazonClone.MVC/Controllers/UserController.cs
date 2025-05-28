@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Login = AmazonClone.MVC.Models.Login;
@@ -122,6 +123,15 @@ namespace AmazonClone.MVC.Controllers
                 return StatusCode(500, "Internal server error: " + ex.Message);
             }
         }
+
+            [HttpGet]
+            public IActionResult Logout()
+            {
+                HttpContext.SignOutAsync();
+                HttpContext.Session.Clear();
+                return RedirectToAction("Login", "User");
+            }
+
 
 
         public IActionResult Index()
