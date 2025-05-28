@@ -7,6 +7,7 @@ using System.Security.Claims;
 
 namespace AmazonClone.API.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class CartController : ControllerBase
@@ -57,8 +58,6 @@ namespace AmazonClone.API.Controllers
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
-
-
 
         [HttpPost("AddToCart")]
         public async Task<IActionResult> AddToCart([FromForm] string Email, [FromForm] int productId, [FromForm] int quantity)

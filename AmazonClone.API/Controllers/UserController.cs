@@ -1,5 +1,6 @@
 ﻿using AmazonClone.API.Data.Entity;
 using AmazonClone.API.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -10,6 +11,7 @@ using System.Text;
 
 namespace AmazonClone.API.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class UserController : ControllerBase
@@ -64,9 +66,7 @@ namespace AmazonClone.API.Controllers
 
                 if (user == null)
                     return Unauthorized(new { message = "Invalid email or password." });
-
                 var token = GenerateJwtToken(user);
-
                 return Ok(new
                 {
                     token = token,
