@@ -24,7 +24,7 @@ namespace AmazonClone.API.Controllers
             _context = context;
             _configuration = configuration;
         }
-
+        [AllowAnonymous]
         [HttpPost("Register")]
         public async Task<IActionResult> Register([FromBody] User user)
         {
@@ -52,7 +52,7 @@ namespace AmazonClone.API.Controllers
             }
         }
 
-
+        [AllowAnonymous]
         [HttpPost("Login")]
         public async Task<IActionResult> Login(Login model)
         {
@@ -88,7 +88,7 @@ namespace AmazonClone.API.Controllers
                 var secretKey = jwtSettings.GetValue<string>("Key");
                 var issuer = jwtSettings.GetValue<string>("Issuer");
                 var audience = jwtSettings.GetValue<string>("Audience");
-                var expiryMinutes = jwtSettings.GetValue<int>("ExpiryInMinutes");
+               // var expiryMinutes = jwtSettings.GetValue<int>("ExpiryInMinutes");
 
                 var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
                 var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
@@ -103,7 +103,7 @@ namespace AmazonClone.API.Controllers
                     issuer: issuer,
                     audience: audience,
                     claims: claims,
-                    expires: DateTime.UtcNow.AddMinutes(expiryMinutes),
+                    //expires: DateTime.UtcNow.AddMinutes(expiryMinutes),
                     signingCredentials: credentials
                 );
 

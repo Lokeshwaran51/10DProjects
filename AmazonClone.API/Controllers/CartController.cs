@@ -7,8 +7,9 @@ using System.Security.Claims;
 
 namespace AmazonClone.API.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [Route("api/[controller]")]
+    [Route("Cart")]
     [ApiController]
     public class CartController : ControllerBase
     {
@@ -31,26 +32,30 @@ namespace AmazonClone.API.Controllers
                     return BadRequest("Email is required.");
                 }
 
-                int userId = await _context.Users
-           .Where(u => u.Email == email)
-           .Select(u => u.UserId)
-           .FirstOrDefaultAsync();
+                var cart = await _context.Carts
+                    .FirstOrDefaultAsync(c => c.Email == email);
+
+                if (cart == null)
+                {
+                    return NotFound("Cart not found for this user.");
+                }
 
                 var cartItems = await _context.CartItems
-            .Where(c => c.UserId == userId)
-            .Join(_context.Products,
-                  cart => cart.ProductId,
-                  product => product.Id,
-                  (cart, product) => new CartItemDto
-                  {
-                      ProductId = product.Id,
-                      ProductName = product.Name,
-                      Quantity = cart.Quantity ?? 0,
-                      Price = product.Price,
-                      Total = (cart.Quantity ?? 0) * product.Price
-                  })
-            .ToListAsync();
-
+                    .Where(ci => ci.CartId == cart.CartId)
+                    .Join(_context.Products,
+                        cartItem => cartItem.ProductId,
+                        product => product.Id,
+                        (cartItem, product) => new CartItemDto
+                        {
+                            ProductId = product.Id,
+                            ProductName = product.Name,
+                            Quantity = cartItem.Quantity ?? 0,
+                            Price = product.Price,
+                            ImageUrl = product.ImageUrl,
+                            Description = product.Description,
+                            Total = (cartItem.Quantity ?? 0) * product.Price
+                        })
+                    .ToListAsync();
                 return Ok(cartItems);
             }
             catch (Exception ex)
@@ -80,14 +85,14 @@ namespace AmazonClone.API.Controllers
                 var cart = await _context.Carts.FirstOrDefaultAsync(c => c.UserId == user.UserId);
                 if (cart == null)
                 {
-                    // Optionally create a new cart if not found
+                    // Create a new cart for the user
                     cart = new Cart
                     {
                         UserId = user.UserId,
                         Email = Email
                     };
                     _context.Carts.Add(cart);
-                    await _context.SaveChangesAsync(); // Save to get the new CartId
+                    await _context.SaveChangesAsync(); // Save to generate CartId
                 }
 
                 // Ensure product exists
@@ -97,19 +102,22 @@ namespace AmazonClone.API.Controllers
                     return NotFound("Product not found.");
                 }
 
-                // Check if the product is already in the cart
+                // Check if product is already in cart
                 var existingItem = await _context.CartItems
-                    .FirstOrDefaultAsync(ci => ci.CartId == cart.CartId && ci.ProductName == product.Name);
+                    .FirstOrDefaultAsync(ci => ci.CartId == cart.CartId && ci.ProductId == productId);
 
                 if (existingItem != null)
                 {
+                    // Update quantity
                     existingItem.Quantity += quantity;
                 }
                 else
                 {
+                    // Add new item to cart
                     var cartItem = new CartItem
                     {
                         CartId = cart.CartId,
+                        ProductId = product.Id,
                         ProductName = product.Name,
                         Quantity = quantity,
                         Price = product.Price,
@@ -126,6 +134,7 @@ namespace AmazonClone.API.Controllers
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
+
 
 
         [HttpGet("CartItemCount")]
@@ -158,6 +167,27 @@ namespace AmazonClone.API.Controllers
             }
         }
 
+
+        [HttpPost("RemoveFromCart")]
+        public async Task<IActionResult> RemoveFromCart([FromBody] int ProductId)
+        {
+            try
+            {
+                var cartItem = await _context.CartItems.FirstOrDefaultAsync(ci => ci.ProductId == ProductId);
+                if (cartItem != null)
+                {
+                    _context.CartItems.Remove(cartItem);
+                    await _context.SaveChangesAsync();
+                    return Ok(new { message = "Item removed successfully." });
+                }
+
+                return NotFound("Cart item not found.");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
 
     }
 }

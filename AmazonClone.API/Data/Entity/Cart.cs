@@ -11,6 +11,9 @@ public class Cart
 
     [Column(TypeName = "int")]
     public int UserId { get; set; }
+
+    [Column(TypeName = "int")]
+    public int? ProductId { get; set; }
     [Column (TypeName = "Varchar(200)")]
     public string Email { get; set; }
 

@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AmazonClone.API.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class CategoryController : ControllerBase
