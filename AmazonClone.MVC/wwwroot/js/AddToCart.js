@@ -98,22 +98,32 @@
 
     $(".cart-option").click(function () {
         var $button = $(this);
-        var Email = $("#Email").val();
+         var Email = $("#Email").val();
+        window.location.href = `/Cart/ViewCart?Email=${Email}`;
+
+        /*if (!Email) {
+            toastr.error("Email is missing.");
+            return;
+        }
+
+        $button.prop('disabled', true);
 
         $.ajax({
             url: '/Cart/ViewCart?Email=' + encodeURIComponent(Email),
             type: "GET",
             success: function (data) {
-                $('#cart-content').html(data); 
+                $('#cart-content').html(data);
                 $button.prop('disabled', false);
             },
             error: function (xhr) {
                 const errorMsg = xhr.responseJSON?.message || 'Failed to load cart.';
                 toastr.error(errorMsg);
+                console.error("AJAX error: ", xhr); // Debug log
                 $button.prop('disabled', false);
             }
-        });
+        });*/
     });
+
 
 
     $("#account-toggle").click(function (e) {
@@ -125,6 +135,9 @@
     $(document).click(function () {
         $("#account-dropdown").hide();
     });
+
+
+
 
     /*$(document).ready(function () {
         //var userEmail = '@HttpContextAccessor.HttpContext.Session.GetString("Email")';

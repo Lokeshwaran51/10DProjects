@@ -7,6 +7,7 @@ using static AmazonClone.MVC.Models.Category;
 
 namespace AmazonClone.MVC.Controllers
 {
+
     public class HomeController : Controller
     {
         private readonly HttpClient _httpClient;
@@ -76,6 +77,7 @@ namespace AmazonClone.MVC.Controllers
             }
         }
 
+        [HttpGet("SubCategories")]
         public async Task<IActionResult> SubCategories(int CategoryId)
         {
             try

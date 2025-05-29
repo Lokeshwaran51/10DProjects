@@ -30,7 +30,7 @@
             <div class="address-container border-white">
                 <p class="hello">Hello</p>
                 <div class="icon-address">
-                    <i class="fa-solid fa-location-dot icon-location"></i>
+                    <i class="fa-solid fa-location-dot icon-location" style="margin-top: -4px;"></i>
                     <p>Select your address</p>
                 </div>
             </div>
@@ -47,19 +47,11 @@
             </div>
 
             <div class="language-container border-white">
-                <p>English</p>
                 <div class="lauguge-image">
                     <img src="https://media.istockphoto.com/vectors/vector-flag-of-the-republic-of-india-proportion-23-the-national-flag-vector-id1051236720?k=20&m=1051236720&s=612x612&w=0&h=ATObRTHmTosADa9zaB2dQPn_VAQmG1XYH2x92kzc304=" />
                 </div>
+                <p>EN</p>
             </div>
-
-            @* <div class="login-container border-white">
-                <p class="top-text">
-                    Hello,
-                    <a href="/User/Login">Sign In</a>
-                </p>
-                <p class="account">Account & Lists</p>
-            </div> *@
 
             <div class="login-container border-white">
                 <p class="top-text">
@@ -79,9 +71,7 @@
                 </div>
             </div>
 
-
-
-            <div class="return-order-container">
+            <div class="return-order-container border-white">
                 <p>
                     Returns
                     <div class="order">& Orders</div>
@@ -121,7 +111,7 @@
                 <li class="border-white"><a href="#">Fashion</a></li>
                 <li class="border-white"><a href="#">Book</a></li> *@
 
-                <div class="category-list" style="display: flex; gap: 15px; flex-wrap: wrap;margin-top:4px;margin-right:43px">
+                <div class="category-list" style="display: flex; gap: 15px; flex-wrap: wrap;margin-top:4px;margin-right:43px;margin-left:13px">
                     @foreach (var cat in Model)
                     {
                         <div style="display: flex; flex-direction: column; align-items: flex-start;">
@@ -337,19 +327,19 @@
 
         <div class="card-product-container container productBackgraound">
             <div class="card-product">
-                <h2>Top rated, premium quality | Amazon Brands &</h2>
+                <h2>Deals related to items you've saved</h2>
                 <div class="card-product-nested-card">
                     <div class="card-nested">
-                        <img src="https://images-eu.ssl-images-amazon.com/images/G/31/img22/BAU/Oct/186X116_1._SY116_CB606110532_.jpg" />
-                        <p>Home Products</p>
+                        <img src="https://m.media-amazon.com/images/W/MEDIAX_1215821-T1/images/I/61QZbqAUvKL._AC_SY145_.jpg" />
+                        <p>Game Box Console</p>
                     </div>
                     <div class="card-nested">
-                        <img src="https://images-eu.ssl-images-amazon.com/images/G/31/img22/BAU/Oct/186X116_5._SY116_CB606110532_.jpg" />
-                        <p>Furniture</p>
+                        <img src="https://m.media-amazon.com/images/W/MEDIAX_1215821-T1/images/I/81PwHrzEEtL._AC_SY145_.jpg" />
+                        <p>Athletic Footwear</p>
                     </div>
                     <div class="card-nested">
-                        <img src="https://images-eu.ssl-images-amazon.com/images/G/31/img22/BAU/Oct/186X116_3._SY116_CB606110532_.jpg" />
-                        <p>Daily essentials</p>
+                        <img src="https://m.media-amazon.com/images/W/MEDIAX_1215821-T1/images/I/71GP8ww8X7L._AC_SY145_.jpg" />
+                        <p>Adidas T-Shirt</p>
                     </div>
                     <div class="card-nested">
                         <img src="https://images-eu.ssl-images-amazon.com/images/G/31/img22/BAU/Oct/186X116_8._SY116_CB606110532_.jpg" />
@@ -359,67 +349,67 @@
                 <button class="card-product-btn">see more</button>
             </div>
             <div class="card-product">
-                <h2>Top rated, premium quality | Amazon Brands &</h2>
+                <h2>Starting ₹499 | Amazon Brands & more</h2>
                 <div class="card-product-nested-card">
                     <div class="card-nested">
-                        <img src="https://images-eu.ssl-images-amazon.com/images/G/31/img22/BAU/Oct/186X116_1._SY116_CB606110532_.jpg" />
-                        <p>Home Products</p>
+                        <img src="https://images-eu.ssl-images-amazon.com/images/W/MEDIAX_1215821-T1/images/G/31/img23/PB/March/Bikram/PC_QC_CEPC_01_186_1._SY116_CB555261080_.jpg" />
+                        <p>Starting ₹799 | Earbuds &amp; neckbands</p>
                     </div>
                     <div class="card-nested">
-                        <img src="https://images-eu.ssl-images-amazon.com/images/G/31/img22/BAU/Oct/186X116_5._SY116_CB606110532_.jpg" />
-                        <p>Furniture</p>
+                        <img src="https://images-eu.ssl-images-amazon.com/images/W/MEDIAX_1215821-T1/images/G/31/img23/PB/March/Bikram/PC_QC_CEPC_01_186_2._SY116_CB555261080_.jpg" />
+                        <p>Up to 60% off | Soundbars</p>
                     </div>
                     <div class="card-nested">
-                        <img src="https://images-eu.ssl-images-amazon.com/images/G/31/img22/BAU/Oct/186X116_3._SY116_CB606110532_.jpg" />
-                        <p>Daily essentials</p>
+                        <img src="https://images-eu.ssl-images-amazon.com/images/W/MEDIAX_1215821-T1/images/G/31/img23/PB/March/Bikram/PC_QC_CEPC_01_186_3._SY116_CB555261080_.jpg" />
+                        <p>Starting ₹699 | Bluetooth speakers</p>
                     </div>
                     <div class="card-nested">
-                        <img src="https://images-eu.ssl-images-amazon.com/images/G/31/img22/BAU/Oct/186X116_8._SY116_CB606110532_.jpg" />
-                        <p>Fashion</p>
+                        <img src="https://images-eu.ssl-images-amazon.com/images/W/MEDIAX_1215821-T1/images/G/31/img23/PB/March/Bikram/PC_QC_CEPC_01_186_4._SY116_CB555261080_.jpg" />
+                        <p>Starting ₹399 | Gaming accessories</p>
                     </div>
                 </div>
                 <button class="card-product-btn">see more</button>
             </div>
             <div class="card-product">
-                <h2>Top rated, premium quality | Amazon Brands &</h2>
+                <h2>Appliances for your home | Up to 55% off</h2>
                 <div class="card-product-nested-card">
                     <div class="card-nested">
-                        <img src="https://images-eu.ssl-images-amazon.com/images/G/31/img22/BAU/Oct/186X116_1._SY116_CB606110532_.jpg" />
-                        <p>Home Products</p>
+                        <img src="https://images-eu.ssl-images-amazon.com/images/W/MEDIAX_1215821-T1/images/G/31/IMG15/Irfan/GATEWAY/MSO/Appliances-QC-PC-186x116--B08RDL6H79._SY116_CB667322346_.jpg" />
+                        <p>ACs</p>
                     </div>
                     <div class="card-nested">
-                        <img src="https://images-eu.ssl-images-amazon.com/images/G/31/img22/BAU/Oct/186X116_5._SY116_CB606110532_.jpg" />
-                        <p>Furniture</p>
+                        <img src="https://images-eu.ssl-images-amazon.com/images/W/MEDIAX_1215821-T1/images/G/31/IMG15/Irfan/GATEWAY/MSO/Appliances-QC-PC-186x116--B08345R1ZW._SY116_CB667322346_.jpg" />
+                        <p>Refrigerators</p>
                     </div>
                     <div class="card-nested">
-                        <img src="https://images-eu.ssl-images-amazon.com/images/G/31/img22/BAU/Oct/186X116_3._SY116_CB606110532_.jpg" />
-                        <p>Daily essentials</p>
+                        <img src="https://images-eu.ssl-images-amazon.com/images/W/MEDIAX_1215821-T1/images/G/31/IMG15/Irfan/GATEWAY/MSO/Appliances-QC-PC-186x116--B07G5J5FYP._SY116_CB667322346_.jpg" />
+                        <p>Microwaves</p>
                     </div>
                     <div class="card-nested">
-                        <img src="https://images-eu.ssl-images-amazon.com/images/G/31/img22/BAU/Oct/186X116_8._SY116_CB606110532_.jpg" />
-                        <p>Fashion</p>
+                        <img src="https://images-eu.ssl-images-amazon.com/images/W/MEDIAX_1215821-T1/images/G/31/IMG15/Irfan/GATEWAY/MSO/186x116---wm._SY116_CB667322346_.jpg" />
+                        <p>Washing machines</p>
                     </div>
                 </div>
                 <button class="card-product-btn">see more</button>
             </div>
             <div class="card-product">
-                <h2>Top rated, premium quality | Amazon Brands &</h2>
+                <h2>Top mobile accessories for your smartphone</h2>
                 <div class="card-product-nested-card">
                     <div class="card-nested">
-                        <img src="https://images-eu.ssl-images-amazon.com/images/G/31/img22/BAU/Oct/186X116_1._SY116_CB606110532_.jpg" />
-                        <p>Home Products</p>
+                        <img src="https://images-eu.ssl-images-amazon.com/images/W/MEDIAX_1215821-T1/images/G/31/img22/WLA/2023/MSOREFRESHDESKTOP/D87165616_IN_WLA_BAU_MSO_REFRESH-desktop-version_PC_QuadCard_186X116_3X3._SY116_CB602731451_.jpg" />
+                        <p>Headsets</p>
                     </div>
                     <div class="card-nested">
-                        <img src="https://images-eu.ssl-images-amazon.com/images/G/31/img22/BAU/Oct/186X116_5._SY116_CB606110532_.jpg" />
-                        <p>Furniture</p>
+                        <img src="https://images-eu.ssl-images-amazon.com/images/W/MEDIAX_1215821-T1/images/G/31/img22/WLA/2023/MSOREFRESHDESKTOP/D87165616_IN_WLA_BAU_MSO_REFRESH-desktop-version_PC_QuadCard_186X116_2X2._SY116_CB602731451_.jpg" />
+                        <p>Cabeles and Chargers</p>
                     </div>
                     <div class="card-nested">
-                        <img src="https://images-eu.ssl-images-amazon.com/images/G/31/img22/BAU/Oct/186X116_3._SY116_CB606110532_.jpg" />
-                        <p>Daily essentials</p>
+                        <img src="https://images-eu.ssl-images-amazon.com/images/W/MEDIAX_1215821-T1/images/G/31/img22/WLA/2023/MSOREFRESHDESKTOP/D87165616_IN_WLA_BAU_MSO_REFRESH-desktop-version_PC_QuadCard_186X116_1X1._SY116_CB602731451_.jpg" />
+                        <p>Cases and covers</p>
                     </div>
                     <div class="card-nested">
-                        <img src="https://images-eu.ssl-images-amazon.com/images/G/31/img22/BAU/Oct/186X116_8._SY116_CB606110532_.jpg" />
-                        <p>Fashion</p>
+                        <img src="https://images-eu.ssl-images-amazon.com/images/W/MEDIAX_1215821-T1/images/G/31/img22/WLA/2023/MSOREFRESHDESKTOP/D87165616_IN_WLA_BAU_MSO_REFRESH-desktop-version_PC_QuadCard_186X116_4X4._SY116_CB602731451_.jpg" />
+                        <p>Powerbanks</p>
                     </div>
                 </div>
                 <button class="card-product-btn">see more</button>

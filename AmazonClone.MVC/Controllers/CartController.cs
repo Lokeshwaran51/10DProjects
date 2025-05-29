@@ -20,6 +20,7 @@ namespace AmazonClone.MVC.Controllers
             _httpClient.BaseAddress = new Uri(_configuration["ApiUrl:BaseUrl"]);
         }
 
+       
         [HttpGet("ViewCart")]
         public async Task<IActionResult> ViewCart([FromQuery] string Email)
         {
@@ -29,39 +30,21 @@ namespace AmazonClone.MVC.Controllers
                 if (res.IsSuccessStatusCode)
                 {
                     var cartItems = await res.Content.ReadFromJsonAsync<List<CartItemDto>>();
-                    return View("ViewCart", cartItems);
-
-                    //return PartialView("_CartPartial", data);
+                    return View(cartItems);
                 }
                 return View("Error");
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-                throw;
+                return StatusCode(500, "Internal server error: " + ex.Message);
             }
         }
-
-       /* [HttpGet("GetCartCount")]
-        public async Task<IActionResult> GetCartCount([FromQuery] string Email)
-        {
-            var res = await _httpClient.GetAsync($"{_httpClient.BaseAddress}/Cart/GetCartItems/{Email}");
-            if (res.IsSuccessStatusCode)
-            {
-                var cartItems = await res.Content.ReadFromJsonAsync<List<CartItem>>();
-                var count = cartItems.Sum(item => item.Quantity);
-                return Json(new { count });
-            }
-            return Json(new { count = 0 });
-        }*/
-    
 
         [HttpPost("AddToCart")]
         public async Task<IActionResult> AddToCart(int productId, int quantity,string UserId)
         {
             try
             {
-                // Get email from session
                 var email = HttpContext.Session.GetString("Email");
                 if (string.IsNullOrEmpty(email))
                 {
@@ -93,6 +76,31 @@ namespace AmazonClone.MVC.Controllers
                 return StatusCode(500, "Internal server error: " + ex.Message);
             }
         }
+
+
+        [HttpPost("RemoveFromCart")]
+        public async Task<IActionResult> RemoveFromCart(int ProductId)
+        {
+            try
+            {
+                var data = JsonConvert.SerializeObject(ProductId);
+                var content = new StringContent(data, System.Text.Encoding.UTF8, "application/json");
+                var response = await _httpClient.PostAsync("/Cart/RemoveFromCart?ProductId={ProductId}", content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    TempData["SuccessMessage"] = "Product Removed from Cart.";
+                    return RedirectToAction("ViewCart", "Cart");
+                }
+                return RedirectToAction("ViewCart", "Cart");
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
         public IActionResult Index()
         {
             return View();

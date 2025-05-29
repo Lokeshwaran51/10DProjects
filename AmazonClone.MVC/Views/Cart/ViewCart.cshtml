@@ -2,41 +2,93 @@
 
 @{
     ViewData["Title"] = "Your Cart";
+    var totalAmount = Model?.Sum(i => i.Price * i.Quantity) ?? 0;
 }
 
-<h2>Your Cart</h2>
+<h2 class="mb-4 fw-bold border-bottom pb-2">Shopping Cart</h2>
 
 @if (Model == null || !Model.Any())
 {
-    <div class="alert alert-info">
-        Your cart is empty.
-    </div>
+    <div class="alert alert-info">Your cart is empty.</div>
 }
 else
 {
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>Product Name</th>
-                <th>Price</th>
-                <th>Quantity</th>
-                <th>Total</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>@item.ProductName</td>
-                    <td>@item.Price</td>
-                    <td>@item.Quantity</td>
-                    <td>@(item.Price* item.Quantity).ToString("C")</td>
-                </tr>
-            }
-        </tbody>
-    </table>
+    <form method="post" asp-action="Checkout" id="checkoutForm">
+        @Html.AntiForgeryToken()
 
-    <h4 class="text-end">
-        Total: @Model.Sum(i => i.Price * i.Quantity)
-    </h4>
+        <div class="row">
+            <!-- Cart Items -->
+            <div class="col-md-8">
+                @for (int i = 0; i < Model.Count; i++)
+                {
+                    <div class="card mb-4 shadow-sm border-0 rounded-3">
+                        <div class="row g-0 p-3">
+                            <!-- Checkbox -->
+                            <div class="col-md-1 d-flex align-items-start pt-3">
+                                <input type="checkbox" name="SelectedItems" value="@Model[i].ProductId" class="form-check-input" />
+                            </div>
+
+                            <!-- Product Image -->
+                            <div class="col-md-3">
+                                <img src="@Model[i].ImageUrl" class="img-fluid rounded" alt="@Model[i].ProductName" />
+                            </div>
+
+                            <!-- Product Info -->
+                            <div class="col-md-7">
+                                <div class="card-body ps-4">
+                                    <h5 class="card-title mb-1">@Model[i].ProductName</h5>
+                                    <p class="mb-1 text-muted">@Model[i].Description</p>
+                                    <p class="mb-1">Price: <strong class="text-danger">₹@Model[i].Price</strong></p>
+                                    <p class="mb-1">Quantity: <strong>@Model[i].Quantity</strong></p>
+                                    <p class="mb-2">Total: <strong>₹@(Model[i].Price * Model[i].Quantity)</strong></p>
+
+                                    <!-- Remove Button -->
+                                    <button type="button"
+                                            class="btn btn-outline-danger btn-sm remove-btn mt-2"
+                                            data-productid="@Model[i].ProductId">
+                                        Remove
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <!-- Order Summary -->
+            <div class="col-md-4">
+                <div class="card p-4 shadow-sm sticky-top" style="top: 80px;">
+                    <h4 class="mb-3">Order Summary</h4>
+                    <hr />
+                    <p class="mb-2">Subtotal (@Model.Sum(i => i.Quantity) items):</p>
+                    <h5 class="mb-4 text-danger">₹@totalAmount</h5>
+                    <button type="submit" class="btn btn-warning w-100 fw-bold">Proceed to Checkout</button>
+                </div>
+            </div>
+        </div>
+    </form>
+}
+
+@section Scripts {
+    <script>
+        document.querySelectorAll('.remove-btn').forEach(button => {
+            button.addEventListener('click', function () {
+                const productId = this.getAttribute('data-productid');
+                if (confirm('Are you sure you want to remove this item?')) {
+                    fetch('/Cart/RemoveFromCart', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                        body: new URLSearchParams({ ProductId: productId })
+                    })
+                    .then(response => {
+                        if (response.ok) {
+                            location.reload();
+                        } else {
+                            alert('Failed to remove item.');
+                        }
+                    });
+                }
+            });
+        });
+    </script>
 }
