@@ -20,7 +20,7 @@ namespace AmazonClone.MVC.Controllers
             _httpClient.BaseAddress = new Uri(_configuration["ApiUrl:BaseUrl"]);
         }
 
-       
+
         [HttpGet("ViewCart")]
         public async Task<IActionResult> ViewCart([FromQuery] string Email)
         {
@@ -41,7 +41,7 @@ namespace AmazonClone.MVC.Controllers
         }
 
         [HttpPost("AddToCart")]
-        public async Task<IActionResult> AddToCart(int productId, int quantity,string UserId)
+        public async Task<IActionResult> AddToCart(int productId, int quantity, string UserId)
         {
             try
             {

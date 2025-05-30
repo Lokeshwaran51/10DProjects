@@ -500,7 +500,7 @@ body {
 
 .today_deals_product_item {
     min-width: 250px;
-    height: 250px;
+    height: 390px;
     padding: 0px 10px;
     margin-right: 10px;
     display: flex;
@@ -819,4 +819,12 @@ body {
 .return-order-container{
     margin-left:-18px;
     border:10px;
+}
+
+#today_deal_btn_next {
+    margin-right: -64px;
+}
+
+#today_deal_btn_prev{
+    margin-left:-50px;
 }

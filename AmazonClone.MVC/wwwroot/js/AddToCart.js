@@ -13,25 +13,25 @@
     });
 
     // Buy Now
-   /* $("#buyNow").click(function () {
-        const productId = parseInt($("#productId").val());
-        const quantity = parseInt($("#quantity").val()) || 1;
-
-        $.ajax({
-            url: `/Order/PlaceOrder`,
-            type: "POST",
-            data: {
-                ProductId: productId,
-                Quantity: quantity
-            },
-            success: function (response) {
-                console.log("Order placed successfully:", response);
-            },
-            error: function (xhr, status, error) {
-                console.error("Error placing order:", error);
-            }
-        });
-    });*/
+    /* $("#buyNow").click(function () {
+         const productId = parseInt($("#productId").val());
+         const quantity = parseInt($("#quantity").val()) || 1;
+ 
+         $.ajax({
+             url: `/Order/PlaceOrder`,
+             type: "POST",
+             data: {
+                 ProductId: productId,
+                 Quantity: quantity
+             },
+             success: function (response) {
+                 console.log("Order placed successfully:", response);
+             },
+             error: function (xhr, status, error) {
+                 console.error("Error placing order:", error);
+             }
+         });
+     });*/
 
     $("#buyNow").click(function () {
         const productId = parseInt($("#productId").val());
@@ -45,7 +45,7 @@
         var $button = $(this);
         var quantity = parseInt($("#quantity").val()) || 1;
         var productId = parseInt($("#productId").val());
-        var userId = $("#Email").val(); 
+        var userId = $("#Email").val();
 
         //window.location.href = `/Cart/AddToCart?ProductId=${productId}&quantity=${quantity}`;
         if (!productId) {
@@ -98,7 +98,7 @@
 
     $(".cart-option").click(function () {
         var $button = $(this);
-         var Email = $("#Email").val();
+        var Email = $("#Email").val();
         window.location.href = `/Cart/ViewCart?Email=${Email}`;
 
         /*if (!Email) {
@@ -135,32 +135,25 @@
     $(document).click(function () {
         $("#account-dropdown").hide();
     });
-
-
-
-
-    /*$(document).ready(function () {
-        //var userEmail = '@HttpContextAccessor.HttpContext.Session.GetString("Email")';
-        var Email = $("#Email").val();
-
-        if (Email) {
-            $.ajax({
-                url: '/Cart/CartItemCount?Email=' + encodeURIComponent(Email),
-                type: 'GET',
-                success: function (count) {
-                    $('#cart-count').text(count);
-                },
-                error: function () {
-                    console.error('Failed to load cart item count.');
-                }
-            });
-        }
-    });*/
-
-    /*$(".cart-option").click(function () {
-        var Email = $("#Email").val();
-        window.location.href = `/Cart/ViewCart?Email=${Email}`;
-    });*/
-
-
 });
+/*
+$(document).ready(function () {
+    $("#account-toggle").click(function () {
+        $("#account-dropdown").toggle();
+    });
+
+    $("#load-account").click(function () {
+        const email = $("#Email").val();
+
+        $.ajax({
+            url: "/User/Account/" + email,
+            type: "GET",
+            success: function (data) {
+                $("#account-content").html(data);
+            },
+            error: function (xhr) {
+                console.error("Error loading account:", xhr);
+            }
+        });
+    });
+});*/

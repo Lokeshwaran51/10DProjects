@@ -69,65 +69,6 @@ namespace AmazonClone.MVC.Controllers
             return View();
         }
 
-        /*[HttpPost]
-        public async Task<IActionResult> Login(Login model)
-        {
-            try
-            {
-                if (ModelState.IsValid)
-                {
-                    var data = JsonConvert.SerializeObject(model);
-                    var content = new StringContent(data, System.Text.Encoding.UTF8, "application/json");
-                    var res = await _httpClient.PostAsync(_httpClient.BaseAddress + "/User/Login", content);
-                    if (res.IsSuccessStatusCode)
-                    {
-                        TempData["SuccessMessage"] = "User Logged in Successfully.";
-                        HttpContext.Session.SetInt32("UserId", model.UserId);
-                        return RedirectToAction("Index", "Home");
-                    }
-                }
-                return View();
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, "Internal server error: " + ex.Message);
-            }
-        }*/
-
-        /*[AllowAnonymous]
-        [HttpPost]
-        public async Task<IActionResult> Login(Login model)
-        {
-            try
-            {
-                if (ModelState.IsValid)
-                {
-                    var data = JsonConvert.SerializeObject(model);
-                    var content = new StringContent(data, System.Text.Encoding.UTF8, "application/json");
-                    var response = await _httpClient.PostAsync(_httpClient.BaseAddress + "/User/Login", content);
-
-                    if (response.IsSuccessStatusCode)
-                    {
-                        var responseContent = await response.Content.ReadAsStringAsync();
-                        var user = JsonConvert.DeserializeObject<Login>(responseContent);
-
-                        HttpContext.Session.SetString("Email", user.Email);
-
-                        TempData["SuccessMessage"] = "User Logged in Successfully.";
-                        return RedirectToAction("Index", "Home");
-                    }
-
-                    ModelState.AddModelError("", "Invalid login credentials.");
-                }
-
-                return View(model);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, "Internal server error: " + ex.Message);
-            }
-        }*/
-
         [HttpPost]
         public async Task<IActionResult> Login(Login model)
         {
@@ -163,12 +104,25 @@ namespace AmazonClone.MVC.Controllers
 
 
         [HttpGet]
-            public IActionResult Logout()
+        public IActionResult Logout()
+        {
+            HttpContext.SignOutAsync();
+            HttpContext.Session.Clear();
+            return RedirectToAction("Login", "User");
+        }
+
+
+        [HttpGet]
+        public async Task<IActionResult> Account(string Email)
+        {
+            var res = await _httpClient.GetAsync($"{_httpClient.BaseAddress}/User/Account?Email={Email}");
+            if (res.IsSuccessStatusCode)
             {
-                HttpContext.SignOutAsync();
-                HttpContext.Session.Clear();
-                return RedirectToAction("Login", "User");
+                var data = await res.Content.ReadAsStringAsync();
+                //subCategories = JsonConvert.DeserializeObject<List<SubCategory>>(data);
             }
+            return View();
+        }
 
         public IActionResult Index()
         {
