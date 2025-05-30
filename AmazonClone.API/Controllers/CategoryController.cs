@@ -19,16 +19,16 @@ namespace AmazonClone.API.Controllers
             _configuration = configuration;
         }
 
-       /// <summary>
-       /// 
-       /// </summary>
-       /// <returns></returns>
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("GetAllCategories")]
         public async Task<IActionResult> GetAllCategories()
         {
             try
             {
-                var categories = await _context.Categories 
+                var categories = await _context.Categories
                     .ToListAsync();
 
                 return Ok(categories);

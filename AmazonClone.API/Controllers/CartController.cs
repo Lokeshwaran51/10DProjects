@@ -1,4 +1,7 @@
 ﻿using AmazonClone.API.Data.Entity;
+using AmazonClone.API.Features.Cart.Commands;
+using AmazonClone.API.Features.Cart.Queries;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -9,62 +12,37 @@ namespace AmazonClone.API.Controllers
 {
     //[Authorize]
     [Route("api/[controller]")]
-    [Route("Cart")]
+    //[Route("Cart")]
     [ApiController]
     public class CartController : ControllerBase
     {
-        private readonly AppDbContext _context;
-        private readonly IConfiguration _configuration;
+        //private readonly AppDbContext _context;
+        //private readonly IConfiguration _configuration;
+        private readonly IMediator _mediator;
 
-        public CartController(AppDbContext context, IConfiguration configuration)
+        public CartController(IMediator mediator)
         {
-            _configuration = configuration;
-            _context = context;
+            //_configuration = configuration;
+            //_context = context;
+            _mediator = mediator;
         }
 
         [HttpGet("GetCartItems/{email}")]
         public async Task<IActionResult> GetCartItems(string email)
         {
-            try
-            {
-                if (string.IsNullOrEmpty(email))
-                {
-                    return BadRequest("Email is required.");
-                }
-
-                var cart = await _context.Carts
-                    .FirstOrDefaultAsync(c => c.Email == email);
-
-                if (cart == null)
-                {
-                    return NotFound("Cart not found for this user.");
-                }
-
-                var cartItems = await _context.CartItems
-                    .Where(ci => ci.CartId == cart.CartId)
-                    .Join(_context.Products,
-                        cartItem => cartItem.ProductId,
-                        product => product.Id,
-                        (cartItem, product) => new CartItemDto
-                        {
-                            ProductId = product.Id,
-                            ProductName = product.Name,
-                            Quantity = cartItem.Quantity ?? 0,
-                            Price = product.Price,
-                            ImageUrl = product.ImageUrl,
-                            Description = product.Description,
-                            Total = (cartItem.Quantity ?? 0) * product.Price
-                        })
-                    .ToListAsync();
-                return Ok(cartItems);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Internal server error: {ex.Message}");
-            }
+            var result = await _mediator.Send(new GetCartItemsQuery(email));
+            return Ok(result);
         }
 
         [HttpPost("AddToCart")]
+        public async Task<IActionResult> AddToCart([FromForm] AddToCartCommand command)
+        {
+            var result = await _mediator.Send(command);
+            return Ok(result);
+        }
+
+
+        /*[HttpPost("AddToCart")]
         public async Task<IActionResult> AddToCart([FromForm] string Email, [FromForm] int productId, [FromForm] int quantity)
         {
             try
@@ -133,61 +111,61 @@ namespace AmazonClone.API.Controllers
             {
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
-        }
+        }*/
 
 
 
-        [HttpGet("CartItemCount")]
-        public async Task<IActionResult> CartItemCount([FromQuery] string Email)
-        {
-            try
-            {
-                if (string.IsNullOrEmpty(Email))
-                {
-                    return BadRequest("Email is required.");
-                }
+        /* [HttpGet("CartItemCount")]
+         public async Task<IActionResult> CartItemCount([FromQuery] string Email)
+         {
+             try
+             {
+                 if (string.IsNullOrEmpty(Email))
+                 {
+                     return BadRequest("Email is required.");
+                 }
 
-                var cart = await _context.Carts
-                    .FirstOrDefaultAsync(c => c.Email == Email);
+                 var cart = await _context.Carts
+                     .FirstOrDefaultAsync(c => c.Email == Email);
 
-                if (cart == null)
-                {
-                    return NotFound("Cart not found for this user.");
-                }
+                 if (cart == null)
+                 {
+                     return NotFound("Cart not found for this user.");
+                 }
 
-                int count = await _context.CartItems
-                    .Where(ci => ci.CartId == cart.CartId)
-                    .SumAsync(ci => ci.Quantity ?? 0);
+                 int count = await _context.CartItems
+                     .Where(ci => ci.CartId == cart.CartId)
+                     .SumAsync(ci => ci.Quantity ?? 0);
 
-                return Ok(count);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Internal server error: {ex.Message}");
-            }
-        }
+                 return Ok(count);
+             }
+             catch (Exception ex)
+             {
+                 return StatusCode(500, $"Internal server error: {ex.Message}");
+             }
+         }
 
 
-        [HttpPost("RemoveFromCart")]
-        public async Task<IActionResult> RemoveFromCart([FromBody] int ProductId)
-        {
-            try
-            {
-                var cartItem = await _context.CartItems.FirstOrDefaultAsync(ci => ci.ProductId == ProductId);
-                if (cartItem != null)
-                {
-                    _context.CartItems.Remove(cartItem);
-                    await _context.SaveChangesAsync();
-                    return Ok(new { message = "Item removed successfully." });
-                }
+         [HttpPost("RemoveFromCart")]
+         public async Task<IActionResult> RemoveFromCart([FromBody] int ProductId)
+         {
+             try
+             {
+                 var cartItem = await _context.CartItems.FirstOrDefaultAsync(ci => ci.ProductId == ProductId);
+                 if (cartItem != null)
+                 {
+                     _context.CartItems.Remove(cartItem);
+                     await _context.SaveChangesAsync();
+                     return Ok(new { message = "Item removed successfully." });
+                 }
 
-                return NotFound("Cart item not found.");
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Internal server error: {ex.Message}");
-            }
-        }
+                 return NotFound("Cart item not found.");
+             }
+             catch (Exception ex)
+             {
+                 return StatusCode(500, $"Internal server error: {ex.Message}");
+             }
+         }*/
 
     }
 }

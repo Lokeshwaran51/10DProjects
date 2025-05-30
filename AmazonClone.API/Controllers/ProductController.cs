@@ -43,7 +43,8 @@ namespace AmazonClone.API.Controllers
                 if (ProductId <= 0)
                 {
                     return BadRequest("Invalid product ID");
-                }; 
+                }
+                ;
                 var product = await _context.Products
                     .Include(p => p.Category)
                     .Include(p => p.SubCategory)
