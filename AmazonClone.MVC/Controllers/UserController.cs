@@ -1,7 +1,4 @@
-﻿using AmazonClone.MVC.Models;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Text;
@@ -69,32 +66,67 @@ namespace AmazonClone.MVC.Controllers
             return View();
         }
 
+        /* [HttpPost]
+         public async Task<IActionResult> Login(Login model)
+         {
+             try
+             {
+                 if (!ModelState.IsValid)
+                     return View(model);
+
+                 var data = JsonConvert.SerializeObject(model);
+                 var content = new StringContent(data, Encoding.UTF8, "application/json");
+
+                 var response = await _httpClient.PostAsync($"{_httpClient.BaseAddress}/User/Login", content);
+
+                 var responseContent = await response.Content.ReadAsStringAsync();
+
+                 if (!response.IsSuccessStatusCode)
+                 {
+                     ModelState.AddModelError("", "Invalid login credentials.");
+                     return View(model);
+                 }
+
+                 var loginResponse = JsonConvert.DeserializeObject<LoginResponse>(responseContent);
+                 HttpContext.Session.SetString("Email", loginResponse.Email);
+                 HttpContext.Session.SetString("Token", loginResponse.Token);
+
+                 TempData["SuccessMessage"] = "User Logged in Successfully.";
+                 return RedirectToAction("Index", "Home");
+             }
+             catch (Exception ex)
+             {
+                 return StatusCode(500, "Internal server error: " + ex.Message);
+             }
+         }*/
+
         [HttpPost]
         public async Task<IActionResult> Login(Login model)
         {
             try
             {
-                if (ModelState.IsValid)
+                if (!ModelState.IsValid)
+                    return View(model);
+
+                var data = JsonConvert.SerializeObject(model);
+                var content = new StringContent(data, Encoding.UTF8, "application/json");
+
+                var response = await _httpClient.PostAsync($"{_httpClient.BaseAddress}/User/Login", content);
+                var responseContent = await response.Content.ReadAsStringAsync();
+
+                if (!response.IsSuccessStatusCode)
                 {
-                    var data = JsonConvert.SerializeObject(model);
-                    var content = new StringContent(data, Encoding.UTF8, "application/json");
-                    var response = await _httpClient.PostAsync(_httpClient.BaseAddress + "/User/Login", content);
-
-                    if (response.IsSuccessStatusCode)
-                    {
-                        var responseContent = await response.Content.ReadAsStringAsync();
-                        var loginResponse = JsonConvert.DeserializeObject<LoginResponse>(responseContent);
-
-                        HttpContext.Session.SetString("Email", loginResponse.Email);
-                        HttpContext.Session.SetString("Token", loginResponse.Token);
-
-                        TempData["SuccessMessage"] = "User Logged in Successfully.";
-                        return RedirectToAction("Index", "Home");
-                    }
                     ModelState.AddModelError("", "Invalid login credentials.");
+                    return View(model);
                 }
+                var token = responseContent.Trim('"');
 
-                return View(model);
+                // Store token in session
+                HttpContext.Session.SetString("Token", token);
+                HttpContext.Session.SetString("Email", model.Email);
+
+                TempData["SuccessMessage"] = "User logged in successfully.";
+                return RedirectToAction("Index", "Home");
             }
             catch (Exception ex)
             {

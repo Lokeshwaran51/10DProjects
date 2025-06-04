@@ -23,7 +23,7 @@ body {
     /* background-color: red; */
     height: 100%;
     margin: auto;
-   /* margin-left:-10px;*/
+    /* margin-left:-10px;*/
 }
 
 .container-header {
@@ -37,7 +37,7 @@ body {
     display: flex;
     align-items: center;
     font-size: 1.1rem;
-    margin-left:-106px;
+    margin-left: -106px;
     /* overflow: hidden; */
 }
 
@@ -58,8 +58,8 @@ body {
 
 /*.border-white {
     padding: 5px;*/
-    /*border: 1.5px solid transparent;*/
-    /*font-size:15px;
+/*border: 1.5px solid transparent;*/
+/*font-size:15px;
 }
 
     .border-white:hover {
@@ -234,7 +234,7 @@ body {
     .nav-right-image-amazon-prime img {
         width: 100%;
         height: 100%;
-        margin-left:101px;
+        margin-left: 101px;
     }
 
 .prime-image {
@@ -710,12 +710,13 @@ body {
 }
 
 
-.language-container{
-    margin-left:-12px;
+.language-container {
+    margin-left: -12px;
 }
-.address-container{
-    margin-left:-7px;
-    margin-right:-6px;
+
+.address-container {
+    margin-left: -7px;
+    margin-right: -6px;
 }
 
 .login-container {
@@ -813,18 +814,19 @@ body {
         border-bottom: 8px solid white;
     }
 
-.cart-option{
-    margin-right:-75px;
+.cart-option {
+    margin-right: -75px;
 }
-.return-order-container{
-    margin-left:-18px;
-    border:10px;
+
+.return-order-container {
+    margin-left: -18px;
+    border: 10px;
 }
 
 #today_deal_btn_next {
     margin-right: -64px;
 }
 
-#today_deal_btn_prev{
-    margin-left:-50px;
+#today_deal_btn_prev {
+    margin-left: -50px;
 }

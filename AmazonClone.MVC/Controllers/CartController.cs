@@ -1,9 +1,5 @@
 ﻿using AmazonClone.MVC.Models;
-using Azure;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
-using System.Reflection.Metadata.Ecma335;
 
 namespace AmazonClone.MVC.Controllers
 {
@@ -19,7 +15,6 @@ namespace AmazonClone.MVC.Controllers
             _configuration = configuration;
             _httpClient.BaseAddress = new Uri(_configuration["ApiUrl:BaseUrl"]);
         }
-
 
         [HttpGet("ViewCart")]
         public async Task<IActionResult> ViewCart([FromQuery] string Email)
@@ -78,15 +73,14 @@ namespace AmazonClone.MVC.Controllers
         }
 
 
-        [HttpPost("RemoveFromCart")]
-        public async Task<IActionResult> RemoveFromCart(int ProductId)
+        [HttpPost("RemoveItemFromCart")]
+        public async Task<IActionResult> RemoveItemFromCart(int ProductId)
         {
             try
             {
-                var data = JsonConvert.SerializeObject(ProductId);
-                var content = new StringContent(data, System.Text.Encoding.UTF8, "application/json");
-                var response = await _httpClient.PostAsync("/Cart/RemoveFromCart?ProductId={ProductId}", content);
-
+                //var data = JsonConvert.SerializeObject(ProductId);
+                //var content = new StringContent(data, System.Text.Encoding.UTF8, "application/json");
+                var response = await _httpClient.PostAsync($"/api/Cart/RemoveItemFromCart?ProductId={ProductId}", null);
                 if (response.IsSuccessStatusCode)
                 {
                     TempData["SuccessMessage"] = "Product Removed from Cart.";
@@ -96,7 +90,6 @@ namespace AmazonClone.MVC.Controllers
             }
             catch (Exception)
             {
-
                 throw;
             }
         }

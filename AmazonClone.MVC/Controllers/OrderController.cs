@@ -1,7 +1,6 @@
 ﻿using AmazonClone.MVC.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using System.Text;
 
 namespace AmazonClone.MVC.Controllers
 {
@@ -23,66 +22,64 @@ namespace AmazonClone.MVC.Controllers
              return View();
          }*/
 
-        /*[HttpPost("PlaceOrder")]
-        public async Task<IActionResult> PlaceOrder(int ProductId, int quantity)
-        {
-            try
-            {
-                var productResponse = await _httpClient.GetAsync($"{_httpClient.BaseAddress}/Product/ProductDetails/{ProductId}");
-                if (!productResponse.IsSuccessStatusCode)
-                {
-                    return NotFound("Product not found.");
-                }
+        /* [HttpGet]
+         public async Task<IActionResult> PlaceOrder(int ProductId, int quantity)
+         {
+             try
+             {
+                 var productResponse = await _httpClient.GetAsync($"{_httpClient.BaseAddress}/Product/ProductDetails/{ProductId}");
+                 if (!productResponse.IsSuccessStatusCode)
+                 {
+                     return NotFound("Product not found.");
+                 }
 
-                var productJson = await productResponse.Content.ReadAsStringAsync();
-                var product = JsonConvert.DeserializeObject<Product>(productJson);
-                if (product == null)
-                {
-                    return View("Error", "Failed to parse product data.");
-                }
+                 var productJson = await productResponse.Content.ReadAsStringAsync();
+                 var product = JsonConvert.DeserializeObject<Product>(productJson);
+                 if (product == null)
+                 {
+                     return View("Error", "Failed to parse product data.");
+                 }
 
-                // 2. Prepare order data
-                var orderData = new Order
-                {
-                    Id = product.Id,
-                    ProductName = product.Name,
-                    Quantity = quantity,
-                    Price = product.Price,
-                    Total = Math.Round(product.Price * quantity, 2)
-                };
+                 // 2. Prepare order data
+                 var orderData = new Order
+                 {
+                     Id = product.Id,
+                     ProductName = product.Name,
+                     Quantity = quantity,
+                     Price = product.Price,
+                     Total = Math.Round(product.Price * quantity, 2)
+                 };
 
-                var jsonData = JsonConvert.SerializeObject(orderData);
-                var content = new StringContent(jsonData, System.Text.Encoding.UTF8, "application/json");
+                 var jsonData = JsonConvert.SerializeObject(orderData);
+                 var content = new StringContent(jsonData, System.Text.Encoding.UTF8, "application/json");
 
-                // 3. Send order request to Order API
-                var orderApiResponse = await _httpClient.PostAsync($"{_httpClient.BaseAddress}/Order/PlaceOrder", content);
+                 // 3. Send order request to Order API
+                 var orderApiResponse = await _httpClient.PostAsync($"{_httpClient.BaseAddress}/Order/PlaceOrder", content);
 
-                if (!orderApiResponse.IsSuccessStatusCode)
-                {
-                    ModelState.AddModelError("", "Failed to place order. Please try again.");
-                    return View("Error");
-                }
+                 if (!orderApiResponse.IsSuccessStatusCode)
+                 {
+                     ModelState.AddModelError("", "Failed to place order. Please try again.");
+                     return View("Error");
+                 }
 
-                // 4. Return confirmation view
-                var confirmationModel = new Order
-                {
-                    Id = product.Id,
-                    ProductName = product.Name,
-                    PaymentMode=orderData.PaymentMode,
-                    Quantity = quantity,
-                    Price = product.Price,
-                    Total = orderData.Total
-                };
+                 // 4. Return confirmation view
+                 var confirmationModel = new Order
+                 {
+                     Id = product.Id,
+                     ProductName = product.Name,
+                     PaymentMode = orderData.PaymentMode,
+                     Quantity = quantity,
+                     Price = product.Price,
+                     Total = orderData.Total
+                 };
 
-                return View("PlaceOrder", confirmationModel);
-                //return View("PlaceOrder", "Order", confirmationModel);
-            }
-            catch (Exception ex)
-            {
-                return View("Error", $"Unexpected error: {ex.Message}");
-            }
-        }*/
-
+                 return View("PlaceOrder", confirmationModel);
+             }
+             catch (Exception ex)
+             {
+                 return View("Error", $"Unexpected error: {ex.Message}");
+             }
+         }*/
 
         [HttpGet]
         public async Task<IActionResult> PlaceOrder(int ProductId, int quantity)
@@ -101,21 +98,21 @@ namespace AmazonClone.MVC.Controllers
                 {
                     return View("Error", "Failed to parse product data.");
                 }
-
-                // 2. Prepare order data
-                var orderData = new Order
+                var placeOrderCommand = new PlaceOrderCommand
                 {
-                    Id = product.Id,
-                    ProductName = product.Name,
+                    ProductId = product.Id,
                     Quantity = quantity,
-                    Price = product.Price,
-                    Total = Math.Round(product.Price * quantity, 2)
+                    UserId = null,
+                    Order = new OrderDetail
+                    {
+                        ProductName = product.Name,
+                        Price = product.Price,
+                        Total = Math.Round(product.Price * quantity, 2),
+                    }
                 };
 
-                var jsonData = JsonConvert.SerializeObject(orderData);
+                var jsonData = JsonConvert.SerializeObject(placeOrderCommand);
                 var content = new StringContent(jsonData, System.Text.Encoding.UTF8, "application/json");
-
-                // 3. Send order request to Order API
                 var orderApiResponse = await _httpClient.PostAsync($"{_httpClient.BaseAddress}/Order/PlaceOrder", content);
 
                 if (!orderApiResponse.IsSuccessStatusCode)
@@ -123,25 +120,23 @@ namespace AmazonClone.MVC.Controllers
                     ModelState.AddModelError("", "Failed to place order. Please try again.");
                     return View("Error");
                 }
-
-                // 4. Return confirmation view
                 var confirmationModel = new Order
                 {
                     Id = product.Id,
                     ProductName = product.Name,
-                    PaymentMode = orderData.PaymentMode,
                     Quantity = quantity,
                     Price = product.Price,
-                    Total = orderData.Total
+                    Total = Math.Round(product.Price * quantity, 2)
                 };
-
                 return View("PlaceOrder", confirmationModel);
+
             }
             catch (Exception ex)
             {
                 return View("Error", $"Unexpected error: {ex.Message}");
             }
         }
+
 
         [HttpPost]
         public async Task<IActionResult> Success(Order order)
@@ -150,7 +145,12 @@ namespace AmazonClone.MVC.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var data = JsonConvert.SerializeObject(order); // Serialize the order
+                    var wrapper = new
+                    {
+                        order = order
+                    };
+
+                    var data = JsonConvert.SerializeObject(wrapper);
                     var content = new StringContent(data, System.Text.Encoding.UTF8, "application/json");
 
                     var response = await _httpClient.PostAsync(_httpClient.BaseAddress + "/Order/Success", content);

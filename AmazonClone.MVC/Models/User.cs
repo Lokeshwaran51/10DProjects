@@ -5,7 +5,7 @@ namespace AmazonClone.MVC.Models
     public class User
     {
         [Key]
-        public int Id { get; set; }
+        public int UserId { get; set; }
 
         [Required(ErrorMessage = "UserName Field is Required..")]
         public String? UserName { get; set; }

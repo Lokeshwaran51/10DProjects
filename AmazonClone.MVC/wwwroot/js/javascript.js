@@ -131,24 +131,3 @@ today_deal_btn_nextEl.addEventListener("click", () => {
 
 
 })
-
-/*// Retrieve user email to store in session
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-
-$(document).ready(function () {
-    var userEmail = '@HttpContextAccessor.HttpContext.Session.GetString("Email")';
-
-    if (userEmail) {
-        $.ajax({
-            url: '/Cart/CartItemCount?email=' + encodeURIComponent(userEmail),
-            type: 'GET',
-            success: function (count) {
-                $('#cart-count').text(count);
-            },
-            error: function () {
-                console.error('Failed to load cart item count.');
-            }
-        });
-    }
-});*/

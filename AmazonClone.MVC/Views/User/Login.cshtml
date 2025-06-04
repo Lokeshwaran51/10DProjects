@@ -14,6 +14,7 @@
         <h1 class="login-title">Sign in</h1>
 
         <form asp-action="Login" method="post" class="login-form">
+            @*  <input type="hidden" id="UserId" value="@Model.UserId" /> *@
             <div asp-validation-summary="ModelOnly" class="text-danger validation-summary"></div>
 
             <div class="form-group">

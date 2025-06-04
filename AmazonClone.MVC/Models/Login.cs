@@ -16,7 +16,6 @@ namespace AmazonClone.MVC.Models
         [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$",
         ErrorMessage = "Password must be at least 8 characters and include an uppercase letter, a lowercase letter, a digit, and a special character.")]
         public string? Password { get; set; }
-        public int UserId { get; internal set; }
     }
 
 }

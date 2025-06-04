@@ -7,7 +7,7 @@
         public string? ProductName { get; set; }
         public int? Quantity { get; set; }
         public decimal? Price { get; set; }
-        public int UserId { get; set; }   // <-- Important
-        public User User { get; set; }    // Navigation property
+        public int UserId { get; set; }  
+        public User User { get; set; }   
     }
 }

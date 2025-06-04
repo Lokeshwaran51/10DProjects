@@ -23,17 +23,15 @@ else
                 {
                     <div class="card mb-4 shadow-sm border-0 rounded-3">
                         <div class="row g-0 p-3">
-                            <!-- Checkbox -->
+
                             <div class="col-md-1 d-flex align-items-start pt-3">
                                 <input type="checkbox" name="SelectedItems" value="@Model[i].ProductId" class="form-check-input" />
                             </div>
 
-                            <!-- Product Image -->
                             <div class="col-md-3">
                                 <img src="@Model[i].ImageUrl" class="img-fluid rounded" alt="@Model[i].ProductName" />
                             </div>
 
-                            <!-- Product Info -->
                             <div class="col-md-7">
                                 <div class="card-body ps-4">
                                     <h5 class="card-title mb-1">@Model[i].ProductName</h5>
@@ -42,7 +40,6 @@ else
                                     <p class="mb-1">Quantity: <strong>@Model[i].Quantity</strong></p>
                                     <p class="mb-2">Total: <strong>₹@(Model[i].Price * Model[i].Quantity)</strong></p>
 
-                                    <!-- Remove Button -->
                                     <button type="button"
                                             class="btn btn-outline-danger btn-sm remove-btn mt-2"
                                             data-productid="@Model[i].ProductId">
@@ -70,25 +67,8 @@ else
 }
 
 @section Scripts {
-    <script>
-        document.querySelectorAll('.remove-btn').forEach(button => {
-            button.addEventListener('click', function () {
-                const productId = this.getAttribute('data-productid');
-                if (confirm('Are you sure you want to remove this item?')) {
-                    fetch('/Cart/RemoveFromCart', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                        body: new URLSearchParams({ ProductId: productId })
-                    })
-                    .then(response => {
-                        if (response.ok) {
-                            location.reload();
-                        } else {
-                            alert('Failed to remove item.');
-                        }
-                    });
-                }
-            });
-        });
-    </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script src="~/js/ecom.js"></script>
+
 }
