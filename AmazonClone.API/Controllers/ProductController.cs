@@ -1,7 +1,6 @@
-﻿using AmazonClone.API.Data.Entity;
-using Microsoft.AspNetCore.Authorization;
+﻿using AmazonClone.API.Features.Product.Queries;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace AmazonClone.API.Controllers
 {
@@ -10,15 +9,44 @@ namespace AmazonClone.API.Controllers
     [ApiController]
     public class ProductController : ControllerBase
     {
-        private readonly AppDbContext _context;
-        private readonly IConfiguration _configuration;
-        public ProductController(IConfiguration configuration, AppDbContext appDbContext)
+        private readonly IMediator _mediator;
+        public ProductController(IMediator mediator)
         {
-            _configuration = configuration;
-            _context = appDbContext;
+            _mediator = mediator;
         }
 
+
         [HttpGet("GetListOfProductsBySubCategoryId/{SubCategoryId}")]
+        public async Task<IActionResult> GetListOfProductsBySubCategoryId(int SubCategoryId)
+        {
+            try
+            {
+                var res = await _mediator.Send(new GetListOfProductsBySubCategoryIdQuery(SubCategoryId));
+                return Ok(res);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        [HttpGet("ProductDetails/{ProductId}")]
+        public async Task<IActionResult> ProductDetails(int ProductId)
+        {
+            try
+            {
+                var res = await _mediator.Send(new ProductDetailsQuery(ProductId));
+                return Ok(res);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        /*[HttpGet("GetListOfProductsBySubCategoryId/{SubCategoryId}")]
         public async Task<IActionResult> GetListOfProductsBySubCategoryId(int SubCategoryId)
         {
             try
@@ -33,43 +61,43 @@ namespace AmazonClone.API.Controllers
             {
                 return StatusCode(500, "Internal server error: " + ex.Message);
             }
-        }
+        }*/
 
-        [HttpGet("ProductDetails/{ProductId}")]
-        public async Task<IActionResult> ProductDetails(int ProductId)
-        {
-            try
-            {
-                if (ProductId <= 0)
-                {
-                    return BadRequest("Invalid product ID");
-                }
-                ;
-                var product = await _context.Products
-                    .Include(p => p.Category)
-                    .Include(p => p.SubCategory)
-                    .FirstOrDefaultAsync(p => p.Id == ProductId);
+        /* [HttpGet("ProductDetails/{ProductId}")]
+         public async Task<IActionResult> ProductDetails(int ProductId)
+         {
+             try
+             {
+                 if (ProductId <= 0)
+                 {
+                     return BadRequest("Invalid product ID");
+                 }
+                 ;
+                 var product = await _context.Products
+                     .Include(p => p.Category)
+                     .Include(p => p.SubCategory)
+                     .FirstOrDefaultAsync(p => p.Id == ProductId);
 
-                if (product == null)
-                {
-                    return NotFound($"Product with ID {ProductId} not found");
-                }
-                var result = new
-                {
-                    product.Id,
-                    product.Name,
-                    product.Description,
-                    product.Price,
-                    product.ImageUrl,
-                    CategoryName = product.Category?.Name,
-                    SubCategoryName = product.SubCategory?.SubCategoryName ?? product.SubCategoryName
-                };
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, "Internal server error: " + ex.Message);
-            }
-        }
+                 if (product == null)
+                 {
+                     return NotFound($"Product with ID {ProductId} not found");
+                 }
+                 var result = new
+                 {
+                     product.Id,
+                     product.Name,
+                     product.Description,
+                     product.Price,
+                     product.ImageUrl,
+                     CategoryName = product.Category?.Name,
+                     SubCategoryName = product.SubCategory?.SubCategoryName ?? product.SubCategoryName
+                 };
+                 return Ok(result);
+             }
+             catch (Exception ex)
+             {
+                 return StatusCode(500, "Internal server error: " + ex.Message);
+             }
+         }*/
     }
 }

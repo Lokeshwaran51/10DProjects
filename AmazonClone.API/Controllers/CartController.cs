@@ -1,45 +1,78 @@
-﻿using AmazonClone.API.Data.Entity;
-using AmazonClone.API.Features.Cart.Commands;
+﻿using AmazonClone.API.Features.Cart.Commands;
 using AmazonClone.API.Features.Cart.Queries;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Security.Claims;
 
 namespace AmazonClone.API.Controllers
 {
     //[Authorize]
     [Route("api/[controller]")]
-    //[Route("Cart")]
     [ApiController]
     public class CartController : ControllerBase
     {
-        //private readonly AppDbContext _context;
-        //private readonly IConfiguration _configuration;
         private readonly IMediator _mediator;
 
         public CartController(IMediator mediator)
         {
-            //_configuration = configuration;
-            //_context = context;
             _mediator = mediator;
-        }
-
-        [HttpGet("GetCartItems/{email}")]
-        public async Task<IActionResult> GetCartItems(string email)
-        {
-            var result = await _mediator.Send(new GetCartItemsQuery(email));
-            return Ok(result);
         }
 
         [HttpPost("AddToCart")]
         public async Task<IActionResult> AddToCart([FromForm] AddToCartCommand command)
         {
-            var result = await _mediator.Send(command);
-            return Ok(result);
+            try
+            {
+                var result = await _mediator.Send(command);
+                return Ok(result);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
+
+        [HttpGet("GetCartItems/{email}")]
+        public async Task<IActionResult> GetCartItems(string email)
+        {
+            try
+            {
+                var result = await _mediator.Send(new GetCartItemsQuery(email));
+                return Ok(result);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        [HttpGet("CartItemCount")]
+        public async Task<IActionResult> CartItemCount(string Email)
+        {
+            try
+            {
+                int result = await _mediator.Send(new GetCartItemCountQuery(Email));
+                return Ok(result);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        [HttpPost("RemoveItemFromCart")]
+        public async Task<IActionResult> RemoveItemFromCart([FromQuery] int ProductId)
+        {
+            try
+            {
+                string res = await _mediator.Send(new RemoveItemFromCartCommand(ProductId));
+                return Ok(res);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
 
 
         /*[HttpPost("AddToCart")]

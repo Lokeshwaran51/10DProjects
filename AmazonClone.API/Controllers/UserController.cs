@@ -1,12 +1,7 @@
-﻿using AmazonClone.API.Data.Entity;
-using AmazonClone.API.Models;
+﻿using AmazonClone.API.Features.User.Command;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
 
 
 namespace AmazonClone.API.Controllers
@@ -16,15 +11,46 @@ namespace AmazonClone.API.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly AppDbContext _context;
-        private readonly IConfiguration _configuration;
+        private readonly IMediator _mediator;
 
-        public UserController(AppDbContext context, IConfiguration configuration)
+        public UserController(IMediator mediator)
         {
-            _context = context;
-            _configuration = configuration;
+            _mediator = mediator;
         }
+
         [AllowAnonymous]
+        [HttpPost("Register")]
+        public async Task<IActionResult> Register([FromBody] RegisterCommand command)
+        {
+            try
+            {
+                var res = await _mediator.Send(command);
+                return Ok(res);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        [AllowAnonymous]
+        [HttpPost("Login")]
+        public async Task<IActionResult> Login([FromBody] LoginCommand command)
+        {
+            try
+            {
+                var res = await _mediator.Send(command);
+                return Ok(res);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        /*[AllowAnonymous]
         [HttpPost("Register")]
         public async Task<IActionResult> Register([FromBody] User user)
         {
@@ -50,9 +76,9 @@ namespace AmazonClone.API.Controllers
             {
                 return StatusCode(500, "Internal server error: " + ex.Message);
             }
-        }
+        }*/
 
-        [AllowAnonymous]
+        /*[AllowAnonymous]
         [HttpPost("Login")]
         public async Task<IActionResult> Login(Login model)
         {
@@ -78,42 +104,42 @@ namespace AmazonClone.API.Controllers
             {
                 return StatusCode(500, "Internal server error: " + ex.Message);
             }
-        }
+        }*/
 
-        private string GenerateJwtToken(User user)
-        {
-            try
-            {
-                var jwtSettings = _configuration.GetSection("Jwt");
-                var secretKey = jwtSettings.GetValue<string>("Key");
-                var issuer = jwtSettings.GetValue<string>("Issuer");
-                var audience = jwtSettings.GetValue<string>("Audience");
-                // var expiryMinutes = jwtSettings.GetValue<int>("ExpiryInMinutes");
+        /* private string GenerateJwtToken(User user)
+         {
+             try
+             {
+                 var jwtSettings = _configuration.GetSection("Jwt");
+                 var secretKey = jwtSettings.GetValue<string>("Key");
+                 var issuer = jwtSettings.GetValue<string>("Issuer");
+                 var audience = jwtSettings.GetValue<string>("Audience");
+                 // var expiryMinutes = jwtSettings.GetValue<int>("ExpiryInMinutes");
 
-                var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
-                var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+                 var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
+                 var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
-                var claims = new[]
-                {
-                    new Claim(JwtRegisteredClaimNames.Sub, user.Email),
-                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-                };
+                 var claims = new[]
+                 {
+                     new Claim(JwtRegisteredClaimNames.Sub, user.Email),
+                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+                 };
 
-                var token = new JwtSecurityToken(
-                    issuer: issuer,
-                    audience: audience,
-                    claims: claims,
-                    //expires: DateTime.UtcNow.AddMinutes(expiryMinutes),
-                    signingCredentials: credentials
-                );
+                 var token = new JwtSecurityToken(
+                     issuer: issuer,
+                     audience: audience,
+                     claims: claims,
+                     //expires: DateTime.UtcNow.AddMinutes(expiryMinutes),
+                     signingCredentials: credentials
+                 );
 
-                return new JwtSecurityTokenHandler().WriteToken(token);
-            }
-            catch (Exception ex)
-            {
-                throw new ApplicationException("Failed to generate JWT token", ex);
-            }
-        }
+                 return new JwtSecurityTokenHandler().WriteToken(token);
+             }
+             catch (Exception ex)
+             {
+                 throw new ApplicationException("Failed to generate JWT token", ex);
+             }
+         }*/
 
     }
 }

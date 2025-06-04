@@ -1,5 +1,5 @@
 using AmazonClone.API.Data.Entity;
-using MediatR;
+using AmazonClone.API.Features.Cart.QueryHandlers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -44,6 +44,9 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
+
+/*builder.Services.AddMediatR(cfg =>
+    cfg.RegisterServicesFromAssemblyContaining<GetCartItemCountQueryHandlers>());*/
 
 // Database connection
 builder.Services.AddDbContext<AppDbContext>(options =>

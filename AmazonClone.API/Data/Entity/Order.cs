@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AmazonClone.API.Data.Entity
@@ -11,7 +10,7 @@ namespace AmazonClone.API.Data.Entity
         public int OrderId { get; set; } // Primary key
 
         [Required]
-        public int Id { get; set; } // Consider renaming to ProductId if that's its purpose
+        public int Id { get; set; } 
 
         [Required]
         [Column(TypeName = "nvarchar(100)")]
@@ -30,13 +29,15 @@ namespace AmazonClone.API.Data.Entity
         public decimal Total { get; set; }
         [Column(TypeName = "datetime2")]
         public DateTime OrderDate { get; set; } = DateTime.UtcNow;
-        /*[Required]
+        
         [Column(TypeName = "nvarchar(50)")]
-        public string? PaymentMode { get; set; }*/
+        public string? PaymentMode { get; set; }
 
         [Column(TypeName = "int")]
         public int? UserId { get; set; }
 
+        //public string PaymentMode { get; internal set; }
+        
         // Optional navigation property
         // [ForeignKey("UserId")]
         // public User User { get; set; }

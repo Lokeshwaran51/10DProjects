@@ -24,5 +24,6 @@ namespace AmazonClone.API.Data.Entity
         public string CategoryName { get; set; } = string.Empty;
 
         public virtual Category? Category { get; set; }
+        //public int Id { get; internal set; }
     }
 }

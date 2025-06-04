@@ -1,7 +1,6 @@
 ﻿using AmazonClone.API.Data.Entity;
 using AmazonClone.API.Features.Cart.Commands;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace AmazonClone.API.Features.Cart.CommandHandlers

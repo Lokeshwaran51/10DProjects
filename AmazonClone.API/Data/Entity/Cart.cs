@@ -1,5 +1,4 @@
-﻿using AmazonClone.API.Data.Entity;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AmazonClone.API.Data.Entity

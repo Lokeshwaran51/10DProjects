@@ -3,5 +3,13 @@ using MediatR;
 
 namespace AmazonClone.API.Features.Cart.Queries
 {
-    public record GetCartItemsQuery(string Email) : IRequest<List<CartItemDto>>;
+    public class GetCartItemsQuery : IRequest<List<CartItemDto>>
+    {
+        public string Email { get; }
+
+        public GetCartItemsQuery(string email)
+        {
+            Email = email;
+        }
+    }
 }

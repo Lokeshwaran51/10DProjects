@@ -1,7 +1,6 @@
-﻿using AmazonClone.API.Data.Entity;
-using Microsoft.AspNetCore.Authorization;
+﻿using AmazonClone.API.Features.Category.Queries;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace AmazonClone.API.Controllers
 {
@@ -10,58 +9,83 @@ namespace AmazonClone.API.Controllers
     [ApiController]
     public class CategoryController : ControllerBase
     {
-        private readonly AppDbContext _context;
-        private readonly IConfiguration _configuration;
-
-        public CategoryController(AppDbContext context, IConfiguration configuration)
+        private readonly IMediator _mediator;
+        public CategoryController(IMediator mediator)
         {
-            _context = context;
-            _configuration = configuration;
+            _mediator = mediator;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
+
         [HttpGet("GetAllCategories")]
         public async Task<IActionResult> GetAllCategories()
         {
             try
             {
-                var categories = await _context.Categories
-                    .ToListAsync();
-
-                return Ok(categories);
+                var res = await _mediator.Send(new GetAllCategoriesQuery());
+                return Ok(res);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return StatusCode(500, "Internal server error: " + ex.Message);
+                throw;
             }
         }
-
 
         [HttpGet("GetSubCategoryByCategoryId/{categoryId}")]
         public async Task<IActionResult> GetSubCategoryByCategoryId(int categoryId)
         {
             try
             {
-                var subcategories = await _context.SubCategories
-                   .Include(sc => sc.Category)
-                   .Where(sc => sc.CategoryId == categoryId)
-                   .Select(sc => new
-                   {
-                       sc.SubCategoryId,
-                       sc.SubCategoryName,
-                       sc.CategoryId,
-                       CategoryName = sc.Category.Name
-                   })
-                   .ToListAsync();
-                return Ok(subcategories);
+                var res = await _mediator.Send(new GetSubCategoryByCategoryIdQuery(categoryId));
+                return Ok(res);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return StatusCode(500, "Internal server error: " + ex.Message);
+
+                throw;
             }
         }
+
+
+        /*  [HttpGet("GetAllCategories")]
+          public async Task<IActionResult> GetAllCategories()
+          {
+              try
+              {
+                  var categories = await _context.Categories
+                      .ToListAsync();
+
+                  return Ok(categories);
+              }
+              catch (Exception ex)
+              {
+                  return StatusCode(500, "Internal server error: " + ex.Message);
+              }
+          }*/
+
+
+
+        /* [HttpGet("GetSubCategoryByCategoryId/{categoryId}")]
+         public async Task<IActionResult> GetSubCategoryByCategoryId(int categoryId)
+         {
+             try
+             {
+                 var subcategories = await _context.SubCategories
+                    .Include(sc => sc.Category)
+                    .Where(sc => sc.CategoryId == categoryId)
+                    .Select(sc => new
+                    {
+                        sc.SubCategoryId,
+                        sc.SubCategoryName,
+                        sc.CategoryId,
+                        CategoryName = sc.Category.Name
+                    })
+                    .ToListAsync();
+                 return Ok(subcategories);
+             }
+             catch (Exception ex)
+             {
+                 return StatusCode(500, "Internal server error: " + ex.Message);
+             }
+         }*/
     }
 }

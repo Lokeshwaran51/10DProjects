@@ -1,7 +1,13 @@
-﻿using AmazonClone.API.Data.Entity;
-using MediatR;
+﻿using MediatR;
 
 namespace AmazonClone.API.Features.Cart.Queries
 {
-    public record GetCartItemCountQuery(string Email) : IRequest<List<CartItemDto>>;
+    public class GetCartItemCountQuery : IRequest<int>
+    {
+        public string Email { get; }
+        public GetCartItemCountQuery(string email)
+        {
+            Email = email;
+        }
+    }
 }
