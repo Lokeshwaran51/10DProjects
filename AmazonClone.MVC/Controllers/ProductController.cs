@@ -1,4 +1,5 @@
-﻿using AmazonClone.MVC.Models;
+﻿using AmazonClone.MVC.Constant;
+using AmazonClone.MVC.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -20,18 +21,18 @@ namespace AmazonClone.MVC.Controllers
         {
             try
             {
-                var res = await _httpClient.GetAsync($"{_httpClient.BaseAddress}/Product/GetListOfProductsBySubCategoryId/{SubCategoryId}");
+                HttpResponseMessage res = await _httpClient.GetAsync($"{_httpClient.BaseAddress}/Product/GetListOfProductsBySubCategoryId/{SubCategoryId}");
                 List<Product> products = new List<Models.Product>();
                 if (res.IsSuccessStatusCode)
                 {
-                    var data = await res.Content.ReadAsStringAsync();
+                    string data = await res.Content.ReadAsStringAsync();
                     products = JsonConvert.DeserializeObject<List<Product>>(data);
                 }
                 return View(products);
             }
             catch (Exception ex)
             {
-                return StatusCode(500, "Internal server error: " + ex.Message);
+                return StatusCode(500, ResponseMessages.internalServerError + ex.Message);
             }
         }
 
@@ -41,13 +42,13 @@ namespace AmazonClone.MVC.Controllers
         {
             try
             {
-                var response = await _httpClient.GetAsync($"{_httpClient.BaseAddress}/Product/ProductDetails/{Id}");
+                HttpResponseMessage response = await _httpClient.GetAsync($"{_httpClient.BaseAddress}/Product/ProductDetails/{Id}");
                 if (!response.IsSuccessStatusCode)
                 {
                     return NotFound();
                 }
-                var productJson = await response.Content.ReadAsStringAsync();
-                var product = JsonConvert.DeserializeObject<Product>(productJson);
+                string productJson = await response.Content.ReadAsStringAsync();
+                Product product = JsonConvert.DeserializeObject<Product>(productJson);
                 if (product == null)
                 {
                     return NotFound();
@@ -56,7 +57,7 @@ namespace AmazonClone.MVC.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, "An error occurred while processing your request");
+                return StatusCode(500, ResponseMessages.internalServerError);
             }
         }
 

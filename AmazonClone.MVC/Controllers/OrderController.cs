@@ -1,4 +1,5 @@
-﻿using AmazonClone.MVC.Models;
+﻿using AmazonClone.MVC.Constant;
+using AmazonClone.MVC.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -86,19 +87,19 @@ namespace AmazonClone.MVC.Controllers
         {
             try
             {
-                var productResponse = await _httpClient.GetAsync($"{_httpClient.BaseAddress}/Product/ProductDetails/{ProductId}");
+                HttpResponseMessage productResponse = await _httpClient.GetAsync($"{_httpClient.BaseAddress}/Product/ProductDetails/{ProductId}");
                 if (!productResponse.IsSuccessStatusCode)
                 {
                     return NotFound("Product not found.");
                 }
 
-                var productJson = await productResponse.Content.ReadAsStringAsync();
-                var product = JsonConvert.DeserializeObject<Product>(productJson);
+                string productJson = await productResponse.Content.ReadAsStringAsync();
+                Product product = JsonConvert.DeserializeObject<Product>(productJson);
                 if (product == null)
                 {
                     return View("Error", "Failed to parse product data.");
                 }
-                var placeOrderCommand = new PlaceOrderCommand
+                PlaceOrderCommand placeOrderCommand = new PlaceOrderCommand
                 {
                     ProductId = product.Id,
                     Quantity = quantity,
@@ -111,16 +112,16 @@ namespace AmazonClone.MVC.Controllers
                     }
                 };
 
-                var jsonData = JsonConvert.SerializeObject(placeOrderCommand);
-                var content = new StringContent(jsonData, System.Text.Encoding.UTF8, "application/json");
-                var orderApiResponse = await _httpClient.PostAsync($"{_httpClient.BaseAddress}/Order/PlaceOrder", content);
+                string jsonData = JsonConvert.SerializeObject(placeOrderCommand);
+                StringContent content = new StringContent(jsonData, System.Text.Encoding.UTF8, "application/json");
+                HttpResponseMessage orderApiResponse = await _httpClient.PostAsync($"{_httpClient.BaseAddress}/Order/PlaceOrder", content);
 
                 if (!orderApiResponse.IsSuccessStatusCode)
                 {
                     ModelState.AddModelError("", "Failed to place order. Please try again.");
                     return View("Error");
                 }
-                var confirmationModel = new Order
+                Order confirmationModel = new Order
                 {
                     Id = product.Id,
                     ProductName = product.Name,
@@ -150,10 +151,10 @@ namespace AmazonClone.MVC.Controllers
                         order = order
                     };
 
-                    var data = JsonConvert.SerializeObject(wrapper);
-                    var content = new StringContent(data, System.Text.Encoding.UTF8, "application/json");
+                    string data = JsonConvert.SerializeObject(wrapper);
+                    StringContent content = new StringContent(data, System.Text.Encoding.UTF8, "application/json");
 
-                    var response = await _httpClient.PostAsync(_httpClient.BaseAddress + "/Order/Success", content);
+                    HttpResponseMessage response = await _httpClient.PostAsync(_httpClient.BaseAddress + "/Order/Success", content);
 
                     if (response.IsSuccessStatusCode)
                     {
@@ -161,7 +162,7 @@ namespace AmazonClone.MVC.Controllers
                     }
                     else
                     {
-                        ModelState.AddModelError("", "Failed to place the order. Please try again.");
+                        ModelState.AddModelError("",ResponseMessages.orderFailed);
                     }
                 }
                 return View(order);

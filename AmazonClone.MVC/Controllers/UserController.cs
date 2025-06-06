@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using AmazonClone.MVC.Constant;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Text;
@@ -30,24 +31,24 @@ namespace AmazonClone.MVC.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var data = JsonConvert.SerializeObject(model);
-                    var content = new StringContent(data, System.Text.Encoding.UTF8, "application/json");
-                    var res = await _httpClient.PostAsync(_httpClient.BaseAddress + "/User/Register", content);
+                    string data = JsonConvert.SerializeObject(model);
+                    StringContent content = new StringContent(data, System.Text.Encoding.UTF8, "application/json");
+                    HttpResponseMessage res = await _httpClient.PostAsync(_httpClient.BaseAddress + "/User/Register", content);
 
                     if (res.IsSuccessStatusCode)
                     {
-                        TempData["SuccessMessage"] = "User Registered Successfully.";
+                        TempData["SuccessMessage"] = ResponseMessages.successMessageRegister;
                         return RedirectToAction("Login", "User");
                     }
                     else if (res.StatusCode == System.Net.HttpStatusCode.Conflict)
                     {
-                        var responseBody = await res.Content.ReadAsStringAsync();
+                        string responseBody = await res.Content.ReadAsStringAsync();
                         dynamic response = JsonConvert.DeserializeObject(responseBody);
-                        ViewBag.ErrorMessage = response.message ?? "User already exists. Please login to continue.";
+                        ViewBag.ErrorMessage = response.message ?? ResponseMessages.userExists;
                     }
                     else
                     {
-                        ViewBag.ErrorMessage = "An error occurred while registering. Please try again.";
+                        ViewBag.ErrorMessage = ResponseMessages.internalServerError;
                         return RedirectToAction("Register", "User");
                     }
                 }
@@ -56,7 +57,7 @@ namespace AmazonClone.MVC.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, "Internal server error: " + ex.Message);
+                return StatusCode(500, ResponseMessages.internalServerError + ex.Message);
             }
         }
 
@@ -108,29 +109,29 @@ namespace AmazonClone.MVC.Controllers
                 if (!ModelState.IsValid)
                     return View(model);
 
-                var data = JsonConvert.SerializeObject(model);
-                var content = new StringContent(data, Encoding.UTF8, "application/json");
+                string data = JsonConvert.SerializeObject(model);
+                StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
 
-                var response = await _httpClient.PostAsync($"{_httpClient.BaseAddress}/User/Login", content);
-                var responseContent = await response.Content.ReadAsStringAsync();
+                HttpResponseMessage response = await _httpClient.PostAsync($"{_httpClient.BaseAddress}/User/Login", content);
+                string responseContent = await response.Content.ReadAsStringAsync();
 
                 if (!response.IsSuccessStatusCode)
                 {
-                    ModelState.AddModelError("", "Invalid login credentials.");
+                    ModelState.AddModelError("", ResponseMessages.invalidCredentials);
                     return View(model);
                 }
-                var token = responseContent.Trim('"');
+                string token = responseContent.Trim('"');
 
                 // Store token in session
                 HttpContext.Session.SetString("Token", token);
                 HttpContext.Session.SetString("Email", model.Email);
 
-                TempData["SuccessMessage"] = "User logged in successfully.";
+                TempData["SuccessMessage"] = ResponseMessages.successMessageLogin;
                 return RedirectToAction("Index", "Home");
             }
             catch (Exception ex)
             {
-                return StatusCode(500, "Internal server error: " + ex.Message);
+                return StatusCode(500, ResponseMessages.internalServerError + ex.Message);
             }
         }
 
@@ -147,10 +148,10 @@ namespace AmazonClone.MVC.Controllers
         [HttpGet]
         public async Task<IActionResult> Account(string Email)
         {
-            var res = await _httpClient.GetAsync($"{_httpClient.BaseAddress}/User/Account?Email={Email}");
+            HttpResponseMessage res = await _httpClient.GetAsync($"{_httpClient.BaseAddress}/User/Account?Email={Email}");
             if (res.IsSuccessStatusCode)
             {
-                var data = await res.Content.ReadAsStringAsync();
+                string data = await res.Content.ReadAsStringAsync();
                 //subCategories = JsonConvert.DeserializeObject<List<SubCategory>>(data);
             }
             return View();

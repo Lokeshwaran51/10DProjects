@@ -1,4 +1,5 @@
-﻿using AmazonClone.MVC.Models;
+﻿using AmazonClone.MVC.Constant;
+using AmazonClone.MVC.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AmazonClone.MVC.Controllers
@@ -21,10 +22,10 @@ namespace AmazonClone.MVC.Controllers
         {
             try
             {
-                var res = await _httpClient.GetAsync($"{_httpClient.BaseAddress}/Cart/GetCartItems/{Email}");
+                HttpResponseMessage res = await _httpClient.GetAsync($"{_httpClient.BaseAddress}/Cart/GetCartItems/{Email}");
                 if (res.IsSuccessStatusCode)
                 {
-                    var cartItems = await res.Content.ReadFromJsonAsync<List<CartItemDto>>();
+                    List<CartItemDto> cartItems = await res.Content.ReadFromJsonAsync<List<CartItemDto>>();
                     return View(cartItems);
                 }
                 return View("Error");
@@ -40,23 +41,23 @@ namespace AmazonClone.MVC.Controllers
         {
             try
             {
-                var email = HttpContext.Session.GetString("Email");
+                string email = HttpContext.Session.GetString("Email");
                 if (string.IsNullOrEmpty(email))
                 {
-                    return Unauthorized("User not logged in.");
+                    return Unauthorized(ResponseMessages.userNotLoggedIn);
                 }
-                var formData = new Dictionary<string, string>
+                Dictionary<string, string> formData = new Dictionary<string, string>
                 {
                     { "Email", email },
                     { "productId", productId.ToString() },
                     { "quantity", quantity.ToString() }
                 };
 
-                var content = new FormUrlEncodedContent(formData);
-                var response = await _httpClient.PostAsync("/api/Cart/AddToCart", content);
+                FormUrlEncodedContent content = new FormUrlEncodedContent(formData);
+                HttpResponseMessage response = await _httpClient.PostAsync("/api/Cart/AddToCart", content);
                 if (!response.IsSuccessStatusCode)
                 {
-                    var error = await response.Content.ReadAsStringAsync();
+                    string error = await response.Content.ReadAsStringAsync();
                     return StatusCode((int)response.StatusCode, $"API error: {error}");
                 }
 
@@ -80,10 +81,10 @@ namespace AmazonClone.MVC.Controllers
             {
                 //var data = JsonConvert.SerializeObject(ProductId);
                 //var content = new StringContent(data, System.Text.Encoding.UTF8, "application/json");
-                var response = await _httpClient.PostAsync($"/api/Cart/RemoveItemFromCart?ProductId={ProductId}", null);
+                HttpResponseMessage response = await _httpClient.PostAsync($"/api/Cart/RemoveItemFromCart?ProductId={ProductId}", null);
                 if (response.IsSuccessStatusCode)
                 {
-                    TempData["SuccessMessage"] = "Product Removed from Cart.";
+                    TempData["SuccessMessage"] = ResponseMessages.productRemoved;
                     return RedirectToAction("ViewCart", "Cart");
                 }
                 return RedirectToAction("ViewCart", "Cart");

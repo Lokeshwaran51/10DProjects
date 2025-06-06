@@ -1,7 +1,15 @@
+﻿using Serilog;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.File("Logs/log-.txt", rollingInterval: RollingInterval.Day)
+    .Enrich.FromLogContext()
+    .CreateLogger();
+
+builder.Host.UseSerilog();
 
 // Add session services HERE (before Build())
 builder.Services.AddDistributedMemoryCache();
@@ -28,8 +36,6 @@ app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
-
-// Session middleware HERE (after Routing/Auth but before MapControllers)
 app.UseSession();
 
 app.MapControllerRoute(
