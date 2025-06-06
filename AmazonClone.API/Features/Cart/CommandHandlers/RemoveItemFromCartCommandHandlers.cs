@@ -1,4 +1,5 @@
-﻿using AmazonClone.API.Data.Entity;
+﻿using AmazonClone.API.Constants;
+using AmazonClone.API.Data.Entity;
 using AmazonClone.API.Features.Cart.Commands;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -17,15 +18,15 @@ namespace AmazonClone.API.Features.Cart.CommandHandlers
         {
             try
             {
-                var cartItem = await _context.CartItems.FirstOrDefaultAsync(ci => ci.ProductId == command.ProductId);
+                CartItem cartItem = await _context.CartItems.FirstOrDefaultAsync(ci => ci.ProductId == command.ProductId);
                 if (cartItem != null)
                 {
                     _context.CartItems.Remove(cartItem);
                     await _context.SaveChangesAsync();
-                    return "Item removed successfully.";
+                    return ResponseMessages.removeItem;
                 }
 
-                return "Cart item not found.";
+                return ResponseMessages.itemNotFound;
             }
             catch (Exception ex)
             {

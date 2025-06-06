@@ -14,7 +14,7 @@ public class GetCartItemsQueryHandler : IRequestHandler<GetCartItemsQuery, List<
 
     public async Task<List<CartItemDto>> Handle(GetCartItemsQuery request, CancellationToken cancellationToken)
     {
-        var cart = await _context.Carts.FirstOrDefaultAsync(c => c.Email == request.Email);
+        Cart cart = await _context.Carts.FirstOrDefaultAsync(c => c.Email == request.Email);
         if (cart == null)
         {
             return [];

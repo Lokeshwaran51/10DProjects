@@ -24,7 +24,7 @@ namespace AmazonClone.API.Controllers
         {
             try
             {
-                var res = await _mediator.Send(command);
+                string res = await _mediator.Send(command);
                 return Ok(res);
             }
             catch (Exception)
@@ -40,7 +40,7 @@ namespace AmazonClone.API.Controllers
         {
             try
             {
-                var res = await _mediator.Send(command);
+                string res = await _mediator.Send(command);
                 return Ok(res);
             }
             catch (Exception)

@@ -1,7 +1,10 @@
-﻿using AmazonClone.API.Data.Entity;
+﻿using AmazonClone.API.Constants;
+using AmazonClone.API.Data.Entity;
 using AmazonClone.API.Features.Order.Command;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Products = AmazonClone.API.Data.Entity.Product;
+using Orders = AmazonClone.API.Data.Entity.Order;
 
 namespace AmazonClone.API.Features.Order.CommandHelper
 {
@@ -15,13 +18,13 @@ namespace AmazonClone.API.Features.Order.CommandHelper
 
         public async Task<List<AmazonClone.API.Data.Entity.Order>> Handle(PlaceOrderCommand command, CancellationToken token)
         {
-            var product = await _context.Products.FindAsync(new object[] { command.ProductId }, token);
+            Products product = await _context.Products.FindAsync(new object[] { command.ProductId }, token);
             if (product == null)
             {
-                throw new Exception("Product not found.");
+                throw new Exception(ResponseMessages.productNotFound);
             }
 
-            var order = new AmazonClone.API.Data.Entity.Order
+            Orders order = new AmazonClone.API.Data.Entity.Order
             {
                 Id = product.Id,
                 ProductName = product.Name,

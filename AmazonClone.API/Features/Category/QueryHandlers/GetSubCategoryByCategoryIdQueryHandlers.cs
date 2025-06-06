@@ -18,7 +18,7 @@ namespace AmazonClone.API.Features.Category.QueryHandlers
         {
             try
             {
-                var subcategories = await _context.SubCategories
+                List<SubCategoryDto> subcategories = await _context.SubCategories
                     .Include(sc => sc.Category)
                     .Where(sc => sc.CategoryId == request.CategoryId)
                     .Select(sc => new SubCategoryDto

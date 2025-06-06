@@ -2,10 +2,11 @@
 using AmazonClone.API.Features.Order.Command;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Orders = AmazonClone.API.Data.Entity.Order;
 
 namespace AmazonClone.API.Features.Order.CommandHelper
 {
-    public class SuccessCommandHelpers : IRequestHandler<SuccessCommand, List<AmazonClone.API.Data.Entity.Order>>
+    public class SuccessCommandHelpers : IRequestHandler<SuccessCommand, List<Orders>>
     {
         private readonly AppDbContext _context;
 
@@ -14,7 +15,7 @@ namespace AmazonClone.API.Features.Order.CommandHelper
             _context = context;
         }
 
-        public async Task<List<AmazonClone.API.Data.Entity.Order>> Handle(SuccessCommand command, CancellationToken token)
+        public async Task<List<Orders>> Handle(SuccessCommand command, CancellationToken token)
         {
             try
             {
@@ -27,7 +28,7 @@ namespace AmazonClone.API.Features.Order.CommandHelper
                 await _context.Orders.AddAsync(command.Order, token);
                 await _context.SaveChangesAsync(token);
 
-                var orders = await _context.Orders.ToListAsync(token);
+                List<Orders> orders = await _context.Orders.ToListAsync(token);
                 return orders;
             }
             catch (Exception ex)

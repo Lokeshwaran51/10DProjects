@@ -15,7 +15,7 @@ namespace AmazonClone.API.Features.Category.QueryHandlers
 
         public async Task<List<CategoryDto>> Handle(GetAllCategoriesQuery request, CancellationToken token)
         {
-            var categories = await _context.Categories
+            List<CategoryDto> categories = await _context.Categories
                 .Select(c => new CategoryDto
                 {
                     CategoryId = c.CategoryId,

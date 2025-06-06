@@ -1,7 +1,9 @@
-﻿using AmazonClone.API.Data.Entity;
+﻿using AmazonClone.API.Constants;
+using AmazonClone.API.Data.Entity;
 using AmazonClone.API.Features.User.Command;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Users = AmazonClone.API.Data.Entity.User;
 
 namespace AmazonClone.API.Features.User.CommandHandlers
 {
@@ -15,13 +17,13 @@ namespace AmazonClone.API.Features.User.CommandHandlers
 
         public async Task<String> Handle(RegisterCommand command, CancellationToken token)
         {
-            var userExists = await _context.Users
+            Users userExists = await _context.Users
                 .FirstOrDefaultAsync(u => u.Email == command.Email);
             if (userExists != null)
             {
-                throw new Exception("User with this email already exists.");
+                throw new Exception(ResponseMessages.emailExists);
             }
-            var newUser = new AmazonClone.API.Data.Entity.User
+            Users newUser = new Users
             {
                 UserName = command.UserName,
                 Email = command.Email,
@@ -30,7 +32,7 @@ namespace AmazonClone.API.Features.User.CommandHandlers
             };
             _context.Users.Add(newUser);
             await _context.SaveChangesAsync(token);
-            return "User Registered Successfully.";
+            return ResponseMessages.userRegister;
         }
     }
 }

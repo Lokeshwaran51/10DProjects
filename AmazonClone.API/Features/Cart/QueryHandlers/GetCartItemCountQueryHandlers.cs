@@ -2,6 +2,7 @@
 using AmazonClone.API.Features.Cart.Queries;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Carts = AmazonClone.API.Data.Entity.Cart;
 
 namespace AmazonClone.API.Features.Cart.QueryHandlers
 {
@@ -20,7 +21,7 @@ namespace AmazonClone.API.Features.Cart.QueryHandlers
             {
                 return 0;
             }
-            var cart = await _context.Carts
+            Carts cart = await _context.Carts
                 .FirstOrDefaultAsync(c => c.Email == request.Email, token);
 
             if (cart == null)

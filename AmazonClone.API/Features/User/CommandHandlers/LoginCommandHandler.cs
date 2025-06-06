@@ -1,4 +1,5 @@
-﻿using AmazonClone.API.Data.Entity;
+﻿using AmazonClone.API.Constants;
+using AmazonClone.API.Data.Entity;
 using AmazonClone.API.Features.User.Command;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -6,6 +7,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Users = AmazonClone.API.Data.Entity.User;
 
 namespace AmazonClone.API.Features.User.CommandHandlers
 {
@@ -20,7 +22,7 @@ namespace AmazonClone.API.Features.User.CommandHandlers
         }
         public async Task<String> Handle(LoginCommand command, CancellationToken token)
         {
-            var user = await _context.Users
+            Users user = await _context.Users
                 .FirstOrDefaultAsync(u => u.Email == command.Email && u.Password == command.Password, token);
 
             if (user == null)
@@ -32,22 +34,22 @@ namespace AmazonClone.API.Features.User.CommandHandlers
         {
             try
             {
-                var jwtSettings = _configuration.GetSection("Jwt");
-                var secretKey = jwtSettings.GetValue<string>("Key");
-                var issuer = jwtSettings.GetValue<string>("Issuer");
-                var audience = jwtSettings.GetValue<string>("Audience");
+                IConfigurationSection jwtSettings = _configuration.GetSection("Jwt");
+                string secretKey = jwtSettings.GetValue<string>("Key");
+                string issuer = jwtSettings.GetValue<string>("Issuer");
+                string audience = jwtSettings.GetValue<string>("Audience");
                 // var expiryMinutes = jwtSettings.GetValue<int>("ExpiryInMinutes");
 
-                var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
+                SymmetricSecurityKey securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
                 var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
-                var claims = new[]
+                Claim[] claims = new[]
                 {
                     new Claim(JwtRegisteredClaimNames.Sub, user.Email),
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
                 };
 
-                var token = new JwtSecurityToken(
+                JwtSecurityToken token = new JwtSecurityToken(
                     issuer: issuer,
                     audience: audience,
                     claims: claims,
@@ -59,7 +61,7 @@ namespace AmazonClone.API.Features.User.CommandHandlers
             }
             catch (Exception ex)
             {
-                throw new ApplicationException("Failed to generate JWT token", ex);
+                throw new ApplicationException(ResponseMessages.failToLoadJWT,ex);
             }
         }
     }

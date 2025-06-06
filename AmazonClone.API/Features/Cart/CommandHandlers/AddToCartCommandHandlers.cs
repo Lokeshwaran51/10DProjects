@@ -1,7 +1,12 @@
-﻿using AmazonClone.API.Data.Entity;
+﻿using AmazonClone.API.Constants;
+using AmazonClone.API.Data.Entity;
 using AmazonClone.API.Features.Cart.Commands;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Users = AmazonClone.API.Data.Entity.User;
+using Carts = AmazonClone.API.Data.Entity.Cart;
+using CartItems = AmazonClone.API.Data.Entity.CartItem;
+using Products = AmazonClone.API.Data.Entity.Product;
 
 namespace AmazonClone.API.Features.Cart.CommandHandlers
 {
@@ -16,13 +21,13 @@ namespace AmazonClone.API.Features.Cart.CommandHandlers
 
         public async Task<string> Handle(AddToCartCommand request, CancellationToken token)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == request.Email);
+            Users user = await _context.Users.FirstOrDefaultAsync(u => u.Email == request.Email);
             if (user == null)
             {
-                return "User not found.";
+                return ResponseMessages.userNotFound;
             }
 
-            var cart = await _context.Carts.FirstOrDefaultAsync(c => c.UserId == user.UserId);
+            Carts cart = await _context.Carts.FirstOrDefaultAsync(c => c.UserId == user.UserId);
             if (cart == null)
             {
                 cart = new Data.Entity.Cart
@@ -34,10 +39,10 @@ namespace AmazonClone.API.Features.Cart.CommandHandlers
                 await _context.SaveChangesAsync(token);
             }
 
-            var product = await _context.Products.FindAsync(new object[] { request.ProductId }, token);
+            Products product = await _context.Products.FindAsync(new object[] { request.ProductId }, token);
             if (product == null)
             {
-                return "Product not found.";
+                return ResponseMessages.productNotFound;
             }
 
             var existingItem = await _context.CartItems
@@ -49,7 +54,7 @@ namespace AmazonClone.API.Features.Cart.CommandHandlers
             }
             else
             {
-                var cartItem = new CartItem
+                CartItems cartItem = new CartItem
                 {
                     CartId = cart.CartId,
                     ProductId = product.Id,
@@ -62,7 +67,7 @@ namespace AmazonClone.API.Features.Cart.CommandHandlers
             }
 
             await _context.SaveChangesAsync(token);
-            return "Product added to cart.";
+            return ResponseMessages.addedToCart;
         }
     }
 }
