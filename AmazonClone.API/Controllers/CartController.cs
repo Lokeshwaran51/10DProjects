@@ -1,5 +1,5 @@
-﻿using AmazonClone.API.Features.Cart.Commands;
-using AmazonClone.API.Features.Cart.Queries;
+﻿using AmazonClone.API.CQRS.Cart.Commands;
+using AmazonClone.API.CQRS.Cart.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 

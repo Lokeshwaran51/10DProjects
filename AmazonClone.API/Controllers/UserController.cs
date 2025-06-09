@@ -1,4 +1,4 @@
-﻿using AmazonClone.API.Features.User.Command;
+﻿using AmazonClone.API.CQRS.User.Command;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

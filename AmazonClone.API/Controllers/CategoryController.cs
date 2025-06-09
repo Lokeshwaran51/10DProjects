@@ -1,4 +1,4 @@
-﻿using AmazonClone.API.Features.Category.Queries;
+﻿using AmazonClone.API.CQRS.Category.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 

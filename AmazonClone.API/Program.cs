@@ -1,5 +1,4 @@
 using AmazonClone.API.Data.Entity;
-using AmazonClone.API.Features.Cart.QueryHandlers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -90,7 +89,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseAuthentication(); 
+app.UseAuthentication();
 app.UseSession();
 app.UseAuthorization();
 

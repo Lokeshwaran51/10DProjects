@@ -1,4 +1,4 @@
-﻿using AmazonClone.API.Features.Order.Command;
+﻿using AmazonClone.API.CQRS.Order.Command;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
