@@ -1,4 +1,4 @@
-﻿namespace AmazonClone.API.Data.Entity
+﻿namespace AmazonClone.API.Data.DTO
 {
     public class CartItemDto
     {

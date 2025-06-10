@@ -1,6 +1,6 @@
-﻿namespace AmazonClone.API.Data.Entity
+﻿namespace AmazonClone.API.Data.DTO
 {
-    public class AddToCartRequest
+    public class AddToCartRequestDTO
     {
         public string Email { get; set; }
         public int ProductId { get; set; }

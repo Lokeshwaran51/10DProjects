@@ -45,7 +45,7 @@ namespace AmazonClone.API.CQRS.User.CommandHandlers
                 string secretKey = jwtSettings.GetValue<string>("Key");
                 string issuer = jwtSettings.GetValue<string>("Issuer");
                 string audience = jwtSettings.GetValue<string>("Audience");
-                // var expiryMinutes = jwtSettings.GetValue<int>("ExpiryInMinutes");
+                int expiryMinutes = jwtSettings.GetValue<int>("ExpiryInMinutes");
 
                 SymmetricSecurityKey securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
                 var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
@@ -60,7 +60,7 @@ namespace AmazonClone.API.CQRS.User.CommandHandlers
                     issuer: issuer,
                     audience: audience,
                     claims: claims,
-                    //expires: DateTime.UtcNow.AddMinutes(expiryMinutes),
+                    expires: DateTime.UtcNow.AddMinutes(expiryMinutes),
                     signingCredentials: credentials
                 );
 

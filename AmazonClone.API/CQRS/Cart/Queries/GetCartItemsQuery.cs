@@ -1,4 +1,4 @@
-﻿using AmazonClone.API.Data.Entity;
+﻿using AmazonClone.API.Data.DTO;
 using MediatR;
 
 namespace AmazonClone.API.CQRS.Cart.Queries

@@ -18,6 +18,7 @@ namespace AmazonClone.API.CQRS.Cart.CommandHandlers
         {
             try
             {
+
                 CartItem cartItem = await _context.CartItems.FirstOrDefaultAsync(ci => ci.ProductId == command.ProductId);
                 if (cartItem != null)
                 {

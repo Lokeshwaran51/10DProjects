@@ -1,19 +1,21 @@
-﻿using MediatR;
+﻿using AmazonClone.API.Data.DTO;
+using MediatR;
 
 namespace AmazonClone.API.CQRS.Order.Command
 {
-    public class PlaceOrderCommand : IRequest<List<AmazonClone.API.Data.Entity.Order>>
+    public class PlaceOrderCommand : IRequest<List<OrderDTO>>
     {
-        public OrderDetail Order { get; set; }
+        public OrderDTO Order { get; set; } 
         public int Quantity { get; set; }
         public int ProductId { get; set; }
         public int? UserId { get; set; }
 
-        public class OrderDetail
+        public PlaceOrderCommand(OrderDTO order, int quantity, int productId, int? userId)
         {
-            public string ProductName { get; set; }
-            public decimal Price { get; set; }
-            public decimal Total { get; set; }
+            Order = order;
+            Quantity = quantity;
+            ProductId = productId;
+            UserId = userId;
         }
     }
 }

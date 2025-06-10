@@ -1,4 +1,5 @@
 ﻿using AmazonClone.API.CQRS.Cart.Queries;
+using AmazonClone.API.Data.DTO;
 using AmazonClone.API.Data.Entity;
 using MediatR;
 using Microsoft.EntityFrameworkCore;

@@ -21,7 +21,8 @@ namespace AmazonClone.API.CQRS.Cart.CommandHandlers
 
         public async Task<string> Handle(AddToCartCommand request, CancellationToken token)
         {
-            Users user = await _context.Users.FirstOrDefaultAsync(u => u.Email == request.Email);
+            var dto = request.Request;
+            Users user = await _context.Users.FirstOrDefaultAsync(u => u.Email == dto.Email);
             if (user == null)
             {
                 return ResponseMessages.userNotFound;
@@ -33,24 +34,24 @@ namespace AmazonClone.API.CQRS.Cart.CommandHandlers
                 cart = new Carts
                 {
                     UserId = user.UserId,
-                    Email = request.Email
+                    Email = dto.Email
                 };
                 _context.Carts.Add(cart);
                 await _context.SaveChangesAsync(token);
             }
 
-            Products product = await _context.Products.FindAsync(new object[] { request.ProductId }, token);
+            Products product = await _context.Products.FindAsync(new object[] { dto.ProductId }, token);
             if (product == null)
             {
                 return ResponseMessages.productNotFound;
             }
 
             var existingItem = await _context.CartItems
-                .FirstOrDefaultAsync(ci => ci.CartId == cart.CartId && ci.ProductId == request.ProductId, token);
+                .FirstOrDefaultAsync(ci => ci.CartId == cart.CartId && ci.ProductId == dto.ProductId, token);
 
             if (existingItem != null)
             {
-                existingItem.Quantity += request.Quantity;
+                existingItem.Quantity += dto.Quantity;
             }
             else
             {
@@ -59,7 +60,7 @@ namespace AmazonClone.API.CQRS.Cart.CommandHandlers
                     CartId = cart.CartId,
                     ProductId = product.Id,
                     ProductName = product.Name,
-                    Quantity = request.Quantity,
+                    Quantity = dto.Quantity,
                     Price = product.Price,
                     UserId = user.UserId
                 };

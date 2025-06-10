@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using AmazonClone.API.Data.DTO;
+using MediatR;
 
 namespace AmazonClone.API.CQRS.Product.Queries
 {

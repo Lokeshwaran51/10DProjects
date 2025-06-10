@@ -1,10 +1,11 @@
 ﻿using AmazonClone.API.CQRS.Product.Queries;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AmazonClone.API.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ProductController : ControllerBase
@@ -15,7 +16,11 @@ namespace AmazonClone.API.Controllers
             _mediator = mediator;
         }
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="SubCategoryId"></param>
+        /// <returns></returns>
         [HttpGet("GetListOfProductsBySubCategoryId/{SubCategoryId}")]
         public async Task<IActionResult> GetListOfProductsBySubCategoryId(int SubCategoryId)
         {
@@ -26,7 +31,6 @@ namespace AmazonClone.API.Controllers
             }
             catch (Exception)
             {
-
                 throw;
             }
         }
@@ -41,63 +45,8 @@ namespace AmazonClone.API.Controllers
             }
             catch (Exception)
             {
-
                 throw;
             }
         }
-
-        /*[HttpGet("GetListOfProductsBySubCategoryId/{SubCategoryId}")]
-        public async Task<IActionResult> GetListOfProductsBySubCategoryId(int SubCategoryId)
-        {
-            try
-            {
-                var products = await _context.Products
-                       .Where(p => p.SubCategoryId == SubCategoryId)
-                       .ToListAsync();
-
-                return Ok(products);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, "Internal server error: " + ex.Message);
-            }
-        }*/
-
-        /* [HttpGet("ProductDetails/{ProductId}")]
-         public async Task<IActionResult> ProductDetails(int ProductId)
-         {
-             try
-             {
-                 if (ProductId <= 0)
-                 {
-                     return BadRequest("Invalid product ID");
-                 }
-                 ;
-                 var product = await _context.Products
-                     .Include(p => p.Category)
-                     .Include(p => p.SubCategory)
-                     .FirstOrDefaultAsync(p => p.Id == ProductId);
-
-                 if (product == null)
-                 {
-                     return NotFound($"Product with ID {ProductId} not found");
-                 }
-                 var result = new
-                 {
-                     product.Id,
-                     product.Name,
-                     product.Description,
-                     product.Price,
-                     product.ImageUrl,
-                     CategoryName = product.Category?.Name,
-                     SubCategoryName = product.SubCategory?.SubCategoryName ?? product.SubCategoryName
-                 };
-                 return Ok(result);
-             }
-             catch (Exception ex)
-             {
-                 return StatusCode(500, "Internal server error: " + ex.Message);
-             }
-         }*/
     }
 }

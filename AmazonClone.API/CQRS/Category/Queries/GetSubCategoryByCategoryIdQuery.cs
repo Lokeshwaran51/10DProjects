@@ -1,15 +1,14 @@
-﻿using MediatR;
+﻿using AmazonClone.API.Data.DTO;
+using MediatR;
 
 namespace AmazonClone.API.CQRS.Category.Queries
 {
-    public record GetSubCategoryByCategoryIdQuery(int CategoryId) : IRequest<List<SubCategoryDto>>;
-
-    public class SubCategoryDto
-    {
-        public int SubCategoryId { get; set; }
-        public string SubCategoryName { get; set; }
+    public class GetSubCategoryByCategoryIdQuery : IRequest<List<SubCategoryDto>> { 
         public int CategoryId { get; set; }
-        public string CategoryName { get; set; }
+        public GetSubCategoryByCategoryIdQuery(int categoryId)
+        {
+            CategoryId = categoryId;
+        }
     }
-
+    
 }

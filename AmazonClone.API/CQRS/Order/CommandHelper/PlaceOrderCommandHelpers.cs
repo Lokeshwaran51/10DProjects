@@ -1,32 +1,34 @@
 ﻿using AmazonClone.API.Constants;
-using AmazonClone.API.Data.Entity;
 using AmazonClone.API.CQRS.Order.Command;
+using AmazonClone.API.Data;
+using AmazonClone.API.Data.DTO;
+using AmazonClone.API.Data.Entity;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Products = AmazonClone.API.Data.Entity.Product;
 using Orders = AmazonClone.API.Data.Entity.Order;
 
 namespace AmazonClone.API.CQRS.Order.CommandHelper
 {
-    public class PlaceOrderCommandHelpers : IRequestHandler<PlaceOrderCommand, List<Orders>>
+    public class PlaceOrderCommandHelpers : IRequestHandler<PlaceOrderCommand, List<OrderDTO>>
     {
         private readonly AppDbContext _context;
+
         public PlaceOrderCommandHelpers(AppDbContext context)
         {
             _context = context;
         }
 
-        public async Task<List<Orders>> Handle(PlaceOrderCommand command, CancellationToken token)
+        public async Task<List<OrderDTO>> Handle(PlaceOrderCommand command, CancellationToken token)
         {
             try
             {
-                Products product = await _context.Products.FindAsync(new object[] { command.ProductId }, token);
+                var product = await _context.Products.FindAsync(new object[] { command.ProductId }, token);
                 if (product == null)
                 {
                     throw new Exception(ResponseMessages.productNotFound);
                 }
 
-                Orders order = new Orders
+                var newOrder = new Orders
                 {
                     Id = product.Id,
                     ProductName = product.Name,
@@ -36,13 +38,28 @@ namespace AmazonClone.API.CQRS.Order.CommandHelper
                     OrderDate = DateTime.UtcNow,
                     UserId = command.UserId
                 };
-                await _context.Orders.AddAsync(order, token);
+
+                await _context.Orders.AddAsync(newOrder, token);
                 await _context.SaveChangesAsync(token);
-                return await _context.Orders.ToListAsync(token);
+
+                // Convert Entity List to DTO List
+                var orderList = await _context.Orders.ToListAsync(token);
+                var orderDTOList = orderList.Select(o => new OrderDTO
+                {
+                    OrderId = o.OrderId,
+                    ProductName = o.ProductName,
+                    Price = o.Price,
+                    Quantity = o.Quantity,
+                    Total = o.Total,
+                    OrderDate = o.OrderDate,
+                    PaymentMode = o.PaymentMode,
+                    UserId = o.UserId
+                }).ToList();
+
+                return orderDTOList;
             }
             catch (Exception)
             {
-
                 throw;
             }
         }

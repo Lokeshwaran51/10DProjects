@@ -2,6 +2,7 @@
 using AmazonClone.API.CQRS.Category.Queries;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using AmazonClone.API.Data.DTO;
 
 namespace AmazonClone.API.Features.Category.QueryHandlers
 {
