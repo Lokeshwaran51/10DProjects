@@ -1,6 +1,8 @@
 ﻿using AmazonClone.MVC.Constant;
 using AmazonClone.MVC.Models;
+using Azure;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace AmazonClone.MVC.Controllers
 {
@@ -22,6 +24,11 @@ namespace AmazonClone.MVC.Controllers
         {
             try
             {
+                string token = HttpContext.Session.GetString("Token");
+                if (!string.IsNullOrEmpty(token))
+                {
+                    _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+                }
                 HttpResponseMessage res = await _httpClient.GetAsync($"{_httpClient.BaseAddress}/Cart/GetCartItems/{Email}");
                 if (res.IsSuccessStatusCode)
                 {
@@ -41,6 +48,11 @@ namespace AmazonClone.MVC.Controllers
         {
             try
             {
+                string token = HttpContext.Session.GetString("Token");
+                if (!string.IsNullOrEmpty(token))
+                {
+                    _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+                }
                 string email = HttpContext.Session.GetString("Email");
                 if (string.IsNullOrEmpty(email))
                 {
@@ -79,9 +91,17 @@ namespace AmazonClone.MVC.Controllers
         {
             try
             {
-                //var data = JsonConvert.SerializeObject(ProductId);
-                //var content = new StringContent(data, System.Text.Encoding.UTF8, "application/json");
-                HttpResponseMessage response = await _httpClient.PostAsync($"/api/Cart/RemoveItemFromCart?ProductId={ProductId}", null);
+                string token = HttpContext.Session.GetString("Token");
+                if (!string.IsNullOrEmpty(token))
+                {
+                    _httpClient.DefaultRequestHeaders.Authorization =
+                        new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+                }
+
+                var data = JsonConvert.SerializeObject(ProductId);
+                var content = new StringContent(data, System.Text.Encoding.UTF8, "application/json");
+                //  HttpResponseMessage response = await _httpClient.PostAsync($"/api/Cart/RemoveItemFromCart?ProductId={ProductId}", null);
+                HttpResponseMessage response = await _httpClient.PostAsync($"/api/Cart/RemoveItemFromCart?ProductId={ProductId}", content);
                 if (response.IsSuccessStatusCode)
                 {
                     TempData["SuccessMessage"] = ResponseMessages.productRemoved;

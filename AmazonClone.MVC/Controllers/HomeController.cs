@@ -24,14 +24,28 @@ namespace AmazonClone.MVC.Controllers
             {
                 _logger.LogInformation("Visited Home/Index at {Time}", DateTime.Now);
                 string email = HttpContext.Session.GetString("Email");
+                string token = HttpContext.Session.GetString("Token"); 
+
                 _logger.LogInformation("User email from session: {Email}", email ?? "Not logged in");
-                // Get categories
+
+                // Add Authorization header if token exists
+                if (!string.IsNullOrEmpty(token))
+                {
+                    _httpClient.DefaultRequestHeaders.Authorization =
+                        new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+                }
+
+                // Call categories API with token
                 HttpResponseMessage categoryResponse = await _httpClient.GetAsync(_httpClient.BaseAddress + "/Category/GetAllCategories");
                 List<Category> categories = new List<Category>();
                 if (categoryResponse.IsSuccessStatusCode)
                 {
                     string data = await categoryResponse.Content.ReadAsStringAsync();
                     categories = JsonConvert.DeserializeObject<List<Category>>(data);
+                }
+                else if (categoryResponse.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                {
+                    _logger.LogWarning("Unauthorized when fetching categories. Token may be expired.");
                 }
 
                 // Get cart item count if email exists
@@ -45,7 +59,6 @@ namespace AmazonClone.MVC.Controllers
                         int.TryParse(countString, out cartItemCount);
                     }
                 }
-
                 ViewBag.CartItemCount = cartItemCount;
                 ViewBag.Email = email;
 
@@ -62,8 +75,13 @@ namespace AmazonClone.MVC.Controllers
         {
             try
             {
+                string token = HttpContext.Session.GetString("Token");
+                if (!string.IsNullOrEmpty(token))
+                {
+                    _httpClient.DefaultRequestHeaders.Authorization =
+                        new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+                }
                 HttpResponseMessage res = await _httpClient.GetAsync($"{_httpClient.BaseAddress}/Category/GetSubCategoryByCategoryId/{CategoryId}");
-
                 List<SubCategory> subCategories = new List<SubCategory>();
                 if (res.IsSuccessStatusCode)
                 {
@@ -83,6 +101,12 @@ namespace AmazonClone.MVC.Controllers
         {
             try
             {
+                string token = HttpContext.Session.GetString("Token");
+                if (!string.IsNullOrEmpty(token))
+                {
+                    _httpClient.DefaultRequestHeaders.Authorization =
+                        new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+                }
                 HttpResponseMessage res = await _httpClient.GetAsync($"{_httpClient.BaseAddress}/Category/GetSubCategoryByCategoryId/{CategoryId}");
                 List<SubCategory> subCategories = new List<SubCategory>();
                 if (res.IsSuccessStatusCode)

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System.Text;
 using Login = AmazonClone.MVC.Models.Login;
 using User = AmazonClone.MVC.Models.User;
@@ -19,6 +20,7 @@ namespace AmazonClone.MVC.Controllers
             _httpClient.BaseAddress = new Uri(_configuration["ApiUrl:BaseUrl"]);
         }
 
+        [HttpGet]
         public IActionResult Register()
         {
             return View();
@@ -31,6 +33,12 @@ namespace AmazonClone.MVC.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    string token = HttpContext.Session.GetString("Token");
+                    if (!string.IsNullOrEmpty(token))
+                    {
+                        _httpClient.DefaultRequestHeaders.Authorization =
+                            new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+                    }
                     string data = JsonConvert.SerializeObject(model);
                     StringContent content = new StringContent(data, System.Text.Encoding.UTF8, "application/json");
                     HttpResponseMessage res = await _httpClient.PostAsync(_httpClient.BaseAddress + "/User/Register", content);
@@ -61,45 +69,11 @@ namespace AmazonClone.MVC.Controllers
             }
         }
 
-
+        [HttpGet]
         public IActionResult Login()
         {
             return View();
         }
-
-        /* [HttpPost]
-         public async Task<IActionResult> Login(Login model)
-         {
-             try
-             {
-                 if (!ModelState.IsValid)
-                     return View(model);
-
-                 var data = JsonConvert.SerializeObject(model);
-                 var content = new StringContent(data, Encoding.UTF8, "application/json");
-
-                 var response = await _httpClient.PostAsync($"{_httpClient.BaseAddress}/User/Login", content);
-
-                 var responseContent = await response.Content.ReadAsStringAsync();
-
-                 if (!response.IsSuccessStatusCode)
-                 {
-                     ModelState.AddModelError("", "Invalid login credentials.");
-                     return View(model);
-                 }
-
-                 var loginResponse = JsonConvert.DeserializeObject<LoginResponse>(responseContent);
-                 HttpContext.Session.SetString("Email", loginResponse.Email);
-                 HttpContext.Session.SetString("Token", loginResponse.Token);
-
-                 TempData["SuccessMessage"] = "User Logged in Successfully.";
-                 return RedirectToAction("Index", "Home");
-             }
-             catch (Exception ex)
-             {
-                 return StatusCode(500, "Internal server error: " + ex.Message);
-             }
-         }*/
 
         [HttpPost]
         public async Task<IActionResult> Login(Login model)
@@ -120,7 +94,9 @@ namespace AmazonClone.MVC.Controllers
                     ModelState.AddModelError("", ResponseMessages.invalidCredentials);
                     return View(model);
                 }
-                string token = responseContent.Trim('"');
+                //string token = responseContent.Trim('"');
+                JObject tokenData = JObject.Parse(responseContent);
+                string token = tokenData["token"].ToString();
 
                 // Store token in session
                 HttpContext.Session.SetString("Token", token);
@@ -134,7 +110,6 @@ namespace AmazonClone.MVC.Controllers
                 return StatusCode(500, ResponseMessages.internalServerError + ex.Message);
             }
         }
-
 
         [HttpGet]
         public IActionResult Logout()

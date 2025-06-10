@@ -21,6 +21,12 @@ namespace AmazonClone.MVC.Controllers
         {
             try
             {
+                string token = HttpContext.Session.GetString("Token");
+                if (!string.IsNullOrEmpty(token))
+                {
+                    _httpClient.DefaultRequestHeaders.Authorization =
+                        new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+                }
                 HttpResponseMessage res = await _httpClient.GetAsync($"{_httpClient.BaseAddress}/Product/GetListOfProductsBySubCategoryId/{SubCategoryId}");
                 List<Product> products = new List<Models.Product>();
                 if (res.IsSuccessStatusCode)
@@ -42,6 +48,12 @@ namespace AmazonClone.MVC.Controllers
         {
             try
             {
+                string token = HttpContext.Session.GetString("Token");
+                if (!string.IsNullOrEmpty(token))
+                {
+                    _httpClient.DefaultRequestHeaders.Authorization =
+                        new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+                }
                 HttpResponseMessage response = await _httpClient.GetAsync($"{_httpClient.BaseAddress}/Product/ProductDetails/{Id}");
                 if (!response.IsSuccessStatusCode)
                 {
@@ -57,11 +69,9 @@ namespace AmazonClone.MVC.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, ResponseMessages.internalServerError);
+                return StatusCode(500, ResponseMessages.internalServerError + ex.Message);
             }
         }
-
-
         public IActionResult Index()
         {
             return View();

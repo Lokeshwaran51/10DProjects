@@ -48,11 +48,6 @@
         var userId = $("#Email").val();
 
         //window.location.href = `/Cart/AddToCart?ProductId=${productId}&quantity=${quantity}`;
-        if (!productId) {
-            toastr.error('Product ID not found!');
-            return;
-        }
-
         $button.prop('disabled', true);
         $.ajax({
             url: "/Cart/AddToCart",
@@ -63,8 +58,12 @@
                 UserId: userId
             },
             success: function (data) {
-                toastr.success(data.message || 'Added to cart!');
+                /*toastr.success(data.message || 'Added to cart!');*/
                 $button.prop('disabled', false);
+                setTimeout(function () {
+                    window.location.href = '/Home/Index';
+                    toastr.success(data.message || 'Added to cart!');
+                }, 0);
             },
             error: function (xhr) {
                 const errorMsg = xhr.responseJSON?.message || 'Failed to add to cart.';
@@ -127,33 +126,11 @@
 
 
     $("#account-toggle").click(function (e) {
-        e.stopPropagation(); // prevent event bubbling
+        e.stopPropagation();
         $("#account-dropdown").toggle();
     });
-
-    // Hide dropdown if clicking outside
     $(document).click(function () {
         $("#account-dropdown").hide();
     });
 });
-/*
-$(document).ready(function () {
-    $("#account-toggle").click(function () {
-        $("#account-dropdown").toggle();
-    });
 
-    $("#load-account").click(function () {
-        const email = $("#Email").val();
-
-        $.ajax({
-            url: "/User/Account/" + email,
-            type: "GET",
-            success: function (data) {
-                $("#account-content").html(data);
-            },
-            error: function (xhr) {
-                console.error("Error loading account:", xhr);
-            }
-        });
-    });
-});*/
