@@ -4,13 +4,11 @@ using Newtonsoft.Json;
 
 namespace AmazonClone.MVC.Controllers
 {
-
     public class HomeController : Controller
     {
         private readonly HttpClient _httpClient;
         private readonly IConfiguration _configuration;
         private readonly ILogger<HomeController> _logger;
-
         public HomeController(IConfiguration configuration, ILogger<HomeController> logger)
         {
             _httpClient = new HttpClient();
@@ -18,14 +16,15 @@ namespace AmazonClone.MVC.Controllers
             _httpClient.BaseAddress = new Uri(_configuration["ApiUrl:BaseUrl"]);
             _logger = logger;
         }
+
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
             try
             {
                 _logger.LogInformation("Visited Home/Index at {Time}", DateTime.Now);
                 string email = HttpContext.Session.GetString("Email");
-                string token = HttpContext.Session.GetString("Token"); 
-
+                string token = HttpContext.Session.GetString("Token");
                 _logger.LogInformation("User email from session: {Email}", email ?? "Not logged in");
 
                 // Add Authorization header if token exists
@@ -34,7 +33,6 @@ namespace AmazonClone.MVC.Controllers
                     _httpClient.DefaultRequestHeaders.Authorization =
                         new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
                 }
-
                 // Call categories API with token
                 HttpResponseMessage categoryResponse = await _httpClient.GetAsync(_httpClient.BaseAddress + "/Category/GetAllCategories");
                 List<Category> categories = new List<Category>();
@@ -66,6 +64,7 @@ namespace AmazonClone.MVC.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error occured during the process request.");
                 return StatusCode(500, "Internal server error: " + ex.Message);
             }
         }
@@ -92,6 +91,7 @@ namespace AmazonClone.MVC.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error occured during the process request.");
                 return Json(new { error = "An error occurred: " + ex.Message });
             }
         }
@@ -118,6 +118,7 @@ namespace AmazonClone.MVC.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error occured during the process request.");
                 return StatusCode(500, "Internal server error: " + ex.Message);
             }
         }

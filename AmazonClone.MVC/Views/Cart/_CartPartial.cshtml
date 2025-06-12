@@ -1,4 +1,4 @@
-﻿@model List<CartItem>
+﻿@* @model List<CartItem>
 
 @if (Model == null || !Model.Any())
 {
@@ -34,3 +34,4 @@ else
         Total: @Model.Sum(i => i.Price * i.Quantity)
     </h4>
 }
+ *@

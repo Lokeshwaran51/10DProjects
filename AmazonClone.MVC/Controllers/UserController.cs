@@ -12,12 +12,14 @@ namespace AmazonClone.MVC.Controllers
     {
         private readonly HttpClient _httpClient;
         private readonly IConfiguration _configuration;
+        private readonly ILogger<UserController> _logger;
 
-        public UserController(IConfiguration configuration)
+        public UserController(IConfiguration configuration, ILogger<UserController> logger)
         {
             _httpClient = new HttpClient();
             _configuration = configuration;
             _httpClient.BaseAddress = new Uri(_configuration["ApiUrl:BaseUrl"]);
+            _logger = logger;
         }
 
         [HttpGet]
@@ -46,6 +48,7 @@ namespace AmazonClone.MVC.Controllers
                     if (res.IsSuccessStatusCode)
                     {
                         TempData["SuccessMessage"] = ResponseMessages.successMessageRegister;
+                        _logger.LogInformation("User registered successfully.");
                         return RedirectToAction("Login", "User");
                     }
                     else if (res.StatusCode == System.Net.HttpStatusCode.Conflict)
@@ -56,6 +59,7 @@ namespace AmazonClone.MVC.Controllers
                     }
                     else
                     {
+                        _logger.LogError("Error occured during the process request.");
                         ViewBag.ErrorMessage = ResponseMessages.internalServerError;
                         return RedirectToAction("Register", "User");
                     }
@@ -65,6 +69,7 @@ namespace AmazonClone.MVC.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error occured during the process request.");
                 return StatusCode(500, ResponseMessages.internalServerError + ex.Message);
             }
         }
@@ -92,9 +97,9 @@ namespace AmazonClone.MVC.Controllers
                 if (!response.IsSuccessStatusCode)
                 {
                     ModelState.AddModelError("", ResponseMessages.invalidCredentials);
+                    _logger.LogError("Login failed, Invalid credentials.");
                     return View(model);
                 }
-                //string token = responseContent.Trim('"');
                 JObject tokenData = JObject.Parse(responseContent);
                 string token = tokenData["token"].ToString();
 
@@ -103,10 +108,12 @@ namespace AmazonClone.MVC.Controllers
                 HttpContext.Session.SetString("Email", model.Email);
 
                 TempData["SuccessMessage"] = ResponseMessages.successMessageLogin;
+                _logger.LogInformation("User logged in successfully.");
                 return RedirectToAction("Index", "Home");
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error occured during the process request.");
                 return StatusCode(500, ResponseMessages.internalServerError + ex.Message);
             }
         }
@@ -116,6 +123,7 @@ namespace AmazonClone.MVC.Controllers
         {
             HttpContext.SignOutAsync();
             HttpContext.Session.Clear();
+            _logger.LogInformation("User logged out successfully.");
             return RedirectToAction("Login", "User");
         }
 

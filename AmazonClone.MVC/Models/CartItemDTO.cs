@@ -1,6 +1,6 @@
 ﻿namespace AmazonClone.MVC.Models
 { 
-    public class CartItemDto
+    public class CartItemDTO
     {
         public int ProductId { get; set; }
         public string ProductName { get; set; }

@@ -1,4 +1,4 @@
-﻿@model List<CartItemDto>
+﻿@model List<CartItemDTO>
 
 @{
     ViewData["Title"] = "Your Cart";
@@ -17,21 +17,17 @@ else
         @Html.AntiForgeryToken()
 
         <div class="row">
-            <!-- Cart Items -->
             <div class="col-md-8">
                 @for (int i = 0; i < Model.Count; i++)
                 {
                     <div class="card mb-4 shadow-sm border-0 rounded-3">
                         <div class="row g-0 p-3">
-
                             <div class="col-md-1 d-flex align-items-start pt-3">
                                 <input type="checkbox" name="SelectedItems" value="@Model[i].ProductId" class="form-check-input" />
                             </div>
-
                             <div class="col-md-3">
                                 <img src="@Model[i].ImageUrl" class="img-fluid rounded" alt="@Model[i].ProductName" />
                             </div>
-
                             <div class="col-md-7">
                                 <div class="card-body ps-4">
                                     <h5 class="card-title mb-1">@Model[i].ProductName</h5>
@@ -39,7 +35,6 @@ else
                                     <p class="mb-1">Price: <strong class="text-danger">₹@Model[i].Price</strong></p>
                                     <p class="mb-1">Quantity: <strong>@Model[i].Quantity</strong></p>
                                     <p class="mb-2">Total: <strong>₹@(Model[i].Price * Model[i].Quantity)</strong></p>
-
                                     <button type="button"
                                             class="btn btn-outline-danger btn-sm remove-btn mt-2"
                                             data-productid="@Model[i].ProductId">
@@ -52,7 +47,6 @@ else
                 }
             </div>
 
-            <!-- Order Summary -->
             <div class="col-md-4">
                 <div class="card p-4 shadow-sm sticky-top" style="top: 80px;">
                     <h4 class="mb-3">Order Summary</h4>
@@ -67,8 +61,5 @@ else
 }
 
 @section Scripts {
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
     <script src="~/js/ecom.js"></script>
-
 }

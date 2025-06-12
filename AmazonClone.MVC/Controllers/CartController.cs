@@ -2,6 +2,7 @@
 using AmazonClone.MVC.Models;
 using Azure;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis;
 using Newtonsoft.Json;
 
 namespace AmazonClone.MVC.Controllers
@@ -11,12 +12,14 @@ namespace AmazonClone.MVC.Controllers
     {
         private readonly HttpClient _httpClient;
         private readonly IConfiguration _configuration;
+        private readonly ILogger<CartController> _logger;
 
-        public CartController(IConfiguration configuration)
+        public CartController(IConfiguration configuration, ILogger<CartController> logger)
         {
             _httpClient = new HttpClient();
             _configuration = configuration;
             _httpClient.BaseAddress = new Uri(_configuration["ApiUrl:BaseUrl"]);
+            _logger = logger;
         }
 
         [HttpGet("ViewCart")]
@@ -32,19 +35,20 @@ namespace AmazonClone.MVC.Controllers
                 HttpResponseMessage res = await _httpClient.GetAsync($"{_httpClient.BaseAddress}/Cart/GetCartItems/{Email}");
                 if (res.IsSuccessStatusCode)
                 {
-                    List<CartItemDto> cartItems = await res.Content.ReadFromJsonAsync<List<CartItemDto>>();
+                    List<CartItemDTO> cartItems = await res.Content.ReadFromJsonAsync<List<CartItemDTO>>();
                     return View(cartItems);
                 }
                 return View("Error");
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error occured during the process request.");
                 return StatusCode(500, "Internal server error: " + ex.Message);
             }
         }
 
         [HttpPost("AddToCart")]
-        public async Task<IActionResult> AddToCart(int productId, int quantity, string UserId)
+        public async Task<IActionResult> AddToCart([FromForm]int productId, int quantity, string UserId)
         {
             try
             {
@@ -58,14 +62,16 @@ namespace AmazonClone.MVC.Controllers
                 {
                     return Unauthorized(ResponseMessages.userNotLoggedIn);
                 }
-                Dictionary<string, string> formData = new Dictionary<string, string>
+
+                AddToCartDTO addToCartDTO = new AddToCartDTO
                 {
-                    { "Email", email },
-                    { "productId", productId.ToString() },
-                    { "quantity", quantity.ToString() }
+                    Email = email,
+                    ProductId = productId,
+                    Quantity = quantity,
                 };
 
-                FormUrlEncodedContent content = new FormUrlEncodedContent(formData);
+                string data = JsonConvert.SerializeObject(addToCartDTO);
+                StringContent content = new StringContent(data, System.Text.Encoding.UTF8, "application/json");
                 HttpResponseMessage response = await _httpClient.PostAsync("/api/Cart/AddToCart", content);
                 if (!response.IsSuccessStatusCode)
                 {
@@ -77,14 +83,15 @@ namespace AmazonClone.MVC.Controllers
                 {
                     return Json(new { success = true, message = "Added to cart!" });
                 }
+                _logger.LogInformation("Product added to cart successfully.");
                 return RedirectToAction("Products", "Product", new { id = productId });
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error occured during the process request.");
                 return StatusCode(500, "Internal server error: " + ex.Message);
             }
         }
-
 
         [HttpPost("RemoveItemFromCart")]
         public async Task<IActionResult> RemoveItemFromCart(int ProductId)
@@ -98,19 +105,20 @@ namespace AmazonClone.MVC.Controllers
                         new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
                 }
 
-                var data = JsonConvert.SerializeObject(ProductId);
-                var content = new StringContent(data, System.Text.Encoding.UTF8, "application/json");
-                //  HttpResponseMessage response = await _httpClient.PostAsync($"/api/Cart/RemoveItemFromCart?ProductId={ProductId}", null);
+                string data = JsonConvert.SerializeObject(ProductId);
+                StringContent content = new StringContent(data, System.Text.Encoding.UTF8, "application/json");
                 HttpResponseMessage response = await _httpClient.PostAsync($"/api/Cart/RemoveItemFromCart?ProductId={ProductId}", content);
                 if (response.IsSuccessStatusCode)
                 {
                     TempData["SuccessMessage"] = ResponseMessages.productRemoved;
+                    _logger.LogInformation("Product removed from cart successfully.");
                     return RedirectToAction("ViewCart", "Cart");
                 }
                 return RedirectToAction("ViewCart", "Cart");
             }
             catch (Exception)
             {
+                _logger.LogError("Error occured during the process request.");
                 throw;
             }
         }

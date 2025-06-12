@@ -9,11 +9,13 @@ namespace AmazonClone.MVC.Controllers
     {
         private readonly HttpClient _httpClient;
         private readonly IConfiguration _configuration;
-        public ProductController(IConfiguration configuration)
+        private readonly ILogger<ProductController> _logger;
+        public ProductController(IConfiguration configuration, ILogger<ProductController> logger)
         {
             _configuration = configuration;
             _httpClient = new HttpClient();
             _httpClient.BaseAddress = new Uri(_configuration["ApiUrl:BaseUrl"]);
+            _logger = logger;
         }
 
         [HttpGet("GetListOfProductsBySubCategoryId/{SubCategoryId}")]
@@ -38,6 +40,7 @@ namespace AmazonClone.MVC.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error occured during the process request.");
                 return StatusCode(500, ResponseMessages.internalServerError + ex.Message);
             }
         }
@@ -69,6 +72,7 @@ namespace AmazonClone.MVC.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error occured during the process request.");
                 return StatusCode(500, ResponseMessages.internalServerError + ex.Message);
             }
         }
