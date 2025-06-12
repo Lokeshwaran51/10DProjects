@@ -20,11 +20,11 @@ namespace AmazonClone.API.Controllers
         }
 
         [HttpPost("AddToCart")]
-        public async Task<IActionResult> AddToCart([FromForm] AddToCartRequestDTO addToCartdto)
+        public async Task<IActionResult> AddToCart(AddToCartRequestDTO addToCartdto)
         {
             try
             {
-                var result = await _mediator.Send(new AddToCartCommand(addToCartdto));
+                string result = await _mediator.Send(new AddToCartCommand(addToCartdto));
                 return Ok(result);
             }
             catch (Exception)
@@ -38,7 +38,7 @@ namespace AmazonClone.API.Controllers
         {
             try
             {
-                var result = await _mediator.Send(new GetCartItemsQuery(email));
+                List<CartItemDto> result = await _mediator.Send(new GetCartItemsQuery(email));
                 return Ok(result);
             }
             catch (Exception)
@@ -69,9 +69,9 @@ namespace AmazonClone.API.Controllers
                 string res = await _mediator.Send(new RemoveItemFromCartCommand(ProductId));
                 return Ok(res);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                return StatusCode(500,  ex.Message);
             }
         }
     }

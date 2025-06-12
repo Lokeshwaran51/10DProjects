@@ -3,6 +3,7 @@ using AmazonClone.API.CQRS.Order.Command;
 using AmazonClone.API.Data;
 using AmazonClone.API.Data.DTO;
 using AmazonClone.API.Data.Entity;
+using Product = AmazonClone.API.Data.Entity.Product;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Orders = AmazonClone.API.Data.Entity.Order;
@@ -18,17 +19,17 @@ namespace AmazonClone.API.CQRS.Order.CommandHelper
             _context = context;
         }
 
-        public async Task<List<OrderDTO>> Handle(PlaceOrderCommand command, CancellationToken token)
+        public async Task<List<OrderDTO>> Handle(PlaceOrderCommand command, CancellationToken cancellationToken)
         {
             try
             {
-                var product = await _context.Products.FindAsync(new object[] { command.ProductId }, token);
+                AmazonClone.API.Data.Entity.Product? product = await _context.Products.FindAsync(new object[] { command.ProductId }, cancellationToken);
                 if (product == null)
                 {
-                    throw new Exception(ResponseMessages.productNotFound);
+                    throw new InvalidOperationException(ResponseMessages.productNotFound);
                 }
 
-                var newOrder = new Orders
+                AmazonClone.API.Data.Entity.Order newOrder = new Orders
                 {
                     Id = product.Id,
                     ProductName = product.Name,
@@ -39,11 +40,11 @@ namespace AmazonClone.API.CQRS.Order.CommandHelper
                     UserId = command.UserId
                 };
 
-                await _context.Orders.AddAsync(newOrder, token);
-                await _context.SaveChangesAsync(token);
+                await _context.Orders.AddAsync(newOrder, cancellationToken);
+                await _context.SaveChangesAsync(cancellationToken);
 
                 // Convert Entity List to DTO List
-                var orderList = await _context.Orders.ToListAsync(token);
+                var orderList = await _context.Orders.ToListAsync(cancellationToken);
                 var orderDTOList = orderList.Select(o => new OrderDTO
                 {
                     OrderId = o.OrderId,
@@ -58,9 +59,9 @@ namespace AmazonClone.API.CQRS.Order.CommandHelper
 
                 return orderDTOList;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                throw new InvalidOperationException("An error occurred while placing the order.", ex);
             }
         }
     }

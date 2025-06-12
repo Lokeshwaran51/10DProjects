@@ -48,7 +48,7 @@ namespace AmazonClone.API.CQRS.User.CommandHandlers
                 int expiryMinutes = jwtSettings.GetValue<int>("ExpiryInMinutes");
 
                 SymmetricSecurityKey securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
-                var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+                SigningCredentials credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
                 Claim[] claims = new[]
                 {
@@ -68,7 +68,7 @@ namespace AmazonClone.API.CQRS.User.CommandHandlers
             }
             catch (Exception ex)
             {
-                throw new ApplicationException(ResponseMessages.failToLoadJWT,ex);
+                throw new ApplicationException(ResponseMessages.failToLoadJWT, ex);
             }
         }
     }

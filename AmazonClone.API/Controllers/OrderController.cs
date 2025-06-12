@@ -1,4 +1,5 @@
 ﻿using AmazonClone.API.CQRS.Order.Command;
+using AmazonClone.API.Data.DTO;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -21,7 +22,7 @@ namespace AmazonClone.API.Controllers
         {
             try
             {
-                var res = await _mediator.Send(command);
+                List<AmazonClone.API.Data.Entity.Order> res = await _mediator.Send(command);
                 return Ok(res);
             }
             catch (Exception)
@@ -35,7 +36,7 @@ namespace AmazonClone.API.Controllers
         {
             try
             {
-                var res = await _mediator.Send(command);
+                List<OrderDTO> res = await _mediator.Send(command);
                 return Ok(res);
             }
             catch (Exception)

@@ -26,7 +26,7 @@ namespace AmazonClone.API.Controllers
         {
             try
             {
-                var res = await _mediator.Send(new GetListOfProductsBySubCategoryIdQuery(SubCategoryId));
+                List<Data.Entity.Product> res = await _mediator.Send(new GetListOfProductsBySubCategoryIdQuery(SubCategoryId));
                 return Ok(res);
             }
             catch (Exception)
@@ -40,7 +40,7 @@ namespace AmazonClone.API.Controllers
         {
             try
             {
-                var res = await _mediator.Send(new ProductDetailsQuery(ProductId));
+                ProductDetailsQuery.ProductDetailsDto res = await _mediator.Send(new ProductDetailsQuery(ProductId));
                 return Ok(res);
             }
             catch (Exception)

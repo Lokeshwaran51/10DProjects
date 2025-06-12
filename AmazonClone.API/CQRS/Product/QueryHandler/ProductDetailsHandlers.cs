@@ -16,7 +16,7 @@ namespace AmazonClone.API.CQRS.Product.QueryHandler
         {
             try
             {
-                var product = await _context.Products
+                AmazonClone.API.Data.Entity.Product product = await _context.Products
                         .Include(p => p.Category)
                         .Include(p => p.SubCategory)
                         .FirstOrDefaultAsync(p => p.Id == query.ProductId, token);
@@ -42,7 +42,5 @@ namespace AmazonClone.API.CQRS.Product.QueryHandler
                 throw;
             }
         }
-
-
     }
 }

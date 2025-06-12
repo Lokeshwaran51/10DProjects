@@ -1,4 +1,5 @@
 ﻿using AmazonClone.API.CQRS.Category.Queries;
+using AmazonClone.API.Data.DTO;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -22,7 +23,7 @@ namespace AmazonClone.API.Controllers
         {
             try
             {
-                var res = await _mediator.Send(new GetAllCategoriesQuery());
+                List<CategoryDTO> res = await _mediator.Send(new GetAllCategoriesQuery());
                 return Ok(res);
             }
             catch (Exception)
@@ -36,7 +37,7 @@ namespace AmazonClone.API.Controllers
         {
             try
             {
-                var res = await _mediator.Send(new GetSubCategoryByCategoryIdQuery(categoryId));
+                List<SubCategoryDto> res = await _mediator.Send(new GetSubCategoryByCategoryIdQuery(categoryId));
                 return Ok(res);
             }
             catch (Exception)

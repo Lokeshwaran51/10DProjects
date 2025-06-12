@@ -36,7 +36,7 @@ namespace AmazonClone.API.Controllers
         [HttpPost("Login")]
         public async Task<IActionResult> Login([FromBody] LoginCommand command)
         {
-            var token = await _mediator.Send(command);
+            string token = await _mediator.Send(command);
 
             if (token == null)
                 return Unauthorized("Invalid credentials");

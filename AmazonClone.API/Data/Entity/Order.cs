@@ -7,14 +7,14 @@ namespace AmazonClone.API.Data.Entity
     public class Order
     {
         [Key]
-        public int OrderId { get; set; } // Primary key
+        public int OrderId { get; set; } 
 
         [Required]
         public int Id { get; set; } 
 
         [Required]
         [Column(TypeName = "nvarchar(100)")]
-        public string ProductName { get; set; }
+        public string? ProductName { get; set; }
 
         [Required]
         [Column(TypeName = "decimal(18,2)")]
