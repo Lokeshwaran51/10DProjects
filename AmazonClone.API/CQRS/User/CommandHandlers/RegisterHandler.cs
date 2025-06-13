@@ -15,24 +15,31 @@ namespace AmazonClone.API.Features.User.CommandHandlers
             _context = context;
         }
 
-        public async Task<String> Handle(RegisterCommand command, CancellationToken token)
+        public async Task<String> Handle(RegisterCommand command, CancellationToken cancellationToken)
         {
-            Users userExists = await _context.Users
-                .FirstOrDefaultAsync(u => u.Email == command.Email);
-            if (userExists != null)
+            try
             {
-                throw new Exception(ResponseMessages.emailExists);
+                Users? userExists = await _context.Users
+                       .FirstOrDefaultAsync(u => u.Email == command.Email,cancellationToken);
+                if (userExists != null)
+                {
+                    throw new InvalidOperationException(ResponseMessages.emailExists);
+                }
+                Users newUser = new Users
+                {
+                    UserName = command.UserName,
+                    Email = command.Email,
+                    Mobile = command.Mobile,
+                    Password = command.Password
+                };
+                _context.Users.Add(newUser);
+                await _context.SaveChangesAsync(cancellationToken);
+                return ResponseMessages.userRegister;
             }
-            Users newUser = new Users
+            catch (Exception)
             {
-                UserName = command.UserName,
-                Email = command.Email,
-                Mobile = command.Mobile,
-                Password = command.Password
-            };
-            _context.Users.Add(newUser);
-            await _context.SaveChangesAsync(token);
-            return ResponseMessages.userRegister;
+                throw new InvalidOperationException(ResponseMessages.internalServerErrorMessage);
+            }
         }
     }
 }

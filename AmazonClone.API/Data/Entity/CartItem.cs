@@ -13,14 +13,14 @@ namespace AmazonClone.API.Data.Entity
         public int CartId { get; set; } // foreign key to Cart
 
         [ForeignKey("CartId")]
-        [Required]  // Ensures every CartItem must have a Cart
-        public virtual Cart Cart { get; set; }
+        [Required]  
+        public virtual Cart? Cart { get; set; }
 
         [Column(TypeName = "int")]
         public int? ProductId { get; set; }
 
         [ForeignKey("ProductId")]
-        public virtual Product Product { get; set; }
+        public virtual Product? Product { get; set; }
 
         [Required]
         [MaxLength(255)]
@@ -38,6 +38,6 @@ namespace AmazonClone.API.Data.Entity
         public int UserId { get; set; }
 
         [ForeignKey("UserId")]
-        public virtual User User { get; set; }
+        public virtual User? User { get; set; }
     }
 }

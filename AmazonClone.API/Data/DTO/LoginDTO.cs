@@ -1,7 +1,7 @@
 ﻿
 namespace AmazonClone.API.Data.DTO
 {
-    public class Login
+    public class LoginDto
     {
         /*[Required(ErrorMessage = "Email is required.")]
         [EmailAddress(ErrorMessage = "Invalid email address.")]

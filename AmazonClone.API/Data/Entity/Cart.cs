@@ -16,7 +16,7 @@ namespace AmazonClone.API.Data.Entity
         [Column(TypeName = "int")]
         public int? ProductId { get; set; }
         [Column(TypeName = "Varchar(200)")]
-        public string Email { get; set; }
+        public string? Email { get; set; }
 
         [Column(TypeName = "datetime2")]
         public DateTime CreatedDate { get; set; } = DateTime.UtcNow;

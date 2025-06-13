@@ -1,4 +1,5 @@
-﻿using AmazonClone.API.CQRS.Cart.Queries;
+﻿using AmazonClone.API.Constants;
+using AmazonClone.API.CQRS.Cart.Queries;
 using AmazonClone.API.Data.Entity;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -15,23 +16,30 @@ namespace AmazonClone.API.CQRS.Cart.QueryHandlers
             _context = context;
         }
 
-        public async Task<int> Handle(GetCartItemCountQuery request, CancellationToken token)
+        public async Task<int> Handle(GetCartItemCountQuery request, CancellationToken cancellationToken)
         {
-            if (string.IsNullOrWhiteSpace(request.Email))
+            try
             {
-                return 0;
-            }
-            Carts cart = await _context.Carts
-                .FirstOrDefaultAsync(c => c.Email == request.Email, token);
+                if (string.IsNullOrWhiteSpace(request.Email))
+                {
+                    return 0;
+                }
+                Carts? cart = await _context.Carts
+                    .FirstOrDefaultAsync(c => c.Email == request.Email, cancellationToken);
 
-            if (cart == null)
-            {
-                return 0;
+                if (cart == null)
+                {
+                    return 0;
+                }
+                int count = await _context.CartItems
+                    .Where(ci => ci.CartId == cart.CartId)
+                    .SumAsync(ci => ci.Quantity ?? 0, cancellationToken);
+                return count;
             }
-            int count = await _context.CartItems
-                .Where(ci => ci.CartId == cart.CartId)
-                .SumAsync(ci => ci.Quantity ?? 0, token);
-            return count;
+            catch (Exception)
+            {
+                throw new InvalidOperationException(ResponseMessages.internalServerErrorMessage);
+            }
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using AmazonClone.API.CQRS.Product.Queries;
+﻿using AmazonClone.API.Constants;
+using AmazonClone.API.CQRS.Product.Queries;
 using AmazonClone.API.Data.Entity;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -12,18 +13,18 @@ namespace AmazonClone.API.CQRS.Product.QueryHandler
         {
             _context = context;
         }
-        public async Task<ProductDetailsQuery.ProductDetailsDto> Handle(ProductDetailsQuery query, CancellationToken token)
+        public async Task<ProductDetailsQuery.ProductDetailsDto> Handle(ProductDetailsQuery query, CancellationToken cancellationToken)
         {
             try
             {
-                AmazonClone.API.Data.Entity.Product product = await _context.Products
+                AmazonClone.API.Data.Entity.Product? product = await _context.Products
                         .Include(p => p.Category)
                         .Include(p => p.SubCategory)
-                        .FirstOrDefaultAsync(p => p.Id == query.ProductId, token);
+                        .FirstOrDefaultAsync(p => p.Id == query.ProductId, cancellationToken);
 
                 if (product == null)
                 {
-                    throw new Exception($"Product with ID {query.ProductId} not found.");
+                    throw new InvalidOperationException(ResponseMessages.productNotFound);
                 }
 
                 return new ProductDetailsQuery.ProductDetailsDto
@@ -39,7 +40,7 @@ namespace AmazonClone.API.CQRS.Product.QueryHandler
             }
             catch (Exception)
             {
-                throw;
+                throw new InvalidOperationException(ResponseMessages.internalServerErrorMessage);
             }
         }
     }

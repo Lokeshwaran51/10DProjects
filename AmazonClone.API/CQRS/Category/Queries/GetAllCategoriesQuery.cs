@@ -3,7 +3,7 @@ using MediatR;
 
 namespace AmazonClone.API.CQRS.Category.Queries
 {
-    public class GetAllCategoriesQuery : IRequest<List<CategoryDTO>>
+    public class GetAllCategoriesQuery : IRequest<List<CategoryDto>>
     {
     }
 }

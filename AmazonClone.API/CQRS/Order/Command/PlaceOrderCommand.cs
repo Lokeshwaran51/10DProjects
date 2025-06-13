@@ -3,14 +3,14 @@ using MediatR;
 
 namespace AmazonClone.API.CQRS.Order.Command
 {
-    public class PlaceOrderCommand : IRequest<List<OrderDTO>>
+    public class PlaceOrderCommand : IRequest<List<OrderDto>>
     {
-        public OrderDTO Order { get; set; } 
+        public OrderDto Order { get; set; } 
         public int Quantity { get; set; }
         public int ProductId { get; set; }
         public int? UserId { get; set; }
 
-        public PlaceOrderCommand(OrderDTO order, int quantity, int productId, int? userId)
+        public PlaceOrderCommand(OrderDto order, int quantity, int productId, int? userId)
         {
             Order = order;
             Quantity = quantity;

@@ -28,7 +28,7 @@ namespace AmazonClone.API.Controllers
             }
             catch (Exception)
             {
-                throw;
+                throw new InvalidOperationException("Internal Server Error.");
             }
         }
 
@@ -36,11 +36,18 @@ namespace AmazonClone.API.Controllers
         [HttpPost("Login")]
         public async Task<IActionResult> Login([FromBody] LoginCommand command)
         {
-            string token = await _mediator.Send(command);
+            try
+            {
+                string token = await _mediator.Send(command);
 
-            if (token == null)
-                return Unauthorized("Invalid credentials");
-            return Ok(new { Token = token });
+                if (token == null)
+                    return Unauthorized("Invalid credentials");
+                return Ok(new { Token = token });
+            }
+            catch (Exception)
+            {
+                throw new InvalidOperationException("Internal Server Error.");
+            }
         }
     }
 }

@@ -4,6 +4,8 @@ using AmazonClone.API.Data.DTO;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
+using constant = AmazonClone.API.Constants.ResponseMessages;
 
 namespace AmazonClone.API.Controllers
 {
@@ -20,16 +22,20 @@ namespace AmazonClone.API.Controllers
         }
 
         [HttpPost("AddToCart")]
-        public async Task<IActionResult> AddToCart(AddToCartRequestDTO addToCartdto)
+        public async Task<IActionResult> AddToCart(AddToCartRequestDto addToCartdto)
         {
             try
             {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
                 string result = await _mediator.Send(new AddToCartCommand(addToCartdto));
                 return Ok(result);
             }
             catch (Exception)
             {
-                throw;
+                throw new InvalidOperationException(constant.internalServerErrorMessage);
             }
         }
 
@@ -43,7 +49,7 @@ namespace AmazonClone.API.Controllers
             }
             catch (Exception)
             {
-                throw;
+                throw new InvalidOperationException(constant.internalServerErrorMessage);
             }
         }
 
@@ -57,21 +63,25 @@ namespace AmazonClone.API.Controllers
             }
             catch (Exception)
             {
-                throw;
+                throw new InvalidOperationException(constant.internalServerErrorMessage);
             }
         }
 
         [HttpPost("RemoveItemFromCart")]
-        public async Task<IActionResult> RemoveItemFromCart(int ProductId)
+        public async Task<IActionResult> RemoveItemFromCart([FromQuery][Required] int ProductId)
         {
             try
             {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
                 string res = await _mediator.Send(new RemoveItemFromCartCommand(ProductId));
                 return Ok(res);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return StatusCode(500,  ex.Message);
+                throw new InvalidOperationException(constant.internalServerErrorMessage);
             }
         }
     }

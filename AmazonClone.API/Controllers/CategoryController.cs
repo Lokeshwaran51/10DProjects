@@ -23,12 +23,12 @@ namespace AmazonClone.API.Controllers
         {
             try
             {
-                List<CategoryDTO> res = await _mediator.Send(new GetAllCategoriesQuery());
+                List<CategoryDto> res = await _mediator.Send(new GetAllCategoriesQuery());
                 return Ok(res);
             }
             catch (Exception)
             {
-                throw;
+                throw new InvalidOperationException("Internal Server Error.");
             }
         }
 
@@ -42,7 +42,7 @@ namespace AmazonClone.API.Controllers
             }
             catch (Exception)
             {
-                throw;
+                throw new InvalidOperationException("Internal Server Error.");
             }
         }
     }

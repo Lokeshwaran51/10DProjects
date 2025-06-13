@@ -1,6 +1,6 @@
 ﻿namespace AmazonClone.API.Data.DTO
 {
-    public class RemoveItemCartDTO
+    public class RemoveItemCartDto
     {
         public int ProductId { get; set; }
     }

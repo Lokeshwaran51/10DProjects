@@ -10,7 +10,7 @@ using Orders = AmazonClone.API.Data.Entity.Order;
 
 namespace AmazonClone.API.CQRS.Order.CommandHelper
 {
-    public class PlaceOrderCommandHelpers : IRequestHandler<PlaceOrderCommand, List<OrderDTO>>
+    public class PlaceOrderCommandHelpers : IRequestHandler<PlaceOrderCommand, List<OrderDto>>
     {
         private readonly AppDbContext _context;
 
@@ -19,7 +19,7 @@ namespace AmazonClone.API.CQRS.Order.CommandHelper
             _context = context;
         }
 
-        public async Task<List<OrderDTO>> Handle(PlaceOrderCommand command, CancellationToken cancellationToken)
+        public async Task<List<OrderDto>> Handle(PlaceOrderCommand command, CancellationToken cancellationToken)
         {
             try
             {
@@ -45,7 +45,7 @@ namespace AmazonClone.API.CQRS.Order.CommandHelper
 
                 // Convert Entity List to DTO List
                 var orderList = await _context.Orders.ToListAsync(cancellationToken);
-                var orderDTOList = orderList.Select(o => new OrderDTO
+                var orderDTOList = orderList.Select(o => new OrderDto
                 {
                     OrderId = o.OrderId,
                     ProductName = o.ProductName,

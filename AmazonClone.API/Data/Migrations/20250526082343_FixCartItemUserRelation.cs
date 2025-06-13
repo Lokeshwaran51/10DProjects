@@ -16,7 +16,7 @@ namespace AmazonClone.API.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-
+            throw new NotSupportedException("This migration cannot be rolled back.");
         }
     }
 }

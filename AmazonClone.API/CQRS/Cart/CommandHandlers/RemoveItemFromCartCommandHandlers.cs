@@ -14,23 +14,23 @@ namespace AmazonClone.API.CQRS.Cart.CommandHandlers
             _context = context;
         }
 
-        public async Task<string> Handle(RemoveItemFromCartCommand command, CancellationToken token)
+        public async Task<string> Handle(RemoveItemFromCartCommand command, CancellationToken cancellationToken)
         {
             try
             {
-                CartItem cartItem = await _context.CartItems.FirstOrDefaultAsync(ci => ci.ProductId == command.ProductId);
+                CartItem? cartItem = await _context.CartItems.FirstOrDefaultAsync(ci => ci.ProductId == command.ProductId,cancellationToken);
                 if (cartItem != null)
                 {
                     _context.CartItems.Remove(cartItem);
-                    await _context.SaveChangesAsync();
+                    await _context.SaveChangesAsync(cancellationToken);
                     return ResponseMessages.removeItem;
                 }
 
                 return ResponseMessages.itemNotFound;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return $"Internal server error: {ex.Message}";
+                throw new InvalidOperationException(ResponseMessages.internalServerErrorMessage);
             }
         }
     }

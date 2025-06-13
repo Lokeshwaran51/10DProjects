@@ -18,16 +18,16 @@ namespace AmazonClone.API.Controllers
         }
 
         [HttpPost("Success")]
-        public async Task<IActionResult> Success([FromBody] SuccessCommand command)
+        public async Task<IActionResult> Success(SuccessCommand command)
         {
             try
             {
-                List<AmazonClone.API.Data.Entity.Order> res = await _mediator.Send(command);
+                List<OrderDto> res = await _mediator.Send(command);
                 return Ok(res);
             }
             catch (Exception)
             {
-                throw;
+                throw new InvalidOperationException("Internal Server Error.");
             }
         }
 
@@ -36,12 +36,12 @@ namespace AmazonClone.API.Controllers
         {
             try
             {
-                List<OrderDTO> res = await _mediator.Send(command);
+                List<OrderDto> res = await _mediator.Send(command);
                 return Ok(res);
             }
             catch (Exception)
             {
-                throw;
+                throw new InvalidOperationException("Internal Server Error.");
             }
         }
     }

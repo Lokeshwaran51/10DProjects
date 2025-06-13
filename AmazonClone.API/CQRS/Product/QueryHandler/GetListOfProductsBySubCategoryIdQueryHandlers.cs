@@ -1,4 +1,5 @@
-﻿using AmazonClone.API.CQRS.Product.Queries;
+﻿using AmazonClone.API.Constants;
+using AmazonClone.API.CQRS.Product.Queries;
 using AmazonClone.API.Data.Entity;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -14,17 +15,17 @@ namespace AmazonClone.API.CQRS.Product.QueryHandler
             _context = context;
         }
 
-        public async Task<List<Products>> Handle(GetListOfProductsBySubCategoryIdQuery query, CancellationToken token)
+        public async Task<List<Products>> Handle(GetListOfProductsBySubCategoryIdQuery query, CancellationToken cancellationToken)
         {
             try
             {
                 return await _context.Products
                         .Where(p => p.SubCategoryId == query.SubCategoryId)
-                        .ToListAsync();
+                        .ToListAsync(cancellationToken);
             }
             catch (Exception)
             {
-                throw;
+                throw new InvalidOperationException(ResponseMessages.internalServerErrorMessage);
             }
         }
     }

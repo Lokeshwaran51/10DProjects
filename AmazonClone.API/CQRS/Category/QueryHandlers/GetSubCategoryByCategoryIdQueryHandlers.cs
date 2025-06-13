@@ -3,6 +3,7 @@ using AmazonClone.API.CQRS.Category.Queries;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using AmazonClone.API.Data.DTO;
+using AmazonClone.API.Constants;
 
 namespace AmazonClone.API.Features.Category.QueryHandlers
 {
@@ -33,9 +34,9 @@ namespace AmazonClone.API.Features.Category.QueryHandlers
 
                 return subcategories;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return new List<SubCategoryDto>();
+                throw new InvalidOperationException(ResponseMessages.internalServerErrorMessage);
             }
         }
     }

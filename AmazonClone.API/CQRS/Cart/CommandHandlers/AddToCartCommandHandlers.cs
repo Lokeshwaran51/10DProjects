@@ -24,6 +24,7 @@ namespace AmazonClone.API.CQRS.Cart.CommandHandlers
             try
             {
                 var dto = request.Request;
+
                 Users? user = await _context.Users.FirstOrDefaultAsync(u => u.Email == dto.Email, cancellationToken);
                 if (user == null)
                 {
@@ -72,9 +73,9 @@ namespace AmazonClone.API.CQRS.Cart.CommandHandlers
                 await _context.SaveChangesAsync(cancellationToken);
                 return ResponseMessages.addedToCart;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw new InvalidOperationException("Error occurred while adding item to cart.", ex);
+                throw new InvalidOperationException(ResponseMessages.internalServerErrorMessage);
             }
         }
     }

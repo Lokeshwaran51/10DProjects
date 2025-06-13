@@ -35,11 +35,5 @@ namespace AmazonClone.API.Data.Entity
 
         [Column(TypeName = "int")]
         public int? UserId { get; set; }
-
-        //public string PaymentMode { get; internal set; }
-        
-        // Optional navigation property
-        // [ForeignKey("UserId")]
-        // public User User { get; set; }
     }
 }

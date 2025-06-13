@@ -31,7 +31,7 @@ namespace AmazonClone.API.Controllers
             }
             catch (Exception)
             {
-                throw;
+                throw new InvalidOperationException("Internal Server Error.");
             }
         }
 
@@ -45,7 +45,7 @@ namespace AmazonClone.API.Controllers
             }
             catch (Exception)
             {
-                throw;
+                throw new InvalidOperationException("Internal Server Error.");
             }
         }
     }

@@ -20,21 +20,21 @@ namespace AmazonClone.API.CQRS.User.CommandHandlers
             _context = context;
             _configuration = configuration;
         }
-        public async Task<String> Handle(LoginCommand command, CancellationToken token)
+        public async Task<String> Handle(LoginCommand command, CancellationToken cancellationToken)
         {
             try
             {
-                Users user = await _context.Users
-                       .FirstOrDefaultAsync(u => u.Email == command.Email && u.Password == command.Password, token);
+                Users? user = await _context.Users
+                       .FirstOrDefaultAsync(u => u.Email == command.Email && u.Password == command.Password, cancellationToken);
 
                 if (user == null)
-                    return null;
+                    throw new InvalidOperationException(ResponseMessages.userNotFound);
 
                 return GenerateJwtToken(user);
             }
             catch (Exception)
             {
-                throw;
+                throw new InvalidOperationException(ResponseMessages.internalServerErrorMessage);
             }
         }
         private string GenerateJwtToken(Users user)
@@ -42,10 +42,15 @@ namespace AmazonClone.API.CQRS.User.CommandHandlers
             try
             {
                 IConfigurationSection jwtSettings = _configuration.GetSection("Jwt");
-                string secretKey = jwtSettings.GetValue<string>("Key");
-                string issuer = jwtSettings.GetValue<string>("Issuer");
-                string audience = jwtSettings.GetValue<string>("Audience");
+                string? secretKey = jwtSettings.GetValue<string>("Key");
+                string? issuer = jwtSettings.GetValue<string>("Issuer");
+                string? audience = jwtSettings.GetValue<string>("Audience");
                 int expiryMinutes = jwtSettings.GetValue<int>("ExpiryInMinutes");
+
+                if (string.IsNullOrEmpty(secretKey))
+                {
+                    throw new InvalidOperationException(ResponseMessages.secretKeyCntBeNull);
+                }
 
                 SymmetricSecurityKey securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
                 SigningCredentials credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
@@ -66,9 +71,9 @@ namespace AmazonClone.API.CQRS.User.CommandHandlers
 
                 return new JwtSecurityTokenHandler().WriteToken(token);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw new ApplicationException(ResponseMessages.failToLoadJWT, ex);
+                throw new InvalidOperationException(ResponseMessages.internalServerErrorMessage);
             }
         }
     }
