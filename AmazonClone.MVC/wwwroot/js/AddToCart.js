@@ -13,25 +13,7 @@
     });
 
     // Buy Now
-    /* $("#buyNow").click(function () {
-         const productId = parseInt($("#productId").val());
-         const quantity = parseInt($("#quantity").val()) || 1;
- 
-         $.ajax({
-             url: `/Order/PlaceOrder`,
-             type: "POST",
-             data: {
-                 ProductId: productId,
-                 Quantity: quantity
-             },
-             success: function (response) {
-                 console.log("Order placed successfully:", response);
-             },
-             error: function (xhr, status, error) {
-                 console.error("Error placing order:", error);
-             }
-         });
-     });*/
+    
 
     $("#buyNow").click(function () {
         const productId = parseInt($("#productId").val());
@@ -42,10 +24,10 @@
 
     // Add to Cart
     $("#addToCart").click(function () {
-        var $button = $(this);
-        var quantity = parseInt($("#quantity").val()) || 1;
-        var productId = parseInt($("#productId").val());
-        var userId = $("#Email").val();
+        let $button = $(this);
+        let quantity = parseInt($("#quantity").val()) || 1;
+        let productId = parseInt($("#productId").val());
+        let userId = $("#Email").val();
 
         //window.location.href = `/Cart/AddToCart?ProductId=${productId}&quantity=${quantity}`;
         $button.prop('disabled', true);
@@ -75,8 +57,8 @@
 
     // Add to Wishlist
     $("#addToWishlist").click(function () {
-        var $button = $(this);
-        var productId = parseInt($("#productId").val());
+        let $button = $(this);
+        let productId = parseInt($("#productId").val());
 
         if (!productId) {
             toastr.error('Product ID not found!');
@@ -96,31 +78,8 @@
     });
 
     $(".cart-option").click(function () {
-        var $button = $(this);
-        var Email = $("#Email").val();
+        let Email = $("#Email").val();
         window.location.href = `/Cart/ViewCart?Email=${Email}`;
-
-        /*if (!Email) {
-            toastr.error("Email is missing.");
-            return;
-        }
-
-        $button.prop('disabled', true);
-
-        $.ajax({
-            url: '/Cart/ViewCart?Email=' + encodeURIComponent(Email),
-            type: "GET",
-            success: function (data) {
-                $('#cart-content').html(data);
-                $button.prop('disabled', false);
-            },
-            error: function (xhr) {
-                const errorMsg = xhr.responseJSON?.message || 'Failed to load cart.';
-                toastr.error(errorMsg);
-                console.error("AJAX error: ", xhr); // Debug log
-                $button.prop('disabled', false);
-            }
-        });*/
     });
 
 

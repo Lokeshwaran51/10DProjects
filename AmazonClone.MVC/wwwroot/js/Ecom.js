@@ -1,8 +1,5 @@
-﻿
-
-$(document).ready(function () {
-    //var userEmail = '@HttpContextAccessor.HttpContext.Session.GetString("Email")';
-    var Email = $("#Email").val();
+﻿$(document).ready(function () {
+    let Email = $("#Email").val();
 
     if (Email) {
         $.ajax({
@@ -17,8 +14,6 @@ $(document).ready(function () {
         });
     }
 });
-
-
 
 $(document).ready(function () {
     $('.remove-btn').on('click', function () {

@@ -116,5 +116,6 @@ D:\Projects\AmazonClone.MVC\AmazonClone.MVC\Views\Shared\_Layout.cshtml.css
 D:\Projects\AmazonClone.MVC\AmazonClone.MVC\Logs\log-20250611.txt
 D:\Projects\AmazonClone.MVC\AmazonClone.MVC\Logs\logMVC-20250611.txt
 D:\Projects\AmazonClone.MVC\AmazonClone.MVC\Logs\logMVC-20250612.txt
+D:\Projects\AmazonClone.MVC\AmazonClone.MVC\Logs\logMVC-20250613.txt
 D:\Projects\AmazonClone.MVC\AmazonClone.MVC\Properties\launchSettings.json
 D:\Projects\AmazonClone.MVC\AmazonClone.MVC\Properties\PublishProfiles\FolderProfile.pubxml

@@ -1,4 +1,6 @@
 ﻿using AmazonClone.MVC.Models;
+using AmazonClone.MVC.Services;
+using AmazonClone.MVC.Services.Interfaces;
 using AmazonClone.MVC.Validators;
 using FluentValidation;
 using Serilog;
@@ -16,8 +18,24 @@ Log.Logger = new LoggerConfiguration()
 
 builder.Host.UseSerilog();
 
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", policy =>
+    {
+        policy.AllowAnyOrigin()
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+
+
 // Add session services HERE (before Build())
 builder.Services.AddDistributedMemoryCache();
+builder.Services.AddHttpClient<ICartService, CartService>();
+builder.Services.AddHttpClient<IUserService, UserService>();
+builder.Services.AddHttpClient<ICategoryService, CategoryService>();
+
 builder.Services.AddSession(options =>
 {
     options.IdleTimeout = TimeSpan.FromMinutes(30);
@@ -38,6 +56,7 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
+app.UseCors("AllowAll");
 app.UseSession();
 app.UseRouting();
 app.UseAuthentication();
