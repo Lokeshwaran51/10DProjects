@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -9,7 +10,7 @@ using UserServices.User.Command;
 
 namespace UserServices.User.CommandHandlers
 {
-    public class LoginCommandHandler
+    public class LoginCommandHandler : IRequestHandler<LoginCommand, string>
     {
         private readonly UserDbContext _context;
         private readonly IConfiguration _configuration;
