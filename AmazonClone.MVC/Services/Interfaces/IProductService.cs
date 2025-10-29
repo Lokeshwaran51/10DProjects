@@ -2,7 +2,7 @@
 {
     public interface IProductService
     {
-        Task<HttpResponseMessage> GetListOfProductsBySubCategoryId(int SubCategoryId,string token);
-        Task<HttpResponseMessage> ProductDetails(int Id, string token);
+        public Task<HttpResponseMessage> GetListOfProductsBySubCategoryId(int SubCategoryId,string token);
+        public Task<HttpResponseMessage> ProductDetails(int Id, string token);
     }
 }

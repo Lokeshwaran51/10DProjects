@@ -4,7 +4,7 @@ namespace AmazonClone.MVC.Services.Interfaces
 {
     public interface IUserService
     {
-        Task<HttpResponseMessage> Register(User user, string Token);
-        Task<HttpResponseMessage> Login(Login login);
+        public Task<HttpResponseMessage> Register(User user, string Token);
+        public Task<HttpResponseMessage> Login(Login login);
     }
 }

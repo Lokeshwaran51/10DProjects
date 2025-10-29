@@ -5,7 +5,7 @@ namespace AmazonClone.MVC.Services.Interfaces
 {
     public interface ICategoryService
     {
-        Task<HttpResponseMessage> GetAllCategories(string token);
-        Task<HttpResponseMessage> GetSubCategoryByCategoryId(int categoryId,string token);
+        public Task<HttpResponseMessage> GetAllCategories(string token);
+        public Task<HttpResponseMessage> GetSubCategoryByCategoryId(int categoryId,string token);
     }
 }
