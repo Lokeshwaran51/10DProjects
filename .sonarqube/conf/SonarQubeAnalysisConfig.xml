@@ -1,22 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <AnalysisConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.sonarsource.com/msbuild/integration/2015/1">
+<<<<<<< HEAD
   <SonarConfigDir>D:\Projects\AmazonClone.MVC\.sonarqube\conf</SonarConfigDir>
   <SonarOutputDir>D:\Projects\AmazonClone.MVC\.sonarqube\out</SonarOutputDir>
   <SonarBinDir>D:\Projects\AmazonClone.MVC\.sonarqube\bin</SonarBinDir>
   <SonarScannerWorkingDirectory>D:\Projects\AmazonClone.MVC</SonarScannerWorkingDirectory>
+=======
+  <SonarConfigDir>D:\Projects\AmazonClone.API\.sonarqube\conf</SonarConfigDir>
+  <SonarOutputDir>D:\Projects\AmazonClone.API\.sonarqube\out</SonarOutputDir>
+  <SonarBinDir>D:\Projects\AmazonClone.API\.sonarqube\bin</SonarBinDir>
+  <SonarScannerWorkingDirectory>D:\Projects\AmazonClone.API</SonarScannerWorkingDirectory>
+>>>>>>> 1ed7349bd947ee8c91c826c37c211825c91d0794
   <JavaExePath>C:\Users\10Decoders\.sonar\cache\11a61a94d383e755b08b4e5890a13d148bc9f95b7149cbbeec62efb8c75a4a67\OpenJDK17U-jre_x64_windows_hotspot_17.0.13_11.zip_extracted\jdk-17.0.13+11-jre/bin/java.exe</JavaExePath>
   <ScanAllAnalysis>true</ScanAllAnalysis>
   <HasBeginStepCommandLineCredentials>true</HasBeginStepCommandLineCredentials>
   <HasBeginStepCommandLineTruststorePassword>false</HasBeginStepCommandLineTruststorePassword>
   <SonarQubeHostUrl>http://localhost:9000</SonarQubeHostUrl>
   <SonarQubeVersion>25.6.0.109173</SonarQubeVersion>
+<<<<<<< HEAD
   <SonarProjectKey>AmazonCloneProjectMVC</SonarProjectKey>
+=======
+  <SonarProjectKey>AmazonCloneProjectAPI</SonarProjectKey>
+>>>>>>> 1ed7349bd947ee8c91c826c37c211825c91d0794
   <AdditionalConfig>
     <ConfigSetting Id="BuildUri" />
     <ConfigSetting Id="TfsUri" />
     <ConfigSetting Id="VsCoverageConverterToolPath" />
     <ConfigSetting Id="UnchangedFilesPath" />
+<<<<<<< HEAD
     <ConfigSetting Id="sonar.pullrequest.cache.basepath" Value="D:\Projects\AmazonClone.MVC" />
+=======
+    <ConfigSetting Id="sonar.pullrequest.cache.basepath" Value="D:\Projects\AmazonClone.API" />
+>>>>>>> 1ed7349bd947ee8c91c826c37c211825c91d0794
     <ConfigSetting Id="settings.file.path" Value="C:\Users\10Decoders\.dotnet\tools\.store\dotnet-sonarscanner\10.2.0\dotnet-sonarscanner\10.2.0\tools\netcoreapp3.1\any\SonarQube.Analysis.xml" />
   </AdditionalConfig>
   <ServerSettings>
@@ -143,8 +158,13 @@
     <Property Name="sonaranalyzer-vbnet.pluginKey">vbnet</Property>
     <Property Name="sonar.java.jvmframeworkconfig.activate">true</Property>
     <Property Name="sonar.updatecenter.url">https://downloads.sonarsource.com/sonarqube/update/update-center.properties</Property>
+<<<<<<< HEAD
     <Property Name="sonar.core.id">147B411E-AZdnsyqWMSBRbj_wJspK</Property>
     <Property Name="sonar.core.startTime">16-06-2025 09:52:27</Property>
+=======
+    <Property Name="sonar.core.startTime">13-06-2025 10:41:22</Property>
+    <Property Name="sonar.core.id">147B411E-AZdnsyqWMSBRbj_wJspK</Property>
+>>>>>>> 1ed7349bd947ee8c91c826c37c211825c91d0794
   </ServerSettings>
   <LocalSettings>
     <Property Name="sonar.host.url">http://localhost:9000</Property>
@@ -153,8 +173,13 @@
   <AnalyzersSettings>
     <AnalyzerSettings>
       <Language>cs</Language>
+<<<<<<< HEAD
       <RulesetPath>D:\Projects\AmazonClone.MVC\.sonarqube\conf\Sonar-cs.ruleset</RulesetPath>
       <DeactivatedRulesetPath>D:\Projects\AmazonClone.MVC\.sonarqube\conf\Sonar-cs-none.ruleset</DeactivatedRulesetPath>
+=======
+      <RulesetPath>D:\Projects\AmazonClone.API\.sonarqube\conf\Sonar-cs.ruleset</RulesetPath>
+      <DeactivatedRulesetPath>D:\Projects\AmazonClone.API\.sonarqube\conf\Sonar-cs-none.ruleset</DeactivatedRulesetPath>
+>>>>>>> 1ed7349bd947ee8c91c826c37c211825c91d0794
       <AnalyzerPlugins>
         <AnalyzerPlugin Key="csharp" Version="10.10.1.116480" StaticResourceName="SonarAnalyzer-csharp-10.10.1.116480.zip">
           <AssemblyPaths>
@@ -164,13 +189,22 @@
         </AnalyzerPlugin>
       </AnalyzerPlugins>
       <AdditionalFilePaths>
+<<<<<<< HEAD
         <Path>D:\Projects\AmazonClone.MVC\.sonarqube\conf\cs\SonarLint.xml</Path>
+=======
+        <Path>D:\Projects\AmazonClone.API\.sonarqube\conf\cs\SonarLint.xml</Path>
+>>>>>>> 1ed7349bd947ee8c91c826c37c211825c91d0794
       </AdditionalFilePaths>
     </AnalyzerSettings>
     <AnalyzerSettings>
       <Language>vbnet</Language>
+<<<<<<< HEAD
       <RulesetPath>D:\Projects\AmazonClone.MVC\.sonarqube\conf\Sonar-vbnet.ruleset</RulesetPath>
       <DeactivatedRulesetPath>D:\Projects\AmazonClone.MVC\.sonarqube\conf\Sonar-vbnet-none.ruleset</DeactivatedRulesetPath>
+=======
+      <RulesetPath>D:\Projects\AmazonClone.API\.sonarqube\conf\Sonar-vbnet.ruleset</RulesetPath>
+      <DeactivatedRulesetPath>D:\Projects\AmazonClone.API\.sonarqube\conf\Sonar-vbnet-none.ruleset</DeactivatedRulesetPath>
+>>>>>>> 1ed7349bd947ee8c91c826c37c211825c91d0794
       <AnalyzerPlugins>
         <AnalyzerPlugin Key="vbnet" Version="10.10.1.116480" StaticResourceName="SonarAnalyzer-vbnet-10.10.1.116480.zip">
           <AssemblyPaths>
@@ -180,7 +214,11 @@
         </AnalyzerPlugin>
       </AnalyzerPlugins>
       <AdditionalFilePaths>
+<<<<<<< HEAD
         <Path>D:\Projects\AmazonClone.MVC\.sonarqube\conf\vbnet\SonarLint.xml</Path>
+=======
+        <Path>D:\Projects\AmazonClone.API\.sonarqube\conf\vbnet\SonarLint.xml</Path>
+>>>>>>> 1ed7349bd947ee8c91c826c37c211825c91d0794
       </AdditionalFilePaths>
     </AnalyzerSettings>
   </AnalyzersSettings>

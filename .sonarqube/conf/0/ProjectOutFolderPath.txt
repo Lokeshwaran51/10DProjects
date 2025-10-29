@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 D:\Projects\AmazonClone.MVC\.sonarqube\out\0
+=======
+D:\Projects\AmazonClone.API\.sonarqube\out\0
+>>>>>>> 1ed7349bd947ee8c91c826c37c211825c91d0794
